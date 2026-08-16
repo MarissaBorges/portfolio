@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borges</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="top-menu">
+        <div>
+            <ul>
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#About">About</a></li>
+                <li><a href="#Projects">Projects</a></li>
+                <li><a href="#Contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <section class="Home section" id="Home">
+        <div class="background-text-wrapper">
+            <h1 class="background-text">Python Developer</h1>
+        </div>
+
+        <div class="home-content">
+            <div class="presentation">
+                <div class="text">
+                    <h2>Hi, I'm Borges</h2>
+                    <p>A Systems Analysis and Development student, driven by the curiosity to understand how
+                        things work.</p>
+                    <button onclick="document.getElementById('Projects').scrollIntoView({behavior: 'smooth'})">Explore my work</button>
+                </div>
+
+                <div class="photo-wrapper">
+                    <img src="src/img_perfil_portfolio.png" alt="Minha foto de perfil">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="skills-carousel">
+        <div class="skills-track">
+            <!-- PRIMEIRA sequência -->
+            <img src="src/icons/Python.svg" alt="Python Logo">
+            <img src="src/icons/Django.svg" alt="Django Logo">
+            <img src="src/icons/Langchain.svg" alt="Langchain Logo">
+            <img src="src/icons/HuggingFace.svg" alt="HuggingFace Logo">
+            <img src="src/icons/Html.svg" alt="Html Logo">
+            <img src="src/icons/Css.svg" alt="Css Logo">
+            <img src="src/icons/OpenAi API.svg" alt="OpenAi Logo">
+            <img src="src/icons/Python.svg" alt="Python Logo">
+            <img src="src/icons/Django.svg" alt="Django Logo">
+            <img src="src/icons/Langchain.svg" alt="Langchain Logo">
+            <img src="src/icons/HuggingFace.svg" alt="HuggingFace Logo">
+            <img src="src/icons/Html.svg" alt="Html Logo">
+            <img src="src/icons/Css.svg" alt="Css Logo">
+            <img src="src/icons/OpenAi API.svg" alt="OpenAi Logo">
+
+
+            <!-- SEGUNDA sequência (igual) para o loop infinito -->
+            <img src="src/icons/Python.svg" alt="Python Logo">
+            <img src="src/icons/Django.svg" alt="Django Logo">
+            <img src="src/icons/Langchain.svg" alt="Langchain Logo">
+            <img src="src/icons/HuggingFace.svg" alt="HuggingFace Logo">
+            <img src="src/icons/Html.svg" alt="Html Logo">
+            <img src="src/icons/Css.svg" alt="Css Logo">
+            <img src="src/icons/OpenAi API.svg" alt="OpenAi Logo">
+            <img src="src/icons/Python.svg" alt="Python Logo">
+            <img src="src/icons/Django.svg" alt="Django Logo">
+            <img src="src/icons/Langchain.svg" alt="Langchain Logo">
+            <img src="src/icons/HuggingFace.svg" alt="HuggingFace Logo">
+            <img src="src/icons/Html.svg" alt="Html Logo">
+            <img src="src/icons/Css.svg" alt="Css Logo">
+            <img src="src/icons/OpenAi API.svg" alt="OpenAi Logo">
+
+        </div>
+    </section>
+    <section class="About section" id="About">
+        <h2>About</h2>
+    </section>
+    <section class="Projects section" id="Projects">
+        <h2>Projects</h2>
+    </section>
+    <section class="Contact section" id="Contact">
+        <h2>Contact</h2>
+    </section>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
