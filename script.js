@@ -397,7 +397,152 @@ document.addEventListener("DOMContentLoaded", () => {
     chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 
-  // 7. Mobile Fullscreen Immersion Logic
+  // 7. Projects Section - Sticky Scroll & Slot Machine Animation
+  const projectsContainer = document.querySelector(".projects-container");
+  if (projectsContainer) {
+    const titleStack = document.querySelector(".title-stack");
+    const titleWords = gsap.utils.toArray(".title-word");
+    const projectCards = gsap.utils.toArray(".project-card");
+    const sliderLine = document.querySelector(".slider-line");
+    
+    // Smooth scrub animation for the slider line to act as a progress bar
+    gsap.fromTo(sliderLine, 
+      { background: "#39495b" },
+      { 
+        background: "#e5e7eb",
+        ease: "none",
+        scrollTrigger: {
+          trigger: projectsContainer,
+          start: "top center",
+          end: "bottom center",
+          scrub: true,
+        }
+      }
+    );
+
+    // Map each card to update the active state in the title stack
+    projectCards.forEach((card, i) => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: "top 60%", // when card reaches 60% of viewport from top
+        end: "bottom 40%",
+        onEnter: () => updateActiveWord(i),
+        onEnterBack: () => updateActiveWord(i),
+      });
+    });
+
+    function updateActiveWord(index) {
+      // Direct 1-to-1 mapping for any number of cards/titles
+      const wordIndex = Math.min(index, titleWords.length - 1);
+      
+      titleWords.forEach((word, w) => {
+        if (w === wordIndex) {
+          word.classList.remove("ghost");
+          word.classList.add("active");
+        } else {
+          word.classList.remove("active");
+          word.classList.add("ghost");
+        }
+      });
+      
+      const activeWord = titleWords[wordIndex];
+      if (!activeWord) return;
+
+      // Mathematically perfect centering: 
+      // 100px is the vertical center of the 200px .title-slider-wrapper
+      const wrapperCenter = 100; 
+      const wordCenter = activeWord.offsetTop + (activeWord.offsetHeight / 2);
+      const shiftY = wrapperCenter - wordCenter;
+      
+      // Slot machine physical shift
+      gsap.to(titleStack, {
+        y: shiftY,
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: "auto" // Kills previous animations if user scrolls very fast, fixing the "stuck" bug
+      });
+    }
+  }
+
+  // 8. Project Carousel Logic
+  const carousels = document.querySelectorAll(".project-carousel");
+  carousels.forEach((carousel) => {
+    const track = carousel.querySelector(".carousel-track");
+    const images = carousel.querySelectorAll(".carousel-track img");
+    const prevBtn = carousel.querySelector(".prev-btn");
+    const nextBtn = carousel.querySelector(".next-btn");
+    const indicatorsContainer = carousel.querySelector(".carousel-indicators");
+    
+    if (!track || images.length === 0) return;
+
+    let currentIndex = 0;
+    const totalImages = images.length;
+    let autoPlayInterval;
+
+    // Create dots
+    images.forEach((_, i) => {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => goToSlide(i));
+      indicatorsContainer.appendChild(dot);
+    });
+
+    const dots = indicatorsContainer.querySelectorAll(".dot");
+
+    function updateCarousel() {
+      // Move track
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      // Update dots
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("active", i === currentIndex);
+      });
+    }
+
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % totalImages;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      updateCarousel();
+    }
+
+    function goToSlide(index) {
+      currentIndex = index;
+      updateCarousel();
+    }
+
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(nextSlide, 3500);
+    }
+
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    // Event Listeners
+    nextBtn.addEventListener("click", () => {
+      nextSlide();
+      stopAutoPlay();
+      startAutoPlay(); // Reset timer
+    });
+
+    prevBtn.addEventListener("click", () => {
+      prevSlide();
+      stopAutoPlay();
+      startAutoPlay(); // Reset timer
+    });
+
+    carousel.addEventListener("mouseenter", stopAutoPlay);
+    carousel.addEventListener("mouseleave", startAutoPlay);
+
+    // Start auto play initially
+    startAutoPlay();
+  });
+
+  // 9. Mobile Fullscreen Immersion Logic
   const phoneMockup = document.getElementById("phoneMockup");
   const exitFullscreenBtn = document.getElementById("exitFullscreen");
 

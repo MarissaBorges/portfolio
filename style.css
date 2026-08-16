@@ -556,6 +556,217 @@ body.immersion-active .exit-fullscreen-btn {
   display: block;
 }
 
+/* --- PROJECTS SECTION --- */
+.projects-container {
+  display: flex;
+  gap: 6vw;
+  position: relative;
+  width: 100%;
+}
+
+.projects-left {
+  flex: 0 0 30%;
+  position: sticky;
+  top: 30vh;
+  height: fit-content;
+  display: flex;
+  align-items: flex-start;
+  z-index: 10;
+}
+
+.title-slider-wrapper {
+  display: flex;
+  gap: 2rem;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-line {
+  width: 4px;
+  background: #39495b; /* match the phone mockup gradient tone */
+  border-radius: 4px;
+}
+
+.title-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: clamp(3rem, 5vw, 6rem);
+  line-height: 1;
+}
+
+.title-word {
+  transition: all 0.5s ease;
+}
+
+.title-word.ghost {
+  color: rgba(255, 255, 255, 0.05);
+  transform: scale(0.9);
+  transform-origin: left center;
+}
+
+.title-word.active {
+  color: #e5e7eb;
+  transform: scale(1);
+  transform-origin: left center;
+}
+
+.projects-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15vh;
+}
+
+.project-card {
+  width: 100%;
+  background-color: rgba(30, 38, 50, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-carousel {
+  flex: 0 0 55%;
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background-color: #121820;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-track img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.project-carousel:hover .carousel-btn {
+  opacity: 1;
+}
+
+.carousel-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.prev-btn { left: 1rem; }
+.next-btn { right: 1rem; }
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: white;
+  transform: scale(1.2);
+}
+
+.project-info {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.project-info h3 {
+  font-size: 2.5rem;
+  color: #e5e7eb;
+  margin-bottom: 1rem;
+}
+
+.project-info p {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #9ca3af;
+  margin-bottom: 2rem;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-tech span {
+  font-size: 1.1rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: #a78bfa;
+}
+
+.project-link {
+  font-size: 1.4rem;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-weight: bold;
+  align-self: flex-start;
+  transition: color 0.3s ease;
+}
+
+.project-link:hover {
+  color: #a78bfa;
+}
+
+
 @media (max-width: 768px) {
   /* Home Section Responsive */
   .Home {
@@ -611,6 +822,52 @@ body.immersion-active .exit-fullscreen-btn {
 
   .floating-tags {
     display: none; /* Hide on mobile to keep focus on the phone mockup */
+  }
+
+  /* Projects Section Responsive - Floating Popup */
+  .projects-container {
+    flex-direction: column;
+  }
+
+  .projects-left {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    top: auto;
+    background: rgba(4, 4, 10, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    pointer-events: none; /* Let users click through it if needed */
+  }
+
+  .title-slider-wrapper {
+    height: 120px;
+    gap: 1rem;
+  }
+
+  .title-stack {
+    font-size: 2.5rem;
+  }
+
+  .projects-right {
+    padding-top: 5vh;
+    gap: 8vh;
+  }
+
+  .project-card {
+    flex-direction: column;
+  }
+  
+  .project-carousel {
+    flex: none;
+    width: 100%;
+  }
+
+  .project-info {
+    padding: 2rem;
   }
 
   /* When immersion is active on mobile */
