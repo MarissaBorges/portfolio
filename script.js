@@ -94,11 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("floatingTagsContainer");
     const tags = Array.from(document.querySelectorAll(".tag"));
 
-    let anchors = [];
-
     const tagData = tags.map((tag, i) => ({
         el: tag,
-        anchorIndex: i, // The CSS position this tag 'owns'
         baseX: 0, baseY: 0,
         floatX: 0, floatY: 0,
         vx: 0, vy: 0,
@@ -107,11 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     function cacheLayout() {
-        anchors = tags.map(tag => ({
-            x: tag.offsetLeft,
-            y: tag.offsetTop
-        }));
-        
         tagData.forEach((data, i) => {
             data.origX = tags[i].offsetLeft;
             data.origY = tags[i].offsetTop;
@@ -156,45 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 onDragEnd: function() {
                     tag.classList.remove("is-dragging");
-                    
-                    if (anchors.length === 0) return;
-
-                    // Slider Puzzle Logic: Find the closest anchor to where we dropped
-                    const draggedAbsX = data.origX + data.baseX;
-                    const draggedAbsY = data.origY + data.baseY;
-                    
-                    let closestAnchorIndex = data.anchorIndex;
-                    let minDist = Infinity;
-                    
-                    anchors.forEach((anchor, index) => {
-                        const dx = anchor.x - draggedAbsX;
-                        const dy = anchor.y - draggedAbsY;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist < minDist) {
-                            minDist = dist;
-                            closestAnchorIndex = index;
-                        }
-                    });
-                    
-                    // If we dropped it near a different anchor, SWAP ownership!
-                    if (closestAnchorIndex !== data.anchorIndex) {
-                        const oldAnchorIndex = data.anchorIndex;
-                        const displacedTagData = tagData.find(d => d.anchorIndex === closestAnchorIndex);
-                        
-                        if (displacedTagData) {
-                            // The dragged tag claims the new spot
-                            data.anchorIndex = closestAnchorIndex;
-                            // The tag that was sitting there is forced to fill the hole left behind!
-                            displacedTagData.anchorIndex = oldAnchorIndex;
-                        }
-                    }
                 }
             });
         });
     }
 
     gsap.ticker.add(() => {
-        if (!container || anchors.length === 0) return;
+        if (!container) return;
         const containerWidth = container.offsetWidth;
         const containerHeight = container.offsetHeight;
 
@@ -202,17 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < tagData.length; i++) {
             const dataA = tagData[i];
             if (dataA.el.classList.contains("is-dragging")) continue;
-
-            // a. Anchor Glide (Replaces the "elastic" spring with a smooth, non-bouncy slide)
-            const targetX = anchors[dataA.anchorIndex].x;
-            const targetY = anchors[dataA.anchorIndex].y;
-            
-            const currentAbsX = dataA.origX + dataA.baseX;
-            const currentAbsY = dataA.origY + dataA.baseY;
-            
-            const glideSpeed = 0.02; // Very soft, buttery glide directly applied to position
-            dataA.baseX += (targetX - currentAbsX) * glideSpeed;
-            dataA.baseY += (targetY - currentAbsY) * glideSpeed;
 
             // b. N-Body Collision Repulsion (Ball-pit fabric behavior)
             for (let j = 0; j < tagData.length; j++) {
@@ -230,16 +179,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 const dy = aAbsY - bAbsY;
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
-                // Combined radii + padding (CACHED for performance)
-                const minDistance = (dataA.w / 2) + (dataB.w / 2) + 20;
+                // AABB distance (distance between centers on X and Y)
+                const absDx = Math.abs(dx);
+                const absDy = Math.abs(dy);
 
-                if (dist < minDistance && dist > 0) {
-                    const overlap = minDistance - dist;
+                const minDx = (dataA.w / 2) + (dataB.w / 2) + 20; // 20px padding X
+                const minDy = (dataA.h / 2) + (dataB.h / 2) + 15; // 15px padding Y
+
+                if (absDx < minDx && absDy < minDy && dist > 0) {
+                    // They are intersecting. Figure out the axis of least penetration
+                    const overlapX = minDx - absDx;
+                    const overlapY = minDy - absDy;
+                    
                     const pushStrength = 0.08; // Stronger push because of damping
                     
-                    // Push dataA away from dataB
-                    dataA.vx += (dx / dist) * overlap * pushStrength;
-                    dataA.vy += (dy / dist) * overlap * pushStrength;
+                    if (overlapX < overlapY) {
+                        // Resolve horizontally
+                        const dirX = dx > 0 ? 1 : -1;
+                        dataA.vx += dirX * overlapX * pushStrength;
+                    } else {
+                        // Resolve vertically
+                        const dirY = dy > 0 ? 1 : -1;
+                        dataA.vy += dirY * overlapY * pushStrength;
+                    }
                     
                     // Viscous damping (soap effect): kills explosive momentum so they don't bounce off each other
                     dataA.vx *= 0.75;
@@ -292,7 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 gsap.set(data.el, {
                     x: data.baseX + data.floatX,
                     y: data.baseY + data.floatY,
-                    rotation: (data.floatX / 20) * 4
+                    rotation: (data.floatX / 20) * 4,
+                    force3D: true
                 });
             } else {
                  // Dragging Override: Keep base in sync with user's pointer

@@ -451,6 +451,10 @@ body {
   user-select: none;
   transition: color 0.3s ease;
   cursor: grab;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .tag:hover {
