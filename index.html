@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@700&display=swap"
         rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
 <body>
@@ -81,7 +82,45 @@
         </div>
     </section>
     <section class="About section" id="About">
-        <h2>About</h2>
+        <div class="about-container">
+            <!-- Mobile Exit Button -->
+            <button class="exit-fullscreen-btn" id="exitFullscreen">✕</button>
+
+            <!-- Phone Mockup -->
+            <div class="phone-mockup" id="phoneMockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="chat-interface" id="chatInterface">
+                        <div class="chat-header">
+                            <h3>What can I help with Borges's?</h3>
+                        </div>
+                        <div class="chat-history" id="chatHistory">
+                            <!-- Messages will appear here -->
+                        </div>
+                        <div class="chat-options" id="chatOptions">
+                            <button class="chat-btn" data-topic="experiences"><i class="ph ph-briefcase"></i> Experiences</button>
+                            <button class="chat-btn" data-topic="about"><i class="ph ph-user"></i> About</button>
+                            <button class="chat-btn" data-topic="stack"><i class="ph ph-code"></i> Stack</button>
+                            <button class="chat-btn" data-topic="projects"><i class="ph ph-folder"></i> Projects</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Tags -->
+            <div class="floating-tags" id="floatingTagsContainer">
+                <span class="tag tag-l" data-speed="1.2">Automation</span>
+                <span class="tag tag-xl" data-speed="0.8">Data Analytics</span>
+                <span class="tag tag-m" data-speed="1.5">Langchain</span>
+                <span class="tag tag-m" data-speed="1.1">Selenium</span>
+                <span class="tag tag-l" data-speed="0.9">Pandas</span>
+                <span class="tag tag-m" data-speed="1.3">APIs</span>
+                <span class="tag tag-l" data-speed="0.7">Django</span>
+                <span class="tag tag-m" data-speed="1.4">HTMX</span>
+                <span class="tag tag-m" data-speed="1.0">CSS</span>
+                <span class="tag tag-m" data-speed="1.2">Design</span>
+            </div>
+        </div>
     </section>
     <section class="Projects section" id="Projects">
         <h2>Projects</h2>
@@ -93,6 +132,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
     <script src="script.js"></script>
 </body>
 
