@@ -175,6 +175,7 @@ body {
   max-height: 80vh;
   object-fit: cover;
   object-position: center bottom;
+  display: block;
 }
 
 .skills-carousel {
@@ -442,7 +443,6 @@ body {
 
 .tag {
   position: absolute;
-  transform: translate(-50%, -50%);
   margin: 0;
   color: rgba(156, 163, 175, 0.8);
   font-weight: 700;
@@ -451,8 +451,8 @@ body {
   user-select: none;
   transition: color 0.3s ease;
   cursor: grab;
-  will-change: transform;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -557,12 +557,60 @@ body.immersion-active .exit-fullscreen-btn {
 }
 
 @media (max-width: 768px) {
+  /* Home Section Responsive */
+  .Home {
+    height: auto;
+    min-height: auto;
+    padding-top: 12vh;
+    padding-bottom: 0;
+  }
+
+  .home-content {
+    position: relative;
+    padding-inline: 6vw;
+  }
+
+  .presentation {
+    flex-direction: column;
+    padding-left: 0;
+    gap: 4vh;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .text {
+    width: 100%;
+    z-index: 2;
+  }
+
+  .text h2 {
+    font-size: 3.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .text p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .photo-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    right: auto;
+    bottom: auto;
+    margin: 0 auto;
+    z-index: 2;
+  }
+
+  /* About Section Responsive */
   .about-container {
     flex-direction: column;
   }
 
   .floating-tags {
-    display: none; /* Hide on small mobile to focus on phone */
+    display: none; /* Hide on mobile to keep focus on the phone mockup */
   }
 
   /* When immersion is active on mobile */

@@ -94,6 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("floatingTagsContainer");
     const tags = Array.from(document.querySelectorAll(".tag"));
 
+    // Force GSAP to use percentage-based centering independently of x/y
+    gsap.set(tags, { xPercent: -50, yPercent: -50 });
+
     const tagData = tags.map((tag, i) => ({
         el: tag,
         baseX: 0, baseY: 0,
@@ -104,9 +107,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     function cacheLayout() {
+        const cHeight = container.offsetHeight || 400;
+        const cWidth = container.offsetWidth || window.innerWidth;
         tagData.forEach((data, i) => {
             data.origX = tags[i].offsetLeft;
             data.origY = tags[i].offsetTop;
+            
+            // Failsafe for mobile: if parent height was 0 during load, offsetTop is 0
+            if (data.origY === 0) {
+                // Scatter them manually and update the CSS base so physics align visually
+                data.origY = (cHeight / tags.length) * i + 20;
+                tags[i].style.top = data.origY + "px";
+            }
+            if (data.origX === 0) {
+                data.origX = (cWidth / tags.length) * i + 20;
+                tags[i].style.left = data.origX + "px";
+            }
+            
             data.w = tags[i].offsetWidth;
             data.h = tags[i].offsetHeight;
         });
@@ -175,16 +192,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 const bAbsX = dataB.origX + dataB.baseX + dataB.floatX;
                 const bAbsY = dataB.origY + dataB.baseY + dataB.floatY;
 
-                const dx = aAbsX - bAbsX;
-                const dy = aAbsY - bAbsY;
+                let dx = aAbsX - bAbsX;
+                let dy = aAbsY - bAbsY;
+                
+                // Micro-jitter to prevent perfect horizontal/vertical locks (which crush elements)
+                if (Math.abs(dx) < 0.1) dx = (Math.random() - 0.5) * 2;
+                if (Math.abs(dy) < 0.1) dy = (Math.random() - 0.5) * 2;
+
                 const dist = Math.sqrt(dx * dx + dy * dy);
 
                 // AABB distance (distance between centers on X and Y)
                 const absDx = Math.abs(dx);
                 const absDy = Math.abs(dy);
 
-                const minDx = (dataA.w / 2) + (dataB.w / 2) + 20; // 20px padding X
-                const minDy = (dataA.h / 2) + (dataB.h / 2) + 15; // 15px padding Y
+                const isMobile = window.innerWidth < 768;
+                const minDx = (dataA.w / 2) + (dataB.w / 2) + (isMobile ? 5 : 20); // Responsive padding X
+                const minDy = (dataA.h / 2) + (dataB.h / 2) + (isMobile ? 5 : 15); // Responsive padding Y
 
                 if (absDx < minDx && absDy < minDy && dist > 0) {
                     // They are intersecting. Figure out the axis of least penetration
@@ -195,11 +218,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     if (overlapX < overlapY) {
                         // Resolve horizontally
-                        const dirX = dx > 0 ? 1 : -1;
+                        const dirX = dx !== 0 ? Math.sign(dx) : (Math.random() > 0.5 ? 1 : -1);
                         dataA.vx += dirX * overlapX * pushStrength;
                     } else {
                         // Resolve vertically
-                        const dirY = dy > 0 ? 1 : -1;
+                        const dirY = dy !== 0 ? Math.sign(dy) : (Math.random() > 0.5 ? 1 : -1);
                         dataA.vy += dirY * overlapY * pushStrength;
                     }
                     
@@ -222,38 +245,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.baseX += data.vx;
                 data.baseY += data.vy;
 
-                // Container Boundaries (Hard Clamping with 25px padding to keep them strictly inside)
+                // Container Boundaries (Responsive padding to keep them strictly inside)
                 const tagWidth = data.w;
                 const tagHeight = data.h;
+                const edgePad = window.innerWidth < 768 ? 5 : 25;
                 
-                const minCenterX = (tagWidth / 2) + 25;
-                const maxCenterX = containerWidth - (tagWidth / 2) - 25;
+                const minCenterX = (tagWidth / 2) + edgePad;
+                const maxCenterX = containerWidth - (tagWidth / 2) - edgePad;
                 let currentCenterX = data.origX + data.baseX;
                 
                 if (currentCenterX < minCenterX) {
                     data.baseX = minCenterX - data.origX;
-                    data.vx = 0; // Zero bounce
+                    data.vx = Math.abs(data.vx) * 0.5; // Bounce instead of zero
                 } else if (currentCenterX > maxCenterX) {
                     data.baseX = maxCenterX - data.origX;
-                    data.vx = 0;
+                    data.vx = -Math.abs(data.vx) * 0.5;
                 }
                 
-                const minCenterY = (tagHeight / 2) + 25;
-                const maxCenterY = containerHeight - (tagHeight / 2) - 25;
+                const minCenterY = (tagHeight / 2) + edgePad;
+                const maxCenterY = containerHeight - (tagHeight / 2) - edgePad;
                 let currentCenterY = data.origY + data.baseY;
                 
                 if (currentCenterY < minCenterY) {
                     data.baseY = minCenterY - data.origY;
-                    data.vy = 0;
+                    data.vy = Math.abs(data.vy) * 0.5;
                 } else if (currentCenterY > maxCenterY) {
                     data.baseY = maxCenterY - data.origY;
-                    data.vy = 0;
+                    data.vy = -Math.abs(data.vy) * 0.5;
                 }
 
                 // Render final positions (Base Physics + GSAP Floating)
                 gsap.set(data.el, {
                     x: data.baseX + data.floatX,
                     y: data.baseY + data.floatY,
+                    xPercent: -50,
+                    yPercent: -50,
                     rotation: (data.floatX / 20) * 4,
                     force3D: true
                 });
@@ -263,7 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
                  if (dragInst) {
                      data.baseX = dragInst.x - data.floatX;
                      data.baseY = dragInst.y - data.floatY;
-                     gsap.set(data.el, { rotation: (data.floatX / 20) * 4 });
+                     gsap.set(data.el, { 
+                         rotation: (data.floatX / 20) * 4,
+                         xPercent: -50,
+                         yPercent: -50
+                     });
                  }
             }
         });
