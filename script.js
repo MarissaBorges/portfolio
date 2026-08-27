@@ -10,32 +10,32 @@ document.addEventListener("DOMContentLoaded", () => {
     .fromTo(
       ".background-text",
       { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.5, ease: "power3.out" },
+      { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" },
     )
     // Animate the main text content
     .fromTo(
       ".text h2",
       { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+      { y: 0, opacity: 1, duration: 1.2, ease: "expo.out" },
       "-=1.0",
     )
     .fromTo(
       ".text p",
       { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-      "-=0.6",
+      { y: 0, opacity: 1, duration: 1.2, ease: "expo.out" },
+      "-=0.9",
     )
     .fromTo(
       ".text button",
       { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)" },
-      "-=0.4",
+      { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" },
+      "-=0.8",
     )
     // Animate the profile image
     .fromTo(
       ".photo-wrapper img",
       { y: 50, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" },
+      { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "expo.out" },
       "-=1.2",
     );
 
@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         y: 0,
         opacity: 1,
-        duration: 1,
-        ease: "power2.out",
+        duration: 1.5,
+        ease: "expo.out",
         scrollTrigger: {
           trigger: sec,
           start: "top 80%", // Trigger when top of section hits 80% of viewport
@@ -378,8 +378,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Gentle shift of floating tags on interaction
         gsap.to(tags, {
           x: () => "+=" + (Math.random() * 40 - 20),
-          duration: 1,
-          ease: "power2.out",
+          duration: 1.5,
+          ease: "expo.out",
         });
       }, 1500); // 1.5 seconds thinking time
     });
@@ -457,8 +457,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Slot machine physical shift
       gsap.to(titleStack, {
         y: shiftY,
-        duration: 0.5,
-        ease: "power2.out",
+        duration: 0.8,
+        ease: "expo.out",
         overwrite: "auto" // Kills previous animations if user scrolls very fast, fixing the "stuck" bug
       });
     }
