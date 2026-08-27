@@ -372,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
         addMessage(randomResponse, "ai");
 
         // Show options again
-        chatOptions.style.display = "grid";
+        chatOptions.style.display = "flex";
         scrollToBottom();
 
         // Gentle shift of floating tags on interaction
