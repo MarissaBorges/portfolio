@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "hero.ctaPrimary": "Explore my work",
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Scroll",
+      "hero.cornerRole": "MARISSA BORGES · PYTHON & AI",
       "about.chatTitle": "What would you like to know about Borges?",
       "about.btnExperiences": "Experiences",
       "about.btnAbout": "About",
@@ -48,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "hero.ctaPrimary": "Explorar projetos",
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Rolar",
+      "hero.cornerRole": "MARISSA BORGES · PYTHON & IA",
       "about.chatTitle": "O que você quer saber sobre a Borges?",
       "about.btnExperiences": "Experiências",
       "about.btnAbout": "Sobre",
@@ -105,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const langToggle = document.getElementById("langToggle");
   const langBubble = document.getElementById("langWaveBubble");
   let activeWaveTl = null;
+  const heroNodeWave = { active: false, x: 0, y: 0, radius: 0, prevRadius: 0 };
 
   function applyToggleState(lang) {
     if (!langToggle) return;
@@ -230,6 +233,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const waveProxy = { radius: 0 };
     let offscreenSwapped = false;
+    heroNodeWave.active = true;
+    heroNodeWave.x = cx;
+    heroNodeWave.y = cy;
+    heroNodeWave.radius = 0;
+    heroNodeWave.prevRadius = 0;
 
     activeWaveTl = gsap.timeline({
       onComplete: () => {
@@ -245,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
             el.textContent = nextText;
           });
         }
+        heroNodeWave.active = false;
         gsap.set(langBubble, { opacity: 0, scale: 0 });
         updateNavIndicator(true);
         activeWaveTl = null;
@@ -260,6 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ease: "power2.inOut",
           onUpdate: () => {
             const currentR = waveProxy.radius;
+            heroNodeWave.prevRadius = heroNodeWave.radius;
+            heroNodeWave.radius = currentR;
             const scaleFactor = (currentR * 2) / 100;
             gsap.set(langBubble, { scale: scaleFactor, force3D: true });
 
@@ -442,6 +453,12 @@ document.addEventListener("DOMContentLoaded", () => {
         { y: 12, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.8 },
         0.85,
+      )
+      .fromTo(
+        ".hero-frame .corner-item",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.9, stagger: 0.08 },
+        0.55,
       );
 
     // Scroll Parallax on Background Text, Portrait & Scroll Cue
@@ -521,6 +538,255 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     }
+  }
+
+  // =========================================================
+  // 3B. EDITORIAL CORNER DETAILS & INTERACTIVE NODE FIELD
+  // =========================================================
+  const heroClockEl = document.getElementById("heroClock");
+  if (heroClockEl) {
+    const clockFormatter = new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Sao_Paulo",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const updateClock = () => {
+      if (!document.hidden) {
+        heroClockEl.textContent = clockFormatter.format(new Date());
+      }
+    };
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+
+  const heroCoordsEl = document.getElementById("heroCoords");
+  const heroCanvas = document.getElementById("heroNodesCanvas");
+  const homeEl = document.getElementById("Home");
+
+  if (heroCanvas && homeEl) {
+    const ctx = heroCanvas.getContext("2d");
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let nodes = [];
+    let heroInView = true;
+    const pointer = { x: -9999, y: -9999, active: false };
+
+    function readNodeColors() {
+      const styles = getComputedStyle(document.documentElement);
+      return {
+        base: styles.getPropertyValue("--node-rgb").trim() || "148, 163, 184",
+        accent:
+          styles.getPropertyValue("--node-accent-rgb").trim() || "167, 139, 250",
+      };
+    }
+
+    let palette = readNodeColors();
+
+    function seedNodes() {
+      const area = width * height;
+      const targetCount = Math.max(
+        26,
+        Math.min(72, Math.round(area / 19500)),
+      );
+      nodes = Array.from({ length: targetCount }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.14 + Math.random() * 0.24;
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          baseVx: Math.cos(angle) * speed,
+          baseVy: Math.sin(angle) * speed,
+          r: 1.0 + Math.random() * 1.15,
+          alpha: 0.18 + Math.random() * 0.28,
+          pulse: 0,
+        };
+      });
+    }
+
+    function resizeCanvas() {
+      const rect = homeEl.getBoundingClientRect();
+      width = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      heroCanvas.width = Math.round(width * dpr);
+      heroCanvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      palette = readNodeColors();
+      seedNodes();
+      renderNodes(true);
+    }
+
+    function renderNodes(staticOnly = false) {
+      ctx.clearRect(0, 0, width, height);
+
+      const linkDist = width < 768 ? 105 : 142;
+      const linkDistSq = linkDist * linkDist;
+      const pointerDist = 180;
+      const pointerDistSq = pointerDist * pointerDist;
+
+      let waveLocalX = 0;
+      let waveLocalY = 0;
+      if (heroNodeWave.active) {
+        const rect = homeEl.getBoundingClientRect();
+        waveLocalX = heroNodeWave.x - rect.left;
+        waveLocalY = heroNodeWave.y - rect.top;
+      }
+
+      if (!staticOnly) {
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+
+          // Smoothly relax velocity back toward gentle organic drift
+          n.vx += (n.baseVx - n.vx) * 0.035;
+          n.vy += (n.baseVy - n.vy) * 0.035;
+
+          // Subtle cursor reaction
+          if (pointer.active) {
+            const dx = n.x - pointer.x;
+            const dy = n.y - pointer.y;
+            const dSq = dx * dx + dy * dy;
+            if (dSq < pointerDistSq && dSq > 0.01) {
+              const d = Math.sqrt(dSq);
+              const force = (1 - d / pointerDist) * 0.22;
+              n.vx += (dx / d) * force;
+              n.vy += (dy / d) * force;
+              n.pulse = Math.max(n.pulse, (1 - d / pointerDist) * 0.55);
+            }
+          }
+
+          // Physical impulse when the EN/PT bubble wavefront touches the node
+          if (heroNodeWave.active) {
+            const wdx = n.x - waveLocalX;
+            const wdy = n.y - waveLocalY;
+            const wd = Math.hypot(wdx, wdy);
+            if (
+              wd >= heroNodeWave.prevRadius - 22 &&
+              wd <= heroNodeWave.radius + 26 &&
+              wd > 0.01
+            ) {
+              const kick = 2.6;
+              n.vx += (wdx / wd) * kick;
+              n.vy += (wdy / wd) * kick;
+              n.pulse = 1;
+            }
+          }
+
+          n.x += n.vx;
+          n.y += n.vy;
+          n.pulse *= 0.94;
+
+          // Seamless edge wrap with slight margin
+          const pad = 24;
+          if (n.x < -pad) n.x = width + pad;
+          else if (n.x > width + pad) n.x = -pad;
+          if (n.y < -pad) n.y = height + pad;
+          else if (n.y > height + pad) n.y = -pad;
+        }
+      }
+
+      // Draw fine connecting filaments between nearby nodes
+      ctx.lineWidth = 0.85;
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < linkDistSq) {
+            const proximity = 1 - Math.sqrt(dSq) / linkDist;
+            const energy = Math.max(a.pulse, b.pulse);
+            const alpha = proximity * (0.13 + energy * 0.24);
+            const rgb = energy > 0.22 ? palette.accent : palette.base;
+            ctx.strokeStyle = `rgba(${rgb}, ${alpha.toFixed(3)})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw delicate filaments to cursor when active
+      if (!staticOnly && pointer.active) {
+        ctx.lineWidth = 0.8;
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          const dx = n.x - pointer.x;
+          const dy = n.y - pointer.y;
+          const dSq = dx * dx + dy * dy;
+          if (dSq < pointerDistSq) {
+            const proximity = 1 - Math.sqrt(dSq) / pointerDist;
+            ctx.strokeStyle = `rgba(${palette.accent}, ${(proximity * 0.22).toFixed(3)})`;
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(pointer.x, pointer.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const energy = n.pulse;
+        const radius = n.r + energy * 1.1;
+        const alpha = Math.min(0.9, n.alpha + energy * 0.55);
+        const rgb = energy > 0.2 ? palette.accent : palette.base;
+        ctx.fillStyle = `rgba(${rgb}, ${alpha.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    homeEl.addEventListener("mousemove", (e) => {
+      const rect = homeEl.getBoundingClientRect();
+      pointer.x = e.clientX - rect.left;
+      pointer.y = e.clientY - rect.top;
+      pointer.active = true;
+      if (heroCoordsEl) {
+        const xPad = String(Math.max(0, Math.round(pointer.x))).padStart(3, "0");
+        const yPad = String(Math.max(0, Math.round(pointer.y))).padStart(3, "0");
+        heroCoordsEl.textContent = `X ${xPad} · Y ${yPad}`;
+      }
+    });
+
+    homeEl.addEventListener("mouseleave", () => {
+      pointer.active = false;
+      pointer.x = -9999;
+      pointer.y = -9999;
+    });
+
+    ScrollTrigger.create({
+      trigger: homeEl,
+      start: "top bottom",
+      end: "bottom top",
+      onEnter: () => (heroInView = true),
+      onLeave: () => (heroInView = false),
+      onEnterBack: () => (heroInView = true),
+      onLeaveBack: () => (heroInView = false),
+    });
+
+    resizeCanvas();
+
+    if (!prefersReducedMotion) {
+      gsap.ticker.add(() => {
+        if (!heroInView || document.hidden) return;
+        renderNodes(false);
+      });
+    }
+
+    let canvasResizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(canvasResizeTimer);
+      canvasResizeTimer = setTimeout(resizeCanvas, 180);
+    });
   }
 
   // =========================================================
