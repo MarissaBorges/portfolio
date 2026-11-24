@@ -1047,20 +1047,37 @@ document.addEventListener("DOMContentLoaded", () => {
   let triggerChatInteraction = () => {};
 
   if (container && tags.length > 0) {
-    const tagData = tags.map((tag) => ({
-      el: tag,
-      skill: tag.dataset.skill || "",
-      baseX: 0,
-      baseY: 0,
-      floatX: 0,
-      floatY: 0,
-      vx: 0,
-      vy: 0,
-      origX: 0,
-      origY: 0,
-      w: 0,
-      h: 0,
-    }));
+    const tagData = tags.map((tag, idx) => {
+      const speed = parseFloat(tag.getAttribute("data-speed")) || 1;
+      const golden = idx * 2.39996;
+      return {
+        el: tag,
+        setX: gsap.quickSetter(tag, "x", "px"),
+        setY: gsap.quickSetter(tag, "y", "px"),
+        setRot: gsap.quickSetter(tag, "rotation", "deg"),
+        skill: tag.dataset.skill || "",
+        baseX: 0,
+        baseY: 0,
+        floatX: 0,
+        floatY: 0,
+        renderX: 0,
+        renderY: 0,
+        renderRot: 0,
+        vx: 0,
+        vy: 0,
+        origX: 0,
+        origY: 0,
+        w: 0,
+        h: 0,
+        phaseX: golden,
+        phaseY: golden * 1.37 + 1.1,
+        freqX: (0.42 + (idx % 4) * 0.09) * speed,
+        freqY: (0.36 + ((idx + 2) % 4) * 0.08) * speed,
+        ampX: 9 + (idx % 3) * 3.5,
+        ampY: 7 + ((idx + 1) % 3) * 3,
+        dragging: false,
+      };
+    });
 
     function cacheLayout() {
       if (window.innerWidth <= 768) return;
@@ -1084,31 +1101,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    function initFloating() {
-      if (prefersReducedMotion) return;
-      tagData.forEach((data) => {
-        function animateFloat() {
-          const speed = parseFloat(data.el.getAttribute("data-speed")) || 1;
-          gsap.to(data, {
-            floatX: Math.random() * 34 - 17,
-            floatY: Math.random() * 26 - 13,
-            duration: 3.2 + (Math.random() * 3) / speed,
-            ease: "sine.inOut",
-            onComplete: animateFloat,
-          });
-        }
-        animateFloat();
-      });
-    }
-
     function initDraggable() {
       if (typeof Draggable === "undefined") return;
       tags.forEach((tag, i) => {
         const data = tagData[i];
-        let startX = 0;
-        let startY = 0;
         let prevX = 0;
         let prevY = 0;
+        let prevTime = 0;
         let dragVx = 0;
         let dragVy = 0;
         let dragDist = 0;
@@ -1116,44 +1115,68 @@ document.addEventListener("DOMContentLoaded", () => {
         Draggable.create(tag, {
           bounds: container,
           allowEventDefault: false,
+          minimumMovement: 4,
           onPress: function () {
             if (window.innerWidth <= 768) {
               this.endDrag();
               return;
             }
-            startX = this.x;
-            startY = this.y;
             prevX = this.x;
             prevY = this.y;
+            prevTime = performance.now();
             dragVx = 0;
             dragVy = 0;
             dragDist = 0;
           },
           onDragStart: function () {
+            data.dragging = true;
+            data.renderX = this.x;
+            data.renderY = this.y;
+            data.vx = 0;
+            data.vy = 0;
             tag.classList.add("is-dragging");
             markArenaDiscovered();
           },
           onDrag: function () {
+            const now = performance.now();
+            const dtMs = Math.max(8, now - prevTime);
+            const scaleTo60 = 16.6667 / dtMs;
             const dx = this.x - prevX;
             const dy = this.y - prevY;
             dragDist += Math.hypot(dx, dy);
-            dragVx = dragVx * 0.55 + dx * 0.45;
-            dragVy = dragVy * 0.55 + dy * 0.45;
+
+            // Frame-rate independent smoothed pointer velocity
+            dragVx = dragVx * 0.65 + dx * scaleTo60 * 0.35;
+            dragVy = dragVy * 0.65 + dy * scaleTo60 * 0.35;
             prevX = this.x;
             prevY = this.y;
+            prevTime = now;
 
             data.baseX = this.x - data.floatX;
             data.baseY = this.y - data.floatY;
-            data.vx = 0;
-            data.vy = 0;
+            data.renderX = this.x;
+            data.renderY = this.y;
+            data.vx = dragVx * 0.6;
+            data.vy = dragVy * 0.6;
           },
           onDragEnd: function () {
+            data.dragging = false;
             tag.classList.remove("is-dragging");
-            if (dragDist >= 6) {
-              // Apply clamped billiard throw inertia on release
-              const maxSpeed = 28;
-              data.vx = Math.max(-maxSpeed, Math.min(maxSpeed, dragVx * 1.2));
-              data.vy = Math.max(-maxSpeed, Math.min(maxSpeed, dragVy * 1.2));
+            const idleMs = performance.now() - prevTime;
+            if (dragDist >= 6 && idleMs < 95) {
+              const releaseFade = Math.max(0, 1 - idleMs / 95);
+              const maxSpeed = 22;
+              data.vx = Math.max(
+                -maxSpeed,
+                Math.min(maxSpeed, dragVx * 0.95 * releaseFade),
+              );
+              data.vy = Math.max(
+                -maxSpeed,
+                Math.min(maxSpeed, dragVy * 0.95 * releaseFade),
+              );
+            } else {
+              data.vx = 0;
+              data.vy = 0;
             }
           },
           onClick: function () {
@@ -1194,132 +1217,164 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (window.innerWidth > 768) {
-      gsap.set(tags, { xPercent: -50, yPercent: -50 });
+      gsap.set(tags, { xPercent: -50, yPercent: -50, force3D: true });
+      cacheLayout();
     }
 
-    gsap.ticker.add(() => {
+    let elapsedSec = 0;
+
+    gsap.ticker.add((_time, deltaTime) => {
       if (!aboutVisible || window.innerWidth <= 768) return;
       const containerWidth = container.offsetWidth;
       const containerHeight = container.offsetHeight;
       if (containerWidth === 0 || containerHeight === 0) return;
 
-      // Pairwise billiard-style AABB collision + momentum transfer
+      // Normalize physics step to 60fps so 60Hz / 120Hz / 144Hz feel identical
+      const dt = Math.min(deltaTime / 16.6667, 2);
+      if (!prefersReducedMotion) {
+        elapsedSec += (deltaTime / 1000);
+      }
+
+      // 1. Continuous C-infinity harmonic floating (zero random jumps)
       for (let i = 0; i < tagData.length; i++) {
-        const dataA = tagData[i];
-        const aDragging = dataA.el.classList.contains("is-dragging");
+        const d = tagData[i];
+        if (!prefersReducedMotion) {
+          d.floatX =
+            Math.sin(elapsedSec * d.freqX + d.phaseX) * d.ampX +
+            Math.sin(elapsedSec * d.freqX * 0.47 + d.phaseY) * (d.ampX * 0.35);
+          d.floatY =
+            Math.cos(elapsedSec * d.freqY + d.phaseY) * d.ampY +
+            Math.cos(elapsedSec * d.freqY * 0.53 + d.phaseX) * (d.ampY * 0.35);
+        } else {
+          d.floatX = 0;
+          d.floatY = 0;
+        }
+      }
+
+      // 2. Smooth elliptical cushion repulsion (eliminates corner axis flipping/jitter)
+      for (let i = 0; i < tagData.length; i++) {
+        const a = tagData[i];
+        const aX = a.origX + a.baseX + a.floatX;
+        const aY = a.origY + a.baseY + a.floatY;
 
         for (let j = i + 1; j < tagData.length; j++) {
-          const dataB = tagData[j];
-          const bDragging = dataB.el.classList.contains("is-dragging");
+          const b = tagData[j];
+          const bX = b.origX + b.baseX + b.floatX;
+          const bY = b.origY + b.baseY + b.floatY;
 
-          const aAbsX = dataA.origX + dataA.baseX + dataA.floatX;
-          const aAbsY = dataA.origY + dataA.baseY + dataA.floatY;
-          const bAbsX = dataB.origX + dataB.baseX + dataB.floatX;
-          const bAbsY = dataB.origY + dataB.baseY + dataB.floatY;
+          const dx = aX - bX;
+          const dy = aY - bY;
+          const rx = (a.w + b.w) * 0.52 + 24;
+          const ry = (a.h + b.h) * 0.56 + 18;
 
-          let dx = aAbsX - bAbsX;
-          let dy = aAbsY - bAbsY;
-          if (Math.abs(dx) < 0.1) dx = (Math.random() - 0.5) * 2;
-          if (Math.abs(dy) < 0.1) dy = (Math.random() - 0.5) * 2;
+          const nx = dx / rx;
+          const ny = dy / ry;
+          const eDistSq = nx * nx + ny * ny;
 
-          const absDx = Math.abs(dx);
-          const absDy = Math.abs(dy);
-          const minDx = dataA.w / 2 + dataB.w / 2 + 18;
-          const minDy = dataA.h / 2 + dataB.h / 2 + 14;
+          if (eDistSq < 1) {
+            const eDist = Math.sqrt(eDistSq) || 0.001;
+            const overlap = 1 - eDist;
+            // Smooth radial direction in world space
+            const worldDist = Math.hypot(dx, dy) || 1;
+            const ux = dx / worldDist;
+            const uy = dy / worldDist;
 
-          if (absDx < minDx && absDy < minDy) {
-            const overlapX = minDx - absDx;
-            const overlapY = minDy - absDy;
-            const push = 0.095;
+            // Gentle quadratic-blended cushion force
+            const force = (overlap * 0.65 + overlap * overlap * 1.4) * dt;
 
-            if (overlapX < overlapY) {
-              const dir = dx >= 0 ? 1 : -1;
-              const impulse = overlapX * push;
-              if (!aDragging && !bDragging) {
-                // Exchange horizontal momentum subtly on impact
-                const relV = (dataB.vx - dataA.vx) * 0.35;
-                dataA.vx += dir * impulse + relV;
-                dataB.vx -= dir * impulse + relV;
-              } else if (aDragging) {
-                dataB.vx -= dir * impulse * 2.2;
-              } else {
-                dataA.vx += dir * impulse * 2.2;
-              }
+            if (!a.dragging && !b.dragging) {
+              // Soft positional easing + gentle billiard momentum transfer
+              const sep = overlap * 3.2 * dt;
+              a.baseX += ux * sep;
+              a.baseY += uy * sep;
+              b.baseX -= ux * sep;
+              b.baseY -= uy * sep;
+
+              const relVn = (b.vx - a.vx) * ux + (b.vy - a.vy) * uy;
+              const transfer = relVn > 0 ? relVn * 0.42 : 0;
+
+              a.vx += ux * (force + transfer);
+              a.vy += uy * (force + transfer);
+              b.vx -= ux * (force + transfer);
+              b.vy -= uy * (force + transfer);
+            } else if (a.dragging) {
+              b.vx -= ux * (force * 2.4) - a.vx * 0.14;
+              b.vy -= uy * (force * 2.4) - a.vy * 0.14;
             } else {
-              const dir = dy >= 0 ? 1 : -1;
-              const impulse = overlapY * push;
-              if (!aDragging && !bDragging) {
-                const relV = (dataB.vy - dataA.vy) * 0.35;
-                dataA.vy += dir * impulse + relV;
-                dataB.vy -= dir * impulse + relV;
-              } else if (aDragging) {
-                dataB.vy -= dir * impulse * 2.2;
-              } else {
-                dataA.vy += dir * impulse * 2.2;
-              }
+              a.vx += ux * (force * 2.4) + b.vx * 0.14;
+              a.vy += uy * (force * 2.4) + b.vy * 0.14;
             }
           }
         }
       }
 
-      tagData.forEach((data) => {
-        if (!data.el.classList.contains("is-dragging")) {
-          // Smooth fluid friction so throws glide and settle naturally
-          data.vx *= 0.94;
-          data.vy *= 0.94;
-          data.baseX += data.vx;
-          data.baseY += data.vy;
+      // 3. Fluid integration, soft wall cushioning & interpolated rendering
+      const dragFactor = Math.pow(0.955, dt);
+      const posLerp = 1 - Math.pow(0.68, dt);
+      const rotLerp = 1 - Math.pow(0.82, dt);
+      const edgePad = 26;
 
-          const edgePad = 24;
-          const minCenterX = data.w / 2 + edgePad;
-          const maxCenterX = containerWidth - data.w / 2 - edgePad;
-          const currentCenterX = data.origX + data.baseX;
+      for (let i = 0; i < tagData.length; i++) {
+        const d = tagData[i];
 
-          if (currentCenterX < minCenterX) {
-            data.baseX = minCenterX - data.origX;
-            data.vx = Math.abs(data.vx) * 0.65;
-          } else if (currentCenterX > maxCenterX) {
-            data.baseX = maxCenterX - data.origX;
-            data.vx = -Math.abs(data.vx) * 0.65;
+        if (!d.dragging) {
+          d.vx *= dragFactor;
+          d.vy *= dragFactor;
+
+          // Kill sub-pixel micro-drift cleanly
+          if (Math.abs(d.vx) < 0.004) d.vx = 0;
+          if (Math.abs(d.vy) < 0.004) d.vy = 0;
+
+          d.baseX += d.vx * dt;
+          d.baseY += d.vy * dt;
+
+          const minX = d.w * 0.5 + edgePad;
+          const maxX = containerWidth - d.w * 0.5 - edgePad;
+          const cx = d.origX + d.baseX;
+
+          if (cx < minX) {
+            d.baseX += (minX - cx) * 0.35;
+            d.vx = Math.abs(d.vx) * 0.55 + (minX - cx) * 0.04;
+          } else if (cx > maxX) {
+            d.baseX -= (cx - maxX) * 0.35;
+            d.vx = -Math.abs(d.vx) * 0.55 - (cx - maxX) * 0.04;
           }
 
-          const minCenterY = data.h / 2 + edgePad;
-          const maxCenterY = containerHeight - data.h / 2 - edgePad;
-          const currentCenterY = data.origY + data.baseY;
+          const minY = d.h * 0.5 + edgePad;
+          const maxY = containerHeight - d.h * 0.5 - edgePad;
+          const cy = d.origY + d.baseY;
 
-          if (currentCenterY < minCenterY) {
-            data.baseY = minCenterY - data.origY;
-            data.vy = Math.abs(data.vy) * 0.65;
-          } else if (currentCenterY > maxCenterY) {
-            data.baseY = maxCenterY - data.origY;
-            data.vy = -Math.abs(data.vy) * 0.65;
+          if (cy < minY) {
+            d.baseY += (minY - cy) * 0.35;
+            d.vy = Math.abs(d.vy) * 0.55 + (minY - cy) * 0.04;
+          } else if (cy > maxY) {
+            d.baseY -= (cy - maxY) * 0.35;
+            d.vy = -Math.abs(d.vy) * 0.55 - (cy - maxY) * 0.04;
           }
 
-          const tilt = Math.max(
-            -10,
-            Math.min(10, (data.floatX / 20) * 3.5 + data.vx * 0.45),
+          const targetX = d.baseX + d.floatX;
+          const targetY = d.baseY + d.floatY;
+          const targetRot = Math.max(
+            -9,
+            Math.min(9, d.floatX * 0.14 + d.vx * 0.38),
           );
 
-          gsap.set(data.el, {
-            x: data.baseX + data.floatX,
-            y: data.baseY + data.floatY,
-            xPercent: -50,
-            yPercent: -50,
-            rotation: tilt,
-            force3D: true,
-          });
+          d.renderX += (targetX - d.renderX) * posLerp;
+          d.renderY += (targetY - d.renderY) * posLerp;
+          d.renderRot += (targetRot - d.renderRot) * rotLerp;
+
+          d.setX(d.renderX);
+          d.setY(d.renderY);
+          d.setRot(d.renderRot);
         } else {
-          const dragInst = Draggable.get(data.el);
-          if (dragInst) {
-            data.baseX = dragInst.x - data.floatX;
-            data.baseY = dragInst.y - data.floatY;
-            gsap.set(data.el, {
-              xPercent: -50,
-              yPercent: -50,
-            });
-          }
+          const dragHoldDecay = Math.pow(0.84, dt);
+          d.vx *= dragHoldDecay;
+          d.vy *= dragHoldDecay;
+          const targetRot = Math.max(-10, Math.min(10, d.vx * 0.45));
+          d.renderRot += (targetRot - d.renderRot) * rotLerp;
+          d.setRot(d.renderRot);
         }
-      });
+      }
     });
 
     let highlightTimer = null;
@@ -1347,19 +1402,18 @@ document.addEventListener("DOMContentLoaded", () => {
           const dy =
             d.origY + d.baseY - (epicData.origY + epicData.baseY);
           const dist = Math.hypot(dx, dy) || 1;
-          const waveStrength = Math.max(2.5, 11 - dist / 65);
+          const waveStrength = Math.max(1.8, 7.5 - dist / 85);
           d.vx += (dx / dist) * waveStrength;
           d.vy += (dy / dist) * waveStrength;
         } else if (!epicData) {
-          d.vx += (Math.random() - 0.5) * 9;
-          d.vy += (Math.random() - 0.5) * 7;
+          d.vx += (Math.random() - 0.5) * 5.5;
+          d.vy += (Math.random() - 0.5) * 4.5;
         }
       });
     };
 
     window.addEventListener("load", () => {
       cacheLayout();
-      initFloating();
       initDraggable();
       updateNavIndicator(false);
     });
