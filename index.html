@@ -171,43 +171,83 @@
 
     <!-- ABOUT SECTION -->
     <section class="About section" id="About">
+        <div class="about-topbar">
+            <div class="section-meta">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span class="section-index">02 <span class="corner-sep">/</span> <span data-i18n="about.kicker">ABOUT</span></span>
+            </div>
+            <div class="arena-hint" id="arenaHint">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span data-i18n="about.hint">DRAG, THROW OR CLICK ANY SKILL</span>
+            </div>
+        </div>
+
         <div class="about-container">
             <!-- Mobile Exit Button -->
-            <button class="exit-fullscreen-btn" id="exitFullscreen" aria-label="Close fullscreen chat">✕</button>
+            <button type="button" class="exit-fullscreen-btn" id="exitFullscreen" aria-label="Close fullscreen chat">✕</button>
 
             <!-- Phone Mockup -->
             <div class="phone-mockup" id="phoneMockup">
-                <div class="phone-notch"></div>
+                <div class="phone-statusbar" aria-hidden="true">
+                    <span class="phone-time" id="phoneClock">--:--</span>
+                    <div class="phone-notch"></div>
+                    <div class="phone-status-icons">
+                        <i class="ph ph-cell-signal-full"></i>
+                        <i class="ph ph-wifi-high"></i>
+                        <i class="ph ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="chat-topbar">
+                    <div class="chat-profile">
+                        <img src="src/img_perfil_portfolio.png" alt="Borges" class="chat-avatar">
+                        <div class="chat-profile-meta">
+                            <span class="chat-profile-name">Borges</span>
+                            <span class="chat-profile-sub" data-i18n="about.status">Interactive Bio</span>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        class="chat-reset-btn"
+                        id="chatResetBtn"
+                        aria-label="Clear conversation"
+                        title="Clear conversation"
+                        hidden>
+                        <i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>
+                    </button>
+                </div>
+
                 <div class="phone-screen">
                     <div class="chat-interface" id="chatInterface">
-                        <div class="chat-header">
+                        <div class="chat-header" id="chatHeader">
                             <h3 data-i18n="about.chatTitle">What would you like to know about Borges?</h3>
+                            <p class="chat-subtitle" data-i18n="about.chatSub">Pick a topic below or click any skill on the right.</p>
                         </div>
-                        <div class="chat-history" id="chatHistory">
+                        <div class="chat-history" id="chatHistory" aria-live="polite">
                             <!-- Messages will appear here -->
                         </div>
                         <div class="chat-options" id="chatOptions">
-                            <button class="chat-btn" data-topic="experiences"><i class="ph ph-briefcase"></i> <span data-i18n="about.btnExperiences">Experiences</span></button>
-                            <button class="chat-btn" data-topic="about"><i class="ph ph-user"></i> <span data-i18n="about.btnAbout">About</span></button>
-                            <button class="chat-btn" data-topic="stack"><i class="ph ph-code"></i> <span data-i18n="about.btnStack">Stack</span></button>
-                            <button class="chat-btn" data-topic="projects"><i class="ph ph-folder"></i> <span data-i18n="about.btnProjects">Projects</span></button>
+                            <button type="button" class="chat-btn" data-topic="experiences"><i class="ph ph-briefcase" aria-hidden="true"></i> <span data-i18n="about.btnExperiences">Experiences</span></button>
+                            <button type="button" class="chat-btn" data-topic="about"><i class="ph ph-user" aria-hidden="true"></i> <span data-i18n="about.btnAbout">About</span></button>
+                            <button type="button" class="chat-btn" data-topic="stack"><i class="ph ph-code" aria-hidden="true"></i> <span data-i18n="about.btnStack">Stack</span></button>
+                            <button type="button" class="chat-btn" data-topic="projects"><i class="ph ph-folder" aria-hidden="true"></i> <span data-i18n="about.btnProjects">Projects</span></button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Floating Tags -->
-            <div class="floating-tags" id="floatingTagsContainer">
-                <span class="tag tag-l" data-speed="1.2">Automation</span>
-                <span class="tag tag-xl" data-speed="0.8">Data Analytics</span>
-                <span class="tag tag-m" data-speed="1.5">Langchain</span>
-                <span class="tag tag-m" data-speed="1.1">Selenium</span>
-                <span class="tag tag-l" data-speed="0.9">Pandas</span>
-                <span class="tag tag-m" data-speed="1.3">APIs</span>
-                <span class="tag tag-l" data-speed="0.7">Django</span>
-                <span class="tag tag-m" data-speed="1.4">HTMX</span>
-                <span class="tag tag-m" data-speed="1.0">CSS</span>
-                <span class="tag tag-m" data-speed="1.2">Design</span>
+            <!-- Interactive Physics Tag Arena -->
+            <div class="floating-tags" id="floatingTagsContainer" aria-label="Interactive skills">
+                <span class="tag tag-xl" data-skill="python" data-speed="0.8" tabindex="0" role="button">Python</span>
+                <span class="tag tag-l" data-skill="agents" data-speed="1.15" tabindex="0" role="button">AI Agents</span>
+                <span class="tag tag-l" data-skill="django" data-speed="0.85" tabindex="0" role="button">Django</span>
+                <span class="tag tag-m" data-skill="fastapi" data-speed="1.25" tabindex="0" role="button">FastAPI</span>
+                <span class="tag tag-l" data-skill="langchain" data-speed="1.05" tabindex="0" role="button">LangChain</span>
+                <span class="tag tag-m" data-skill="rag" data-speed="1.3" tabindex="0" role="button">RAG</span>
+                <span class="tag tag-m" data-skill="playwright" data-speed="1.1" tabindex="0" role="button">Playwright</span>
+                <span class="tag tag-s" data-skill="postgresql" data-speed="0.95" tabindex="0" role="button">PostgreSQL</span>
+                <span class="tag tag-s" data-skill="docker" data-speed="1.2" tabindex="0" role="button">Docker</span>
+                <span class="tag tag-m" data-skill="gsap" data-speed="1.0" tabindex="0" role="button">GSAP</span>
             </div>
         </div>
     </section>

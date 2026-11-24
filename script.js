@@ -27,11 +27,16 @@ document.addEventListener("DOMContentLoaded", () => {
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Scroll",
       "hero.cornerRole": "MARISSA BORGES · PYTHON & AI",
+      "about.kicker": "ABOUT",
+      "about.hint": "DRAG, THROW OR CLICK ANY SKILL",
+      "about.status": "Interactive Bio",
       "about.chatTitle": "What would you like to know about Borges?",
+      "about.chatSub": "Pick a topic below or click any skill on the right.",
       "about.btnExperiences": "Experiences",
       "about.btnAbout": "About",
       "about.btnStack": "Stack",
       "about.btnProjects": "Projects",
+      "about.jumpProjects": "Jump to Projects ↓",
       "projects.heading": "Projects",
       "projects.view": "View Project →",
       "contact.heading": "Contact",
@@ -50,47 +55,198 @@ document.addEventListener("DOMContentLoaded", () => {
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Rolar",
       "hero.cornerRole": "MARISSA BORGES · PYTHON & IA",
+      "about.kicker": "SOBRE",
+      "about.hint": "ARRASTE, JOGUE OU CLIQUE EM UMA SKILL",
+      "about.status": "Bio Interativa",
       "about.chatTitle": "O que você quer saber sobre a Borges?",
+      "about.chatSub": "Escolha um tópico abaixo ou clique em qualquer skill ao lado.",
       "about.btnExperiences": "Experiências",
       "about.btnAbout": "Sobre",
       "about.btnStack": "Stack",
       "about.btnProjects": "Projetos",
+      "about.jumpProjects": "Ir para Projetos ↓",
       "projects.heading": "Projetos",
       "projects.view": "Ver Projeto →",
       "contact.heading": "Contato",
     },
   };
 
-  const CHAT_RESPONSES = {
-    en: {
-      experiences: [
-        "Borges has worked as an apprentice at HPE, was an apprentice at São Nicolau Hospital, and has now evolved to a Technician role.",
-        "With a strong track record early in her career, she has worked across industrial and hospital IT environments and recently earned a promotion.",
-      ],
-      about: [
-        "She is a Systems Analysis and Development student driven by curiosity and a passion for understanding how things work under the hood.",
-      ],
-      stack: [
-        "Her main stack spans Python, Django, FastAPI, LangChain, RAG pipelines, Playwright automation, PostgreSQL, Docker, and GSAP.",
-      ],
-      projects: [
-        "Scroll down to the Projects section to explore her real systems: OROS, Tallenn, Help na Escolha, and Signa!",
-      ],
+  const CHAT_TOPICS = {
+    experiences: {
+      highlight: ["python", "django", "postgresql", "docker"],
+      en: {
+        prompt: "Experiences",
+        reply:
+          "Borges worked as an apprentice at HPE, later as an apprentice at São Nicolau Hospital, and grew into an IT Technician role — building internal software, automations, and ERP integrations.",
+      },
+      pt: {
+        prompt: "Experiências",
+        reply:
+          "Borges atuou como aprendiz na HPE, depois como aprendiz no Hospital São Nicolau e evoluiu para Técnica em TI — desenvolvendo sistemas internos, automações e integrações com ERP.",
+      },
     },
-    pt: {
-      experiences: [
-        "Borges atuou como aprendiz na HPE, foi aprendiz no Hospital São Nicolau e evoluiu para o cargo de Técnica em TI.",
-        "Com uma trajetória sólida no início da carreira, acumulou experiência em ambientes corporativos e hospitalares e conquistou uma promoção recente.",
-      ],
-      about: [
-        "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade e pela vontade de entender como os sistemas funcionam por baixo dos panos.",
-      ],
-      stack: [
-        "Sua stack principal envolve Python, Django, FastAPI, LangChain, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP.",
-      ],
-      projects: [
-        "Role até a seção de Projetos para conhecer os sistemas reais em desenvolvimento: OROS, Tallenn, Help na Escolha e Signa!",
-      ],
+    about: {
+      highlight: ["python", "agents", "gsap"],
+      en: {
+        prompt: "About",
+        reply:
+          "Systems Analysis and Development student driven by curiosity. She likes opening the black box, understanding systems end to end, and turning ideas into real software.",
+      },
+      pt: {
+        prompt: "Sobre",
+        reply:
+          "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade. Gosta de abrir a caixa-preta, entender sistemas de ponta a ponta e transformar ideias em software real.",
+      },
+    },
+    stack: {
+      highlight: ["python", "django", "fastapi", "langchain", "rag", "playwright", "postgresql", "docker"],
+      en: {
+        prompt: "Stack",
+        reply:
+          "Core stack: Python, Django, FastAPI, LangChain/LangGraph, RAG pipelines, Playwright browser automation, PostgreSQL, Docker, and GSAP for interactive interfaces.",
+      },
+      pt: {
+        prompt: "Stack",
+        reply:
+          "Stack principal: Python, Django, FastAPI, LangChain/LangGraph, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP para interfaces interativas.",
+      },
+    },
+    projects: {
+      highlight: ["agents", "rag", "django", "fastapi", "playwright"],
+      cta: "#Projects",
+      en: {
+        prompt: "Projects",
+        reply:
+          "Her flagship systems include OROS (local-first AI voice assistant), Tallenn (career & job collection platform), Help na Escolha (commercial BI + AI SaaS), and Signa (signature studio integrated with Tasy ERP).",
+      },
+      pt: {
+        prompt: "Projetos",
+        reply:
+          "Entre os principais sistemas estão o OROS (assistente IA local-first com voz), Tallenn (plataforma de carreira e coleta de vagas), Help na Escolha (SaaS comercial de BI + IA) e Signa (estúdio de assinaturas integrado ao ERP Tasy).",
+      },
+    },
+  };
+
+  const SKILL_RESPONSES = {
+    python: {
+      en: {
+        prompt: "Tell me about Python",
+        reply:
+          "Python is the backbone of almost everything Borges builds — from Django and FastAPI backends to local AI orchestrators, ETL pipelines, and automation workers.",
+      },
+      pt: {
+        prompt: "Como você usa Python?",
+        reply:
+          "Python é a base de quase tudo que a Borges constrói — de backends em Django e FastAPI até orquestradores de IA locais, pipelines ETL e workers de automação.",
+      },
+    },
+    agents: {
+      en: {
+        prompt: "How do you build AI Agents?",
+        reply:
+          "She builds tool-calling agents with strict safety boundaries: in OROS (local Ollama + OpenJarvis orchestrator with voice and system tools) and in Help na Escolha (LangGraph ReAct agent with ORM-level row security).",
+      },
+      pt: {
+        prompt: "Como você cria AI Agents?",
+        reply:
+          "Ela projeta agentes com tool-calling e limites claros de segurança: no OROS (orquestrador local Ollama + OpenJarvis com voz e ferramentas do sistema) e no Help na Escolha (agente LangGraph com segurança no nível do ORM).",
+      },
+    },
+    django: {
+      en: {
+        prompt: "Where do you use Django?",
+        reply:
+          "Django powers her full-stack systems: Help na Escolha (multi-tenant BI SaaS), OROS (API + web deck), Tallenn (authenticated workspace UI), and NeoGestão (HR platform).",
+      },
+      pt: {
+        prompt: "Onde você usa Django?",
+        reply:
+          "Django sustenta seus sistemas full-stack: Help na Escolha (SaaS de BI), OROS (API + interface web), Tallenn (workspace autenticado) e NeoGestão (sistema de RH).",
+      },
+    },
+    fastapi: {
+      en: {
+        prompt: "How do you use FastAPI?",
+        reply:
+          "Used for high-throughput async services — including the dedicated AI microservice in Help na Escolha and the job collection API + background worker architecture in Tallenn.",
+      },
+      pt: {
+        prompt: "Como você usa FastAPI?",
+        reply:
+          "Usado em serviços assíncronos de alta performance — incluindo o microserviço dedicado de IA no Help na Escolha e a API de coleta + fila de workers no Tallenn.",
+      },
+    },
+    langchain: {
+      en: {
+        prompt: "What about LangChain?",
+        reply:
+          "Applied together with LangGraph for structured tool-calling workflows, retrieval chains, and semantic context management across projects like Help na Escolha and GitHermes.",
+      },
+      pt: {
+        prompt: "Como você usa LangChain?",
+        reply:
+          "Aplicado junto com LangGraph para fluxos estruturados de tool-calling, cadeias de recuperação e gestão de contexto semântico em projetos como Help na Escolha e GitHermes.",
+      },
+    },
+    rag: {
+      en: {
+        prompt: "How do you implement RAG?",
+        reply:
+          "From hybrid crawlers (GitHermes) and ChromaDB vector memory (Help na Escolha) to zero-dependency SQLite FTS5 + Markdown learned memory running locally in OROS.",
+      },
+      pt: {
+        prompt: "Como você implementa RAG?",
+        reply:
+          "Desde crawlers híbridos (GitHermes) e memória vetorial com ChromaDB (Help na Escolha) até memória local de aprendizado em SQLite FTS5 + Markdown rodando no OROS.",
+      },
+    },
+    playwright: {
+      en: {
+        prompt: "Where do you use Playwright?",
+        reply:
+          "Powers real-browser automation and testing: dynamic doc crawling in GitHermes, career-portal scraping with Browser-use Actor in Tallenn, and responsive UI regression tests.",
+      },
+      pt: {
+        prompt: "Onde você usa Playwright?",
+        reply:
+          "Move automações e testes em navegador real: coleta de documentações dinâmicas no GitHermes, scraping de portais de vagas com Browser-use no Tallenn e testes responsivos de interface.",
+      },
+    },
+    postgresql: {
+      en: {
+        prompt: "How do you use PostgreSQL?",
+        reply:
+          "Production relational database behind Help na Escolha and Tallenn — handling multi-tenant workspaces, concurrent job queues, Alembic/Django migrations, and analytical views.",
+      },
+      pt: {
+        prompt: "Como você usa PostgreSQL?",
+        reply:
+          "Banco relacional de produção no Help na Escolha e no Tallenn — com isolamento por workspace, filas concorrentes, migrações Alembic/Django e views analíticas.",
+      },
+    },
+    docker: {
+      en: {
+        prompt: "How do you use Docker?",
+        reply:
+          "Containerizes multi-service stacks with Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers, and Nginx) with health checks for reliable deployment.",
+      },
+      pt: {
+        prompt: "Como você usa Docker?",
+        reply:
+          "Containeriza stacks multi-serviço com Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers e Nginx) com health checks para deploy reproduzível.",
+      },
+    },
+    gsap: {
+      en: {
+        prompt: "Why GSAP?",
+        reply:
+          "For motion that feels physical instead of generic: ScrollTrigger choreography, Draggable physics (like the words you're playing with right now!), and animated SVG scenes in Tallenn and Haffe's Design System.",
+      },
+      pt: {
+        prompt: "Por que GSAP?",
+        reply:
+          "Para criar movimento com sensação física de verdade: coreografias com ScrollTrigger, física com Draggable (como essas palavras ao lado!) e cenas SVG animadas no Tallenn e no Haffe's Design System.",
+      },
     },
   };
 
@@ -196,6 +352,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (prefersReducedMotion || !langBubble || !originEl) {
       applyTranslationsImmediate(targetLang);
+      if (typeof window.__retranslateChatHistory === "function") {
+        window.__retranslateChatHistory(targetLang);
+      }
       updateNavIndicator(false);
       return;
     }
@@ -307,6 +466,9 @@ document.addEventListener("DOMContentLoaded", () => {
               offscreenTargets.forEach(({ el, nextText }) => {
                 el.textContent = nextText;
               });
+              if (typeof window.__retranslateChatHistory === "function") {
+                window.__retranslateChatHistory(targetLang);
+              }
             }
           },
         },
@@ -564,7 +726,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3B. EDITORIAL CORNER DETAILS & INTERACTIVE NODE FIELD
   // =========================================================
   const heroClockEl = document.getElementById("heroClock");
-  if (heroClockEl) {
+  const phoneClockEl = document.getElementById("phoneClock");
+  if (heroClockEl || phoneClockEl) {
     const clockFormatter = new Intl.DateTimeFormat("pt-BR", {
       timeZone: "America/Sao_Paulo",
       hour: "2-digit",
@@ -574,7 +737,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const updateClock = () => {
       if (!document.hidden) {
-        heroClockEl.textContent = clockFormatter.format(new Date());
+        const formatted = clockFormatter.format(new Date());
+        if (heroClockEl) heroClockEl.textContent = formatted;
+        if (phoneClockEl) phoneClockEl.textContent = formatted.slice(0, 5);
       }
     };
     updateClock();
@@ -863,17 +1028,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // 6. ABOUT SECTION — FLOATING TAGS PHYSICS (PAUSED OFFSCREEN)
+  // 6. ABOUT SECTION — FLOATING TAGS PHYSICS & THROW INERTIA
   // =========================================================
   const container = document.getElementById("floatingTagsContainer");
+  const arenaHint = document.getElementById("arenaHint");
   const tags = Array.from(document.querySelectorAll(".tag"));
   let aboutVisible = false;
+  let arenaDiscovered = false;
+
+  function markArenaDiscovered() {
+    if (arenaDiscovered) return;
+    arenaDiscovered = true;
+    if (arenaHint) arenaHint.classList.add("is-discovered");
+  }
+
+  let highlightTags = () => {};
+  let nudgeFloatingTags = () => {};
+  let triggerChatInteraction = () => {};
 
   if (container && tags.length > 0) {
-    gsap.set(tags, { xPercent: -50, yPercent: -50 });
-
     const tagData = tags.map((tag) => ({
       el: tag,
+      skill: tag.dataset.skill || "",
       baseX: 0,
       baseY: 0,
       floatX: 0,
@@ -887,18 +1063,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }));
 
     function cacheLayout() {
-      const cHeight = container.offsetHeight || 400;
+      if (window.innerWidth <= 768) return;
+      const cHeight = container.offsetHeight || 500;
       const cWidth = container.offsetWidth || window.innerWidth;
       tagData.forEach((data, i) => {
         data.origX = tags[i].offsetLeft;
         data.origY = tags[i].offsetTop;
 
         if (data.origY === 0) {
-          data.origY = (cHeight / tags.length) * i + 20;
+          data.origY = (cHeight / tags.length) * i + 30;
           tags[i].style.top = data.origY + "px";
         }
         if (data.origX === 0) {
-          data.origX = (cWidth / tags.length) * i + 20;
+          data.origX = (cWidth / tags.length) * i + 30;
           tags[i].style.left = data.origX + "px";
         }
 
@@ -913,9 +1090,9 @@ document.addEventListener("DOMContentLoaded", () => {
         function animateFloat() {
           const speed = parseFloat(data.el.getAttribute("data-speed")) || 1;
           gsap.to(data, {
-            floatX: Math.random() * 40 - 20,
-            floatY: Math.random() * 30 - 15,
-            duration: 3 + (Math.random() * 3) / speed,
+            floatX: Math.random() * 34 - 17,
+            floatY: Math.random() * 26 - 13,
+            duration: 3.2 + (Math.random() * 3) / speed,
             ease: "sine.inOut",
             onComplete: animateFloat,
           });
@@ -928,12 +1105,43 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeof Draggable === "undefined") return;
       tags.forEach((tag, i) => {
         const data = tagData[i];
+        let startX = 0;
+        let startY = 0;
+        let prevX = 0;
+        let prevY = 0;
+        let dragVx = 0;
+        let dragVy = 0;
+        let dragDist = 0;
+
         Draggable.create(tag, {
           bounds: container,
+          allowEventDefault: false,
+          onPress: function () {
+            if (window.innerWidth <= 768) {
+              this.endDrag();
+              return;
+            }
+            startX = this.x;
+            startY = this.y;
+            prevX = this.x;
+            prevY = this.y;
+            dragVx = 0;
+            dragVy = 0;
+            dragDist = 0;
+          },
           onDragStart: function () {
             tag.classList.add("is-dragging");
+            markArenaDiscovered();
           },
           onDrag: function () {
+            const dx = this.x - prevX;
+            const dy = this.y - prevY;
+            dragDist += Math.hypot(dx, dy);
+            dragVx = dragVx * 0.55 + dx * 0.45;
+            dragVy = dragVy * 0.55 + dy * 0.45;
+            prevX = this.x;
+            prevY = this.y;
+
             data.baseX = this.x - data.floatX;
             data.baseY = this.y - data.floatY;
             data.vx = 0;
@@ -941,10 +1149,39 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           onDragEnd: function () {
             tag.classList.remove("is-dragging");
+            if (dragDist >= 6) {
+              // Apply clamped billiard throw inertia on release
+              const maxSpeed = 28;
+              data.vx = Math.max(-maxSpeed, Math.min(maxSpeed, dragVx * 1.2));
+              data.vy = Math.max(-maxSpeed, Math.min(maxSpeed, dragVy * 1.2));
+            }
+          },
+          onClick: function () {
+            if (window.innerWidth <= 768) return;
+            markArenaDiscovered();
+            triggerChatInteraction("skill", data.skill, tag);
           },
         });
       });
     }
+
+    // Mobile tap & keyboard activation for every skill tag
+    tags.forEach((tag) => {
+      tag.addEventListener("click", () => {
+        if (window.innerWidth <= 768) {
+          markArenaDiscovered();
+          triggerChatInteraction("skill", tag.dataset.skill || "", tag);
+        }
+      });
+
+      tag.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          markArenaDiscovered();
+          triggerChatInteraction("skill", tag.dataset.skill || "", tag);
+        }
+      });
+    });
 
     ScrollTrigger.create({
       trigger: "#About",
@@ -956,19 +1193,24 @@ document.addEventListener("DOMContentLoaded", () => {
       onLeaveBack: () => (aboutVisible = false),
     });
 
+    if (window.innerWidth > 768) {
+      gsap.set(tags, { xPercent: -50, yPercent: -50 });
+    }
+
     gsap.ticker.add(() => {
       if (!aboutVisible || window.innerWidth <= 768) return;
       const containerWidth = container.offsetWidth;
       const containerHeight = container.offsetHeight;
       if (containerWidth === 0 || containerHeight === 0) return;
 
+      // Pairwise billiard-style AABB collision + momentum transfer
       for (let i = 0; i < tagData.length; i++) {
         const dataA = tagData[i];
-        if (dataA.el.classList.contains("is-dragging")) continue;
+        const aDragging = dataA.el.classList.contains("is-dragging");
 
-        for (let j = 0; j < tagData.length; j++) {
-          if (i === j) continue;
+        for (let j = i + 1; j < tagData.length; j++) {
           const dataB = tagData[j];
+          const bDragging = dataB.el.classList.contains("is-dragging");
 
           const aAbsX = dataA.origX + dataA.baseX + dataA.floatX;
           const aAbsY = dataA.origY + dataA.baseY + dataA.floatY;
@@ -980,48 +1222,65 @@ document.addEventListener("DOMContentLoaded", () => {
           if (Math.abs(dx) < 0.1) dx = (Math.random() - 0.5) * 2;
           if (Math.abs(dy) < 0.1) dy = (Math.random() - 0.5) * 2;
 
-          const dist = Math.sqrt(dx * dx + dy * dy);
           const absDx = Math.abs(dx);
           const absDy = Math.abs(dy);
-          const minDx = dataA.w / 2 + dataB.w / 2 + 20;
-          const minDy = dataA.h / 2 + dataB.h / 2 + 15;
+          const minDx = dataA.w / 2 + dataB.w / 2 + 18;
+          const minDy = dataA.h / 2 + dataB.h / 2 + 14;
 
-          if (absDx < minDx && absDy < minDy && dist > 0) {
+          if (absDx < minDx && absDy < minDy) {
             const overlapX = minDx - absDx;
             const overlapY = minDy - absDy;
-            const pushStrength = 0.08;
+            const push = 0.095;
 
             if (overlapX < overlapY) {
-              const dirX = dx !== 0 ? Math.sign(dx) : Math.random() > 0.5 ? 1 : -1;
-              dataA.vx += dirX * overlapX * pushStrength;
+              const dir = dx >= 0 ? 1 : -1;
+              const impulse = overlapX * push;
+              if (!aDragging && !bDragging) {
+                // Exchange horizontal momentum subtly on impact
+                const relV = (dataB.vx - dataA.vx) * 0.35;
+                dataA.vx += dir * impulse + relV;
+                dataB.vx -= dir * impulse + relV;
+              } else if (aDragging) {
+                dataB.vx -= dir * impulse * 2.2;
+              } else {
+                dataA.vx += dir * impulse * 2.2;
+              }
             } else {
-              const dirY = dy !== 0 ? Math.sign(dy) : Math.random() > 0.5 ? 1 : -1;
-              dataA.vy += dirY * overlapY * pushStrength;
+              const dir = dy >= 0 ? 1 : -1;
+              const impulse = overlapY * push;
+              if (!aDragging && !bDragging) {
+                const relV = (dataB.vy - dataA.vy) * 0.35;
+                dataA.vy += dir * impulse + relV;
+                dataB.vy -= dir * impulse + relV;
+              } else if (aDragging) {
+                dataB.vy -= dir * impulse * 2.2;
+              } else {
+                dataA.vy += dir * impulse * 2.2;
+              }
             }
-            dataA.vx *= 0.75;
-            dataA.vy *= 0.75;
           }
         }
       }
 
       tagData.forEach((data) => {
         if (!data.el.classList.contains("is-dragging")) {
-          data.vx *= 0.92;
-          data.vy *= 0.92;
+          // Smooth fluid friction so throws glide and settle naturally
+          data.vx *= 0.94;
+          data.vy *= 0.94;
           data.baseX += data.vx;
           data.baseY += data.vy;
 
-          const edgePad = 25;
+          const edgePad = 24;
           const minCenterX = data.w / 2 + edgePad;
           const maxCenterX = containerWidth - data.w / 2 - edgePad;
           const currentCenterX = data.origX + data.baseX;
 
           if (currentCenterX < minCenterX) {
             data.baseX = minCenterX - data.origX;
-            data.vx = Math.abs(data.vx) * 0.5;
+            data.vx = Math.abs(data.vx) * 0.65;
           } else if (currentCenterX > maxCenterX) {
             data.baseX = maxCenterX - data.origX;
-            data.vx = -Math.abs(data.vx) * 0.5;
+            data.vx = -Math.abs(data.vx) * 0.65;
           }
 
           const minCenterY = data.h / 2 + edgePad;
@@ -1030,18 +1289,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (currentCenterY < minCenterY) {
             data.baseY = minCenterY - data.origY;
-            data.vy = Math.abs(data.vy) * 0.5;
+            data.vy = Math.abs(data.vy) * 0.65;
           } else if (currentCenterY > maxCenterY) {
             data.baseY = maxCenterY - data.origY;
-            data.vy = -Math.abs(data.vy) * 0.5;
+            data.vy = -Math.abs(data.vy) * 0.65;
           }
+
+          const tilt = Math.max(
+            -10,
+            Math.min(10, (data.floatX / 20) * 3.5 + data.vx * 0.45),
+          );
 
           gsap.set(data.el, {
             x: data.baseX + data.floatX,
             y: data.baseY + data.floatY,
             xPercent: -50,
             yPercent: -50,
-            rotation: (data.floatX / 20) * 4,
+            rotation: tilt,
             force3D: true,
           });
         } else {
@@ -1050,7 +1314,6 @@ document.addEventListener("DOMContentLoaded", () => {
             data.baseX = dragInst.x - data.floatX;
             data.baseY = dragInst.y - data.floatY;
             gsap.set(data.el, {
-              rotation: (data.floatX / 20) * 4,
               xPercent: -50,
               yPercent: -50,
             });
@@ -1058,6 +1321,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+
+    let highlightTimer = null;
+    highlightTags = (skillList = []) => {
+      clearTimeout(highlightTimer);
+      const targetSet = new Set(skillList);
+      tags.forEach((tag) => {
+        tag.classList.toggle("is-highlighted", targetSet.has(tag.dataset.skill));
+      });
+      highlightTimer = setTimeout(() => {
+        tags.forEach((tag) => tag.classList.remove("is-highlighted"));
+      }, 2400);
+    };
+
+    nudgeFloatingTags = (epicenterEl = null) => {
+      if (window.innerWidth <= 768) return;
+      const epicData = epicenterEl
+        ? tagData.find((d) => d.el === epicenterEl)
+        : null;
+
+      tagData.forEach((d) => {
+        if (epicData && d !== epicData) {
+          const dx =
+            d.origX + d.baseX - (epicData.origX + epicData.baseX);
+          const dy =
+            d.origY + d.baseY - (epicData.origY + epicData.baseY);
+          const dist = Math.hypot(dx, dy) || 1;
+          const waveStrength = Math.max(2.5, 11 - dist / 65);
+          d.vx += (dx / dist) * waveStrength;
+          d.vy += (dy / dist) * waveStrength;
+        } else if (!epicData) {
+          d.vx += (Math.random() - 0.5) * 9;
+          d.vy += (Math.random() - 0.5) * 7;
+        }
+      });
+    };
 
     window.addEventListener("load", () => {
       cacheLayout();
@@ -1070,78 +1368,169 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        cacheLayout();
+        if (window.innerWidth > 768) {
+          gsap.set(tags, { xPercent: -50, yPercent: -50 });
+          cacheLayout();
+          tags.forEach((tag) => {
+            const dragInst = Draggable.get(tag);
+            if (dragInst) dragInst.applyBounds(container);
+          });
+        }
         updateNavIndicator(false);
-        tags.forEach((tag) => {
-          const dragInst = Draggable.get(tag);
-          if (dragInst) dragInst.applyBounds(container);
-        });
       }, 200);
     });
-
-    // Expose impulse helper for chat interactions
-    window.__nudgeFloatingTags = () => {
-      tagData.forEach((d) => {
-        d.vx += (Math.random() - 0.5) * 9;
-        d.vy += (Math.random() - 0.5) * 7;
-      });
-    };
   } else {
     window.addEventListener("load", () => updateNavIndicator(false));
     window.addEventListener("resize", () => updateNavIndicator(false));
   }
 
   // =========================================================
-  // 7. ABOUT CHAT INTERACTION
+  // 7. ABOUT CHAT INTERACTION (BIDIRECTIONAL + LIVE I18N)
   // =========================================================
+  const chatInterface = document.getElementById("chatInterface");
   const chatOptions = document.getElementById("chatOptions");
   const chatHistory = document.getElementById("chatHistory");
+  const chatResetBtn = document.getElementById("chatResetBtn");
   const chatBtns = document.querySelectorAll(".chat-btn");
+  let pendingReplyTimer = null;
 
-  chatBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const topic = btn.getAttribute("data-topic");
-      const btnText = btn.textContent.trim();
+  function renderBubbleContent(msgDiv, text, ctaTarget = null) {
+    msgDiv.textContent = "";
+    const textSpan = document.createElement("span");
+    textSpan.textContent = text;
+    msgDiv.appendChild(textSpan);
 
-      chatOptions.style.display = "none";
-      document.getElementById("chatInterface").classList.add("chat-active");
-
-      addMessage(btnText, "user");
-
-      const typingIndicator = document.createElement("div");
-      typingIndicator.className = "typing-indicator chat-bubble chat-ai";
-      typingIndicator.innerHTML =
-        '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-      chatHistory.appendChild(typingIndicator);
-      scrollToBottom();
-
-      setTimeout(() => {
-        typingIndicator.remove();
-        const responses = CHAT_RESPONSES[currentLang][topic] || [];
-        const randomResponse =
-          responses[Math.floor(Math.random() * responses.length)] || "";
-
-        addMessage(randomResponse, "ai");
-        chatOptions.style.display = "flex";
-        scrollToBottom();
-
-        if (typeof window.__nudgeFloatingTags === "function") {
-          window.__nudgeFloatingTags();
+    if (ctaTarget) {
+      const link = document.createElement("a");
+      link.href = ctaTarget;
+      link.className = "chat-inline-link";
+      link.textContent = TRANSLATIONS[currentLang]["about.jumpProjects"];
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.body.classList.remove("immersion-active");
+        const target = document.querySelector(ctaTarget);
+        if (target) {
+          target.scrollIntoView({
+            behavior: prefersReducedMotion ? "auto" : "smooth",
+          });
         }
-      }, 1100);
-    });
-  });
+      });
+      msgDiv.appendChild(document.createElement("br"));
+      msgDiv.appendChild(link);
+    }
+  }
 
-  function addMessage(text, sender) {
+  function addMessage(text, sender, meta = {}) {
     const msgDiv = document.createElement("div");
     msgDiv.className = `chat-bubble ${sender === "user" ? "chat-user" : "chat-ai"}`;
-    msgDiv.textContent = text;
+    if (meta.kind) msgDiv.dataset.chatKind = meta.kind;
+    if (meta.key) msgDiv.dataset.chatKey = meta.key;
+    msgDiv.dataset.chatRole = sender;
+
+    renderBubbleContent(msgDiv, text, meta.cta || null);
     chatHistory.appendChild(msgDiv);
+
+    if (!prefersReducedMotion) {
+      gsap.fromTo(
+        msgDiv,
+        { opacity: 0, y: 12, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.36, ease: "expo.out" },
+      );
+    }
+
     scrollToBottom();
   }
 
   function scrollToBottom() {
     chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
+
+  function clearTypingIndicators() {
+    chatHistory
+      .querySelectorAll(".typing-indicator")
+      .forEach((el) => el.remove());
+  }
+
+  triggerChatInteraction = (kind, key, sourceEl = null) => {
+    const source =
+      kind === "skill" ? SKILL_RESPONSES[key] : CHAT_TOPICS[key];
+    if (!source) return;
+
+    const localized = source[currentLang];
+    if (!localized) return;
+
+    if (pendingReplyTimer) {
+      clearTimeout(pendingReplyTimer);
+      pendingReplyTimer = null;
+      clearTypingIndicators();
+    }
+
+    chatInterface.classList.add("chat-active");
+    if (chatResetBtn) chatResetBtn.hidden = false;
+
+    addMessage(localized.prompt, "user", { kind, key });
+
+    // Trigger synchronized tag reaction immediately
+    if (kind === "skill") {
+      highlightTags([key]);
+      nudgeFloatingTags(sourceEl);
+    } else if (Array.isArray(source.highlight)) {
+      highlightTags(source.highlight);
+      nudgeFloatingTags(null);
+    }
+
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "typing-indicator chat-bubble chat-ai";
+    typingIndicator.innerHTML =
+      '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    chatHistory.appendChild(typingIndicator);
+    scrollToBottom();
+
+    pendingReplyTimer = setTimeout(() => {
+      pendingReplyTimer = null;
+      typingIndicator.remove();
+      const freshLocalized = source[currentLang];
+      addMessage(freshLocalized.reply, "ai", {
+        kind,
+        key,
+        cta: source.cta || null,
+      });
+    }, 680);
+  };
+
+  window.__retranslateChatHistory = (lang) => {
+    if (!chatHistory) return;
+    chatHistory.querySelectorAll(".chat-bubble[data-chat-key]").forEach((bubble) => {
+      const kind = bubble.dataset.chatKind;
+      const key = bubble.dataset.chatKey;
+      const role = bubble.dataset.chatRole;
+      const source =
+        kind === "skill" ? SKILL_RESPONSES[key] : CHAT_TOPICS[key];
+      if (!source || !source[lang]) return;
+      const text = role === "user" ? source[lang].prompt : source[lang].reply;
+      const cta = role === "ai" ? source.cta || null : null;
+      renderBubbleContent(bubble, text, cta);
+    });
+  };
+
+  chatBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const topic = btn.getAttribute("data-topic");
+      triggerChatInteraction("topic", topic, null);
+    });
+  });
+
+  if (chatResetBtn) {
+    chatResetBtn.addEventListener("click", () => {
+      if (pendingReplyTimer) {
+        clearTimeout(pendingReplyTimer);
+        pendingReplyTimer = null;
+      }
+      chatHistory.innerHTML = "";
+      chatInterface.classList.remove("chat-active");
+      chatResetBtn.hidden = true;
+      highlightTags([]);
+    });
   }
 
   // =========================================================
@@ -1280,7 +1669,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (phoneMockup && exitFullscreenBtn) {
     phoneMockup.addEventListener("click", (e) => {
-      if (window.innerWidth <= 768 && !e.target.closest(".chat-btn")) {
+      if (
+        window.innerWidth <= 768 &&
+        !e.target.closest(".chat-btn, .chat-reset-btn, .chat-inline-link")
+      ) {
         document.body.classList.add("immersion-active");
       }
     });
