@@ -1,356 +1,841 @@
-// Initialize GSAP and ScrollTrigger
+// Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Hero Entrance Animation
-  const heroTl = gsap.timeline();
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const hasFinePointer = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
 
-  // Animate the big background text
-  heroTl
-    .fromTo(
-      ".background-text",
-      { y: 100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.5, ease: "expo.out" },
-    )
-    // Animate the main text content
-    .fromTo(
-      ".text h2",
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: "expo.out" },
-      "-=1.0",
-    )
-    .fromTo(
-      ".text p",
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, ease: "expo.out" },
-      "-=0.9",
-    )
-    .fromTo(
-      ".text button",
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.0, ease: "expo.out" },
-      "-=0.8",
-    )
-    // Animate the profile image
-    .fromTo(
-      ".photo-wrapper img",
-      { y: 50, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "expo.out" },
-      "-=1.2",
-    );
-
-  // 2. Parallax Effect on Background Text
-  gsap.to(".background-text", {
-    y: 200, // Move down as user scrolls down
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".Home",
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
+  // =========================================================
+  // 1. I18N DICTIONARY & EXPANDING BUBBLE WAVE ENGINE
+  // =========================================================
+  const TRANSLATIONS = {
+    en: {
+      "meta.title": "Borges — Python & AI Developer",
+      "nav.home": "Home",
+      "nav.about": "About",
+      "nav.projects": "Projects",
+      "nav.contact": "Contact",
+      "hero.bg": "Python Developer",
+      "hero.eyebrow": "Python & Applied AI Engineering",
+      "hero.greeting": "Hi, I'm Borges",
+      "hero.desc":
+        "A Systems Analysis and Development student driven by curiosity — building local-first AI agents, full-stack systems, and interfaces that feel alive.",
+      "hero.ctaPrimary": "Explore my work",
+      "hero.ctaSecondary": "GitHub",
+      "hero.scroll": "Scroll",
+      "about.chatTitle": "What would you like to know about Borges?",
+      "about.btnExperiences": "Experiences",
+      "about.btnAbout": "About",
+      "about.btnStack": "Stack",
+      "about.btnProjects": "Projects",
+      "projects.heading": "Projects",
+      "projects.view": "View Project →",
+      "contact.heading": "Contact",
     },
-  });
+    pt: {
+      "meta.title": "Borges — Desenvolvedora Python & IA",
+      "nav.home": "Início",
+      "nav.about": "Sobre",
+      "nav.projects": "Projetos",
+      "nav.contact": "Contato",
+      "hero.bg": "Dev Python & IA",
+      "hero.eyebrow": "Engenharia Python & IA Aplicada",
+      "hero.greeting": "Olá, eu sou Borges",
+      "hero.desc":
+        "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade — construindo agentes de IA local-first, sistemas full-stack e interfaces que ganham vida.",
+      "hero.ctaPrimary": "Explorar projetos",
+      "hero.ctaSecondary": "GitHub",
+      "hero.scroll": "Rolar",
+      "about.chatTitle": "O que você quer saber sobre a Borges?",
+      "about.btnExperiences": "Experiências",
+      "about.btnAbout": "Sobre",
+      "about.btnStack": "Stack",
+      "about.btnProjects": "Projetos",
+      "projects.heading": "Projetos",
+      "projects.view": "Ver Projeto →",
+      "contact.heading": "Contato",
+    },
+  };
 
-  // 3. Infinite Horizontal Scroll for Skills Carousel
-  const track = document.querySelector(".skills-track");
+  const CHAT_RESPONSES = {
+    en: {
+      experiences: [
+        "Borges has worked as an apprentice at HPE, was an apprentice at São Nicolau Hospital, and has now evolved to a Technician role.",
+        "With a strong track record early in her career, she has worked across industrial and hospital IT environments and recently earned a promotion.",
+      ],
+      about: [
+        "She is a Systems Analysis and Development student driven by curiosity and a passion for understanding how things work under the hood.",
+      ],
+      stack: [
+        "Her main stack spans Python, Django, FastAPI, LangChain, RAG pipelines, Playwright automation, PostgreSQL, Docker, and GSAP.",
+      ],
+      projects: [
+        "Scroll down to the Projects section to explore her real systems: OROS, Tallenn, Help na Escolha, and Signa!",
+      ],
+    },
+    pt: {
+      experiences: [
+        "Borges atuou como aprendiz na HPE, foi aprendiz no Hospital São Nicolau e evoluiu para o cargo de Técnica em TI.",
+        "Com uma trajetória sólida no início da carreira, acumulou experiência em ambientes corporativos e hospitalares e conquistou uma promoção recente.",
+      ],
+      about: [
+        "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade e pela vontade de entender como os sistemas funcionam por baixo dos panos.",
+      ],
+      stack: [
+        "Sua stack principal envolve Python, Django, FastAPI, LangChain, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP.",
+      ],
+      projects: [
+        "Role até a seção de Projetos para conhecer os sistemas reais em desenvolvimento: OROS, Tallenn, Help na Escolha e Signa!",
+      ],
+    },
+  };
 
-  // Dynamically clone the contents to ensure it's wide enough for any screen
-  // We clone the existing sequence multiple times.
-  // Since we move by -50%, having an even number of identical sequences ensures a seamless loop.
-  const originalHTML = track.innerHTML;
-  for (let i = 0; i < 6; i++) {
-    track.innerHTML += originalHTML;
+  let currentLang = "en";
+  try {
+    const savedLang = localStorage.getItem("borges-lang");
+    if (savedLang === "pt" || savedLang === "en") {
+      currentLang = savedLang;
+    }
+  } catch (_) {
+    /* localStorage optional */
   }
 
-  gsap.to(".skills-track", {
-    xPercent: -50,
-    ease: "none",
-    duration: 140, // Much slower: proportional to the new total width
-    repeat: -1,
-  });
+  const langToggle = document.getElementById("langToggle");
+  const langBubble = document.getElementById("langWaveBubble");
+  let activeWaveTl = null;
 
-  // 4. Fade Up for Sections (About, Projects, Contact)
-  const sections = gsap.utils.toArray(".section:not(.Home)");
+  function applyToggleState(lang) {
+    if (!langToggle) return;
+    langToggle.setAttribute("data-lang", lang);
+    langToggle.querySelectorAll(".lang-option").forEach((opt) => {
+      opt.classList.toggle("is-active", opt.dataset.code === lang);
+    });
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+    document.title = TRANSLATIONS[lang]["meta.title"];
+  }
 
-  sections.forEach((sec) => {
-    gsap.fromTo(
-      sec,
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.5,
-        ease: "expo.out",
-        scrollTrigger: {
-          trigger: sec,
-          start: "top 80%", // Trigger when top of section hits 80% of viewport
-          toggleActions: "play none none reverse", // Play forward on enter, reverse on leave back
-        },
+  function applyTranslationsImmediate(lang) {
+    const dict = TRANSLATIONS[lang];
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (dict[key]) {
+        el.textContent = dict[key];
+      }
+    });
+    applyToggleState(lang);
+  }
+
+  function swapElementWithRipple(el, newText) {
+    gsap.killTweensOf(el, "opacity,y,filter");
+    el.classList.add("i18n-wave-hit");
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        el.classList.remove("i18n-wave-hit");
+        gsap.set(el, { clearProps: "filter" });
       },
+    });
+
+    tl.to(el, {
+      opacity: 0.15,
+      y: -5,
+      filter: "blur(4px)",
+      duration: 0.13,
+      ease: "power2.in",
+      onComplete: () => {
+        el.textContent = newText;
+        if (el.classList.contains("nav-link")) {
+          updateNavIndicator(false);
+        }
+      },
+    }).to(el, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: 0.32,
+      ease: "expo.out",
+    });
+  }
+
+  function switchLanguageWithWave(targetLang, originEl) {
+    if (targetLang === currentLang) return;
+    currentLang = targetLang;
+    try {
+      localStorage.setItem("borges-lang", targetLang);
+    } catch (_) {
+      /* ignore */
+    }
+
+    const dict = TRANSLATIONS[targetLang];
+    applyToggleState(targetLang);
+
+    if (prefersReducedMotion || !langBubble || !originEl) {
+      applyTranslationsImmediate(targetLang);
+      updateNavIndicator(false);
+      return;
+    }
+
+    if (activeWaveTl) {
+      activeWaveTl.kill();
+    }
+
+    const originRect = originEl.getBoundingClientRect();
+    const cx = originRect.left + originRect.width / 2;
+    const cy = originRect.top + originRect.height / 2;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const maxRadius =
+      Math.hypot(Math.max(cx, vw - cx), Math.max(cy, vh - cy)) + 90;
+
+    // Gather all translatable elements and compute their exact radial distance
+    const onscreenTargets = [];
+    const offscreenTargets = [];
+
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      const nextText = dict[key];
+      if (!nextText) return;
+
+      const rect = el.getBoundingClientRect();
+      const isVisible =
+        rect.width > 0 &&
+        rect.height > 0 &&
+        rect.bottom > -120 &&
+        rect.top < vh + 120;
+
+      if (isVisible) {
+        const elCx = rect.left + rect.width / 2;
+        const elCy = rect.top + rect.height / 2;
+        const dist = Math.hypot(elCx - cx, elCy - cy);
+        onscreenTargets.push({ el, nextText, dist, swapped: false });
+      } else {
+        offscreenTargets.push({ el, nextText });
+      }
+    });
+
+    onscreenTargets.sort((a, b) => a.dist - b.dist);
+
+    // Position the 100px base circle centered on the button
+    gsap.set(langBubble, {
+      left: cx,
+      top: cy,
+      xPercent: -50,
+      yPercent: -50,
+      scale: 0.05,
+      opacity: 0.92,
+      force3D: true,
+    });
+
+    const waveProxy = { radius: 0 };
+    let offscreenSwapped = false;
+
+    activeWaveTl = gsap.timeline({
+      onComplete: () => {
+        // Safety net: ensure every element finished swapping
+        onscreenTargets.forEach((item) => {
+          if (!item.swapped) {
+            item.swapped = true;
+            item.el.textContent = item.nextText;
+          }
+        });
+        if (!offscreenSwapped) {
+          offscreenTargets.forEach(({ el, nextText }) => {
+            el.textContent = nextText;
+          });
+        }
+        gsap.set(langBubble, { opacity: 0, scale: 0 });
+        updateNavIndicator(true);
+        activeWaveTl = null;
+      },
+    });
+
+    activeWaveTl
+      .to(
+        waveProxy,
+        {
+          radius: maxRadius,
+          duration: 0.92,
+          ease: "power2.inOut",
+          onUpdate: () => {
+            const currentR = waveProxy.radius;
+            const scaleFactor = (currentR * 2) / 100;
+            gsap.set(langBubble, { scale: scaleFactor, force3D: true });
+
+            for (let i = 0; i < onscreenTargets.length; i++) {
+              const item = onscreenTargets[i];
+              if (!item.swapped && currentR >= item.dist) {
+                item.swapped = true;
+                swapElementWithRipple(item.el, item.nextText);
+              }
+            }
+
+            if (!offscreenSwapped && currentR >= maxRadius * 0.45) {
+              offscreenSwapped = true;
+              offscreenTargets.forEach(({ el, nextText }) => {
+                el.textContent = nextText;
+              });
+            }
+          },
+        },
+        0,
+      )
+      .to(
+        langBubble,
+        {
+          opacity: 0,
+          duration: 0.34,
+          ease: "power2.out",
+        },
+        0.58,
+      );
+  }
+
+  // Apply persisted language immediately on initial load
+  applyTranslationsImmediate(currentLang);
+
+  if (langToggle) {
+    langToggle.addEventListener("click", () => {
+      const nextLang = currentLang === "en" ? "pt" : "en";
+      switchLanguageWithWave(nextLang, langToggle);
+    });
+  }
+
+  // =========================================================
+  // 2. FLOATING NAV, ACTIVE INDICATOR & SCROLL PROGRESS
+  // =========================================================
+  const topMenu = document.getElementById("topMenu");
+  const navLinks = Array.from(document.querySelectorAll(".nav-link"));
+  const navIndicator = document.getElementById("navIndicator");
+  const scrollProgress = document.getElementById("scrollProgress");
+  let activeNavSection = "Home";
+
+  function updateNavIndicator(animate = true) {
+    if (!navIndicator) return;
+    const activeLink = navLinks.find(
+      (link) => link.dataset.section === activeNavSection,
     );
+    if (!activeLink || activeLink.offsetWidth === 0) return;
+
+    const targetX = activeLink.offsetLeft;
+    const targetW = activeLink.offsetWidth;
+
+    if (animate && !prefersReducedMotion) {
+      gsap.to(navIndicator, {
+        x: targetX,
+        width: targetW,
+        opacity: 1,
+        duration: 0.45,
+        ease: "expo.out",
+        overwrite: "auto",
+      });
+    } else {
+      gsap.set(navIndicator, {
+        x: targetX,
+        width: targetW,
+        opacity: 1,
+      });
+    }
+  }
+
+  function setActiveNav(sectionId) {
+    if (activeNavSection === sectionId) return;
+    activeNavSection = sectionId;
+    navLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.dataset.section === sectionId);
+    });
+    updateNavIndicator(true);
+  }
+
+  // Scrolled header background state
+  ScrollTrigger.create({
+    start: 40,
+    onEnter: () => topMenu && topMenu.classList.add("is-scrolled"),
+    onLeaveBack: () => topMenu && topMenu.classList.remove("is-scrolled"),
   });
 
-    // 5. About Section - Floating Tags Animation (Fabric Physics Engine)
-    const container = document.getElementById("floatingTagsContainer");
-    const tags = Array.from(document.querySelectorAll(".tag"));
+  // Reading progress hairline
+  if (scrollProgress) {
+    gsap.to(scrollProgress, {
+      scaleX: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.15,
+      },
+    });
+  }
 
-    // Force GSAP to use percentage-based centering independently of x/y
+  // Track active section in nav
+  ["Home", "About", "Projects", "Contact"].forEach((id) => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    ScrollTrigger.create({
+      trigger: sec,
+      start: "top 45%",
+      end: "bottom 45%",
+      onEnter: () => setActiveNav(id),
+      onEnterBack: () => setActiveNav(id),
+    });
+  });
+
+  // =========================================================
+  // 3. HERO ENTRANCE CHOREOGRAPHY & MULTI-LAYER PARALLAX
+  // =========================================================
+  const exploreWorkBtn = document.getElementById("exploreWorkBtn");
+  if (exploreWorkBtn) {
+    exploreWorkBtn.addEventListener("click", () => {
+      const target = document.getElementById("Projects");
+      if (target) {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      }
+    });
+  }
+
+  if (!prefersReducedMotion) {
+    const heroTl = gsap.timeline({ defaults: { ease: "expo.out" } });
+
+    heroTl
+      .fromTo(
+        ".top-menu",
+        { y: -24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9 },
+        0,
+      )
+      .fromTo(
+        ".background-text",
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.4 },
+        0.1,
+      )
+      .fromTo(
+        ".hero-eyebrow",
+        { y: 18, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9 },
+        0.2,
+      )
+      .fromTo(
+        ".hero-title .line-inner",
+        { yPercent: 115, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 1.15 },
+        0.28,
+      )
+      .fromTo(
+        ".hero-desc",
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.0 },
+        0.44,
+      )
+      .fromTo(
+        ".hero-actions > *",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, stagger: 0.1 },
+        0.56,
+      )
+      .fromTo(
+        ".photo-wrapper",
+        { y: 55, opacity: 0, scale: 0.96 },
+        { y: 0, opacity: 1, scale: 1, duration: 1.35 },
+        0.25,
+      )
+      .fromTo(
+        ".scroll-cue",
+        { y: 12, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
+        0.85,
+      );
+
+    // Scroll Parallax on Background Text, Portrait & Scroll Cue
+    gsap.to(".background-text", {
+      y: 160,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".Home",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    gsap.to(".photo-wrapper img", {
+      y: 42,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".Home",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    gsap.to("#scrollCue", {
+      opacity: 0,
+      y: 18,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".Home",
+        start: "top top",
+        end: "25% top",
+        scrub: true,
+      },
+    });
+
+    // Subtle Desktop Cursor Depth Parallax (Background Text vs Portrait)
+    const homeSection = document.getElementById("Home");
+    const bgWord = document.querySelector(".background-text");
+    const photoHalo = document.querySelector(".photo-halo");
+    const heroPhoto = document.querySelector(".photo-wrapper");
+
+    if (hasFinePointer && homeSection && bgWord && heroPhoto) {
+      const bgX = gsap.quickTo(bgWord, "x", { duration: 0.9, ease: "power3.out" });
+      const photoX = gsap.quickTo(heroPhoto, "x", { duration: 0.85, ease: "power3.out" });
+      const haloX = photoHalo
+        ? gsap.quickTo(photoHalo, "x", { duration: 1.1, ease: "power3.out" })
+        : null;
+
+      homeSection.addEventListener("mousemove", (e) => {
+        const rect = homeSection.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        bgX(nx * -28);
+        photoX(nx * 14);
+        if (haloX) haloX(nx * 24);
+      });
+
+      homeSection.addEventListener("mouseleave", () => {
+        bgX(0);
+        photoX(0);
+        if (haloX) haloX(0);
+      });
+    }
+
+    // Magnetic Buttons
+    if (hasFinePointer) {
+      document.querySelectorAll(".magnetic").forEach((el) => {
+        const moveX = gsap.quickTo(el, "x", { duration: 0.45, ease: "expo.out" });
+        const moveY = gsap.quickTo(el, "y", { duration: 0.45, ease: "expo.out" });
+
+        el.addEventListener("mousemove", (e) => {
+          const rect = el.getBoundingClientRect();
+          const dx = e.clientX - (rect.left + rect.width / 2);
+          const dy = e.clientY - (rect.top + rect.height / 2);
+          moveX(dx * 0.22);
+          moveY(dy * 0.22);
+        });
+
+        el.addEventListener("mouseleave", () => {
+          moveX(0);
+          moveY(0);
+        });
+      });
+    }
+  }
+
+  // =========================================================
+  // 4. INFINITE HORIZONTAL SKILLS MARQUEE (CLEAN 1x CLONE)
+  // =========================================================
+  const track = document.getElementById("skillsTrack");
+  if (track) {
+    // Clone exactly once so -50% translates seamlessly back to 0%
+    const singleSequence = track.innerHTML;
+    track.innerHTML = singleSequence + singleSequence;
+
+    if (!prefersReducedMotion) {
+      const marqueeTween = gsap.to(track, {
+        xPercent: -50,
+        ease: "none",
+        duration: 36,
+        repeat: -1,
+      });
+
+      const marqueeBand = track.closest(".skills-carousel");
+      if (marqueeBand) {
+        marqueeBand.addEventListener("mouseenter", () => {
+          gsap.to(marqueeTween, { timeScale: 0.2, duration: 0.6, ease: "power2.out" });
+        });
+        marqueeBand.addEventListener("mouseleave", () => {
+          gsap.to(marqueeTween, { timeScale: 1, duration: 0.6, ease: "power2.out" });
+        });
+      }
+    }
+  }
+
+  // =========================================================
+  // 5. SECTION REVEALS (About, Projects, Contact)
+  // =========================================================
+  if (!prefersReducedMotion) {
+    const sections = gsap.utils.toArray(".section:not(.Home)");
+    sections.forEach((sec) => {
+      gsap.fromTo(
+        sec,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: sec,
+            start: "top 82%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+    });
+  }
+
+  // =========================================================
+  // 6. ABOUT SECTION — FLOATING TAGS PHYSICS (PAUSED OFFSCREEN)
+  // =========================================================
+  const container = document.getElementById("floatingTagsContainer");
+  const tags = Array.from(document.querySelectorAll(".tag"));
+  let aboutVisible = false;
+
+  if (container && tags.length > 0) {
     gsap.set(tags, { xPercent: -50, yPercent: -50 });
 
-    const tagData = tags.map((tag, i) => ({
-        el: tag,
-        baseX: 0, baseY: 0,
-        floatX: 0, floatY: 0,
-        vx: 0, vy: 0,
-        origX: 0, origY: 0,
-        w: 0, h: 0
+    const tagData = tags.map((tag) => ({
+      el: tag,
+      baseX: 0,
+      baseY: 0,
+      floatX: 0,
+      floatY: 0,
+      vx: 0,
+      vy: 0,
+      origX: 0,
+      origY: 0,
+      w: 0,
+      h: 0,
     }));
 
     function cacheLayout() {
-        const cHeight = container.offsetHeight || 400;
-        const cWidth = container.offsetWidth || window.innerWidth;
-        tagData.forEach((data, i) => {
-            data.origX = tags[i].offsetLeft;
-            data.origY = tags[i].offsetTop;
-            
-            // Failsafe for mobile: if parent height was 0 during load, offsetTop is 0
-            if (data.origY === 0) {
-                // Scatter them manually and update the CSS base so physics align visually
-                data.origY = (cHeight / tags.length) * i + 20;
-                tags[i].style.top = data.origY + "px";
-            }
-            if (data.origX === 0) {
-                data.origX = (cWidth / tags.length) * i + 20;
-                tags[i].style.left = data.origX + "px";
-            }
-            
-            data.w = tags[i].offsetWidth;
-            data.h = tags[i].offsetHeight;
-        });
+      const cHeight = container.offsetHeight || 400;
+      const cWidth = container.offsetWidth || window.innerWidth;
+      tagData.forEach((data, i) => {
+        data.origX = tags[i].offsetLeft;
+        data.origY = tags[i].offsetTop;
+
+        if (data.origY === 0) {
+          data.origY = (cHeight / tags.length) * i + 20;
+          tags[i].style.top = data.origY + "px";
+        }
+        if (data.origX === 0) {
+          data.origX = (cWidth / tags.length) * i + 20;
+          tags[i].style.left = data.origX + "px";
+        }
+
+        data.w = tags[i].offsetWidth;
+        data.h = tags[i].offsetHeight;
+      });
     }
 
     function initFloating() {
-        tagData.forEach(data => {
-            // Independent smooth float animation
-            function animateFloat() {
-                const speed = parseFloat(data.el.getAttribute("data-speed")) || 1;
-                gsap.to(data, {
-                    floatX: (Math.random() * 40 - 20),
-                    floatY: (Math.random() * 30 - 15),
-                    duration: 3 + Math.random() * 3 / speed,
-                    ease: "sine.inOut",
-                    onComplete: animateFloat
-                });
-            }
-            animateFloat();
-        });
+      if (prefersReducedMotion) return;
+      tagData.forEach((data) => {
+        function animateFloat() {
+          const speed = parseFloat(data.el.getAttribute("data-speed")) || 1;
+          gsap.to(data, {
+            floatX: Math.random() * 40 - 20,
+            floatY: Math.random() * 30 - 15,
+            duration: 3 + (Math.random() * 3) / speed,
+            ease: "sine.inOut",
+            onComplete: animateFloat,
+          });
+        }
+        animateFloat();
+      });
     }
 
     function initDraggable() {
-        if (typeof Draggable === "undefined") return;
-
-        tags.forEach((tag, i) => {
-            const data = tagData[i];
-            
-            Draggable.create(tag, {
-                bounds: container,
-                onDragStart: function() {
-                    tag.classList.add("is-dragging");
-                },
-                onDrag: function() {
-                    data.baseX = this.x - data.floatX;
-                    data.baseY = this.y - data.floatY;
-                    data.vx = 0;
-                    data.vy = 0;
-                },
-                onDragEnd: function() {
-                    tag.classList.remove("is-dragging");
-                }
-            });
+      if (typeof Draggable === "undefined") return;
+      tags.forEach((tag, i) => {
+        const data = tagData[i];
+        Draggable.create(tag, {
+          bounds: container,
+          onDragStart: function () {
+            tag.classList.add("is-dragging");
+          },
+          onDrag: function () {
+            data.baseX = this.x - data.floatX;
+            data.baseY = this.y - data.floatY;
+            data.vx = 0;
+            data.vy = 0;
+          },
+          onDragEnd: function () {
+            tag.classList.remove("is-dragging");
+          },
         });
+      });
     }
 
+    ScrollTrigger.create({
+      trigger: "#About",
+      start: "top bottom",
+      end: "bottom top",
+      onEnter: () => (aboutVisible = true),
+      onLeave: () => (aboutVisible = false),
+      onEnterBack: () => (aboutVisible = true),
+      onLeaveBack: () => (aboutVisible = false),
+    });
+
     gsap.ticker.add(() => {
-        if (!container) return;
-        const containerWidth = container.offsetWidth;
-        const containerHeight = container.offsetHeight;
+      if (!aboutVisible || window.innerWidth <= 768) return;
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      if (containerWidth === 0 || containerHeight === 0) return;
 
-        // --- Physics Step 1: Accumulate Forces ---
-        for (let i = 0; i < tagData.length; i++) {
-            const dataA = tagData[i];
-            if (dataA.el.classList.contains("is-dragging")) continue;
+      for (let i = 0; i < tagData.length; i++) {
+        const dataA = tagData[i];
+        if (dataA.el.classList.contains("is-dragging")) continue;
 
-            // b. N-Body Collision Repulsion (Ball-pit fabric behavior)
-            for (let j = 0; j < tagData.length; j++) {
-                if (i === j) continue;
-                const dataB = tagData[j];
+        for (let j = 0; j < tagData.length; j++) {
+          if (i === j) continue;
+          const dataB = tagData[j];
 
-                // Absolute center coordinates for accurate real-world distance (CACHED for performance)
-                const aAbsX = dataA.origX + dataA.baseX + dataA.floatX;
-                const aAbsY = dataA.origY + dataA.baseY + dataA.floatY;
-                
-                const bAbsX = dataB.origX + dataB.baseX + dataB.floatX;
-                const bAbsY = dataB.origY + dataB.baseY + dataB.floatY;
+          const aAbsX = dataA.origX + dataA.baseX + dataA.floatX;
+          const aAbsY = dataA.origY + dataA.baseY + dataA.floatY;
+          const bAbsX = dataB.origX + dataB.baseX + dataB.floatX;
+          const bAbsY = dataB.origY + dataB.baseY + dataB.floatY;
 
-                let dx = aAbsX - bAbsX;
-                let dy = aAbsY - bAbsY;
-                
-                // Micro-jitter to prevent perfect horizontal/vertical locks (which crush elements)
-                if (Math.abs(dx) < 0.1) dx = (Math.random() - 0.5) * 2;
-                if (Math.abs(dy) < 0.1) dy = (Math.random() - 0.5) * 2;
+          let dx = aAbsX - bAbsX;
+          let dy = aAbsY - bAbsY;
+          if (Math.abs(dx) < 0.1) dx = (Math.random() - 0.5) * 2;
+          if (Math.abs(dy) < 0.1) dy = (Math.random() - 0.5) * 2;
 
-                const dist = Math.sqrt(dx * dx + dy * dy);
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const absDx = Math.abs(dx);
+          const absDy = Math.abs(dy);
+          const minDx = dataA.w / 2 + dataB.w / 2 + 20;
+          const minDy = dataA.h / 2 + dataB.h / 2 + 15;
 
-                // AABB distance (distance between centers on X and Y)
-                const absDx = Math.abs(dx);
-                const absDy = Math.abs(dy);
+          if (absDx < minDx && absDy < minDy && dist > 0) {
+            const overlapX = minDx - absDx;
+            const overlapY = minDy - absDy;
+            const pushStrength = 0.08;
 
-                const isMobile = window.innerWidth < 768;
-                const minDx = (dataA.w / 2) + (dataB.w / 2) + (isMobile ? 5 : 20); // Responsive padding X
-                const minDy = (dataA.h / 2) + (dataB.h / 2) + (isMobile ? 5 : 15); // Responsive padding Y
-
-                if (absDx < minDx && absDy < minDy && dist > 0) {
-                    // They are intersecting. Figure out the axis of least penetration
-                    const overlapX = minDx - absDx;
-                    const overlapY = minDy - absDy;
-                    
-                    const pushStrength = 0.08; // Stronger push because of damping
-                    
-                    if (overlapX < overlapY) {
-                        // Resolve horizontally
-                        const dirX = dx !== 0 ? Math.sign(dx) : (Math.random() > 0.5 ? 1 : -1);
-                        dataA.vx += dirX * overlapX * pushStrength;
-                    } else {
-                        // Resolve vertically
-                        const dirY = dy !== 0 ? Math.sign(dy) : (Math.random() > 0.5 ? 1 : -1);
-                        dataA.vy += dirY * overlapY * pushStrength;
-                    }
-                    
-                    // Viscous damping (soap effect): kills explosive momentum so they don't bounce off each other
-                    dataA.vx *= 0.75;
-                    dataA.vy *= 0.75;
-                }
-            }
-        }
-
-        // --- Physics Step 2: Integration & Constraints ---
-        tagData.forEach(data => {
-            if (!data.el.classList.contains("is-dragging")) {
-                // Apply Friction (Fluid resistance)
-                const friction = 0.92;
-                data.vx *= friction;
-                data.vy *= friction;
-
-                // Move base position
-                data.baseX += data.vx;
-                data.baseY += data.vy;
-
-                // Container Boundaries (Responsive padding to keep them strictly inside)
-                const tagWidth = data.w;
-                const tagHeight = data.h;
-                const edgePad = window.innerWidth < 768 ? 5 : 25;
-                
-                const minCenterX = (tagWidth / 2) + edgePad;
-                const maxCenterX = containerWidth - (tagWidth / 2) - edgePad;
-                let currentCenterX = data.origX + data.baseX;
-                
-                if (currentCenterX < minCenterX) {
-                    data.baseX = minCenterX - data.origX;
-                    data.vx = Math.abs(data.vx) * 0.5; // Bounce instead of zero
-                } else if (currentCenterX > maxCenterX) {
-                    data.baseX = maxCenterX - data.origX;
-                    data.vx = -Math.abs(data.vx) * 0.5;
-                }
-                
-                const minCenterY = (tagHeight / 2) + edgePad;
-                const maxCenterY = containerHeight - (tagHeight / 2) - edgePad;
-                let currentCenterY = data.origY + data.baseY;
-                
-                if (currentCenterY < minCenterY) {
-                    data.baseY = minCenterY - data.origY;
-                    data.vy = Math.abs(data.vy) * 0.5;
-                } else if (currentCenterY > maxCenterY) {
-                    data.baseY = maxCenterY - data.origY;
-                    data.vy = -Math.abs(data.vy) * 0.5;
-                }
-
-                // Render final positions (Base Physics + GSAP Floating)
-                gsap.set(data.el, {
-                    x: data.baseX + data.floatX,
-                    y: data.baseY + data.floatY,
-                    xPercent: -50,
-                    yPercent: -50,
-                    rotation: (data.floatX / 20) * 4,
-                    force3D: true
-                });
+            if (overlapX < overlapY) {
+              const dirX = dx !== 0 ? Math.sign(dx) : Math.random() > 0.5 ? 1 : -1;
+              dataA.vx += dirX * overlapX * pushStrength;
             } else {
-                 // Dragging Override: Keep base in sync with user's pointer
-                 const dragInst = Draggable.get(data.el);
-                 if (dragInst) {
-                     data.baseX = dragInst.x - data.floatX;
-                     data.baseY = dragInst.y - data.floatY;
-                     gsap.set(data.el, { 
-                         rotation: (data.floatX / 20) * 4,
-                         xPercent: -50,
-                         yPercent: -50
-                     });
-                 }
+              const dirY = dy !== 0 ? Math.sign(dy) : Math.random() > 0.5 ? 1 : -1;
+              dataA.vy += dirY * overlapY * pushStrength;
             }
-        });
+            dataA.vx *= 0.75;
+            dataA.vy *= 0.75;
+          }
+        }
+      }
+
+      tagData.forEach((data) => {
+        if (!data.el.classList.contains("is-dragging")) {
+          data.vx *= 0.92;
+          data.vy *= 0.92;
+          data.baseX += data.vx;
+          data.baseY += data.vy;
+
+          const edgePad = 25;
+          const minCenterX = data.w / 2 + edgePad;
+          const maxCenterX = containerWidth - data.w / 2 - edgePad;
+          const currentCenterX = data.origX + data.baseX;
+
+          if (currentCenterX < minCenterX) {
+            data.baseX = minCenterX - data.origX;
+            data.vx = Math.abs(data.vx) * 0.5;
+          } else if (currentCenterX > maxCenterX) {
+            data.baseX = maxCenterX - data.origX;
+            data.vx = -Math.abs(data.vx) * 0.5;
+          }
+
+          const minCenterY = data.h / 2 + edgePad;
+          const maxCenterY = containerHeight - data.h / 2 - edgePad;
+          const currentCenterY = data.origY + data.baseY;
+
+          if (currentCenterY < minCenterY) {
+            data.baseY = minCenterY - data.origY;
+            data.vy = Math.abs(data.vy) * 0.5;
+          } else if (currentCenterY > maxCenterY) {
+            data.baseY = maxCenterY - data.origY;
+            data.vy = -Math.abs(data.vy) * 0.5;
+          }
+
+          gsap.set(data.el, {
+            x: data.baseX + data.floatX,
+            y: data.baseY + data.floatY,
+            xPercent: -50,
+            yPercent: -50,
+            rotation: (data.floatX / 20) * 4,
+            force3D: true,
+          });
+        } else {
+          const dragInst = Draggable.get(data.el);
+          if (dragInst) {
+            data.baseX = dragInst.x - data.floatX;
+            data.baseY = dragInst.y - data.floatY;
+            gsap.set(data.el, {
+              rotation: (data.floatX / 20) * 4,
+              xPercent: -50,
+              yPercent: -50,
+            });
+          }
+        }
+      });
     });
 
     window.addEventListener("load", () => {
-        cacheLayout();
-        initFloating();
-        initDraggable();
+      cacheLayout();
+      initFloating();
+      initDraggable();
+      updateNavIndicator(false);
     });
 
     let resizeTimeout;
     window.addEventListener("resize", () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            cacheLayout();
-            tags.forEach(tag => {
-                const dragInst = Draggable.get(tag);
-                if (dragInst) dragInst.applyBounds(container);
-            });
-        }, 200);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        cacheLayout();
+        updateNavIndicator(false);
+        tags.forEach((tag) => {
+          const dragInst = Draggable.get(tag);
+          if (dragInst) dragInst.applyBounds(container);
+        });
+      }, 200);
     });
 
+    // Expose impulse helper for chat interactions
+    window.__nudgeFloatingTags = () => {
+      tagData.forEach((d) => {
+        d.vx += (Math.random() - 0.5) * 9;
+        d.vy += (Math.random() - 0.5) * 7;
+      });
+    };
+  } else {
+    window.addEventListener("load", () => updateNavIndicator(false));
+    window.addEventListener("resize", () => updateNavIndicator(false));
+  }
+
+  // =========================================================
+  // 7. ABOUT CHAT INTERACTION
+  // =========================================================
   const chatOptions = document.getElementById("chatOptions");
   const chatHistory = document.getElementById("chatHistory");
   const chatBtns = document.querySelectorAll(".chat-btn");
 
-  // Placeholder data for the AI responses
-  const chatData = {
-    experiences: [
-      "Borges has worked as an apprentice at HPE, was an apprentice at São Nicolau Hospital, and has now evolved to a Technician role.",
-      "With a strong background for someone his age, he has worked in 2 places and recently got promoted at his current company.",
-    ],
-    about: [
-      "He is a Systems Analysis and Development student, driven by curiosity and a passion for understanding how things work under the hood.",
-    ],
-    stack: [
-      "His main stack involves Python, Django, Data Analytics with Pandas, Automation with Selenium, and he is exploring Langchain for AI.",
-    ],
-    projects: [
-      "Scroll down to the Projects section to see some of his open-source work and personal experiments!",
-    ],
-  };
-
   chatBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const topic = btn.getAttribute("data-topic");
-      const btnText = btn.textContent.trim(); // Get the clean text
+      const btnText = btn.textContent.trim();
 
-      // 1. Hide options & activate chat layout
       chatOptions.style.display = "none";
       document.getElementById("chatInterface").classList.add("chat-active");
 
-      // 2. Add User Message
       addMessage(btnText, "user");
 
-      // 3. Show "Thinking..." indicator
       const typingIndicator = document.createElement("div");
       typingIndicator.className = "typing-indicator chat-bubble chat-ai";
       typingIndicator.innerHTML =
@@ -358,30 +843,20 @@ document.addEventListener("DOMContentLoaded", () => {
       chatHistory.appendChild(typingIndicator);
       scrollToBottom();
 
-      // 4. Wait, then show response
       setTimeout(() => {
-        // Remove typing indicator
         typingIndicator.remove();
-
-        // Get random response from the JSON/Data
-        const responses = chatData[topic];
+        const responses = CHAT_RESPONSES[currentLang][topic] || [];
         const randomResponse =
-          responses[Math.floor(Math.random() * responses.length)];
+          responses[Math.floor(Math.random() * responses.length)] || "";
 
-        // Add AI Message
         addMessage(randomResponse, "ai");
-
-        // Show options again
         chatOptions.style.display = "flex";
         scrollToBottom();
 
-        // Gentle shift of floating tags on interaction
-        gsap.to(tags, {
-          x: () => "+=" + (Math.random() * 40 - 20),
-          duration: 1.5,
-          ease: "expo.out",
-        });
-      }, 1500); // 1.5 seconds thinking time
+        if (typeof window.__nudgeFloatingTags === "function") {
+          window.__nudgeFloatingTags();
+        }
+      }, 1100);
     });
   });
 
@@ -397,18 +872,20 @@ document.addEventListener("DOMContentLoaded", () => {
     chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 
-  // 7. Projects Section - Sticky Scroll & Slot Machine Animation
+  // =========================================================
+  // 8. PROJECTS SECTION — STICKY SCROLL & CAROUSELS
+  // =========================================================
   const projectsContainer = document.querySelector(".projects-container");
   if (projectsContainer) {
     const titleStack = document.querySelector(".title-stack");
     const titleWords = gsap.utils.toArray(".title-word");
     const projectCards = gsap.utils.toArray(".project-card");
     const sliderLine = document.querySelector(".slider-line");
-    
-    // Smooth scrub animation for the slider line to act as a progress bar
-    gsap.fromTo(sliderLine, 
+
+    gsap.fromTo(
+      sliderLine,
       { background: "#39495b" },
-      { 
+      {
         background: "#e5e7eb",
         ease: "none",
         scrollTrigger: {
@@ -416,15 +893,14 @@ document.addEventListener("DOMContentLoaded", () => {
           start: "top center",
           end: "bottom center",
           scrub: true,
-        }
-      }
+        },
+      },
     );
 
-    // Map each card to update the active state in the title stack
     projectCards.forEach((card, i) => {
       ScrollTrigger.create({
         trigger: card,
-        start: "top 60%", // when card reaches 60% of viewport from top
+        start: "top 60%",
         end: "bottom 40%",
         onEnter: () => updateActiveWord(i),
         onEnterBack: () => updateActiveWord(i),
@@ -432,54 +908,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function updateActiveWord(index) {
-      // Direct 1-to-1 mapping for any number of cards/titles
       const wordIndex = Math.min(index, titleWords.length - 1);
-      
       titleWords.forEach((word, w) => {
-        if (w === wordIndex) {
-          word.classList.remove("ghost");
-          word.classList.add("active");
-        } else {
-          word.classList.remove("active");
-          word.classList.add("ghost");
-        }
+        word.classList.toggle("active", w === wordIndex);
+        word.classList.toggle("ghost", w !== wordIndex);
       });
-      
+
       const activeWord = titleWords[wordIndex];
       if (!activeWord) return;
-
-      // Mathematically perfect centering: 
-      // 100px is the vertical center of the 200px .title-slider-wrapper
-      const wrapperCenter = 100; 
-      const wordCenter = activeWord.offsetTop + (activeWord.offsetHeight / 2);
+      const wrapperCenter = 100;
+      const wordCenter = activeWord.offsetTop + activeWord.offsetHeight / 2;
       const shiftY = wrapperCenter - wordCenter;
-      
-      // Slot machine physical shift
+
       gsap.to(titleStack, {
         y: shiftY,
         duration: 0.8,
         ease: "expo.out",
-        overwrite: "auto" // Kills previous animations if user scrolls very fast, fixing the "stuck" bug
+        overwrite: "auto",
       });
     }
   }
 
-  // 8. Project Carousel Logic
   const carousels = document.querySelectorAll(".project-carousel");
   carousels.forEach((carousel) => {
-    const track = carousel.querySelector(".carousel-track");
+    const trackEl = carousel.querySelector(".carousel-track");
     const images = carousel.querySelectorAll(".carousel-track img");
     const prevBtn = carousel.querySelector(".prev-btn");
     const nextBtn = carousel.querySelector(".next-btn");
     const indicatorsContainer = carousel.querySelector(".carousel-indicators");
-    
-    if (!track || images.length === 0) return;
+
+    if (!trackEl || images.length === 0) return;
 
     let currentIndex = 0;
     const totalImages = images.length;
     let autoPlayInterval;
 
-    // Create dots
     images.forEach((_, i) => {
       const dot = document.createElement("span");
       dot.classList.add("dot");
@@ -491,9 +954,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dots = indicatorsContainer.querySelectorAll(".dot");
 
     function updateCarousel() {
-      // Move track
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
-      // Update dots
+      trackEl.style.transform = `translateX(-${currentIndex * 100}%)`;
       dots.forEach((dot, i) => {
         dot.classList.toggle("active", i === currentIndex);
       });
@@ -522,42 +983,38 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(autoPlayInterval);
     }
 
-    // Event Listeners
     nextBtn.addEventListener("click", () => {
       nextSlide();
       stopAutoPlay();
-      startAutoPlay(); // Reset timer
+      startAutoPlay();
     });
 
     prevBtn.addEventListener("click", () => {
       prevSlide();
       stopAutoPlay();
-      startAutoPlay(); // Reset timer
+      startAutoPlay();
     });
 
     carousel.addEventListener("mouseenter", stopAutoPlay);
     carousel.addEventListener("mouseleave", startAutoPlay);
-
-    // Start auto play initially
     startAutoPlay();
   });
 
-  // 9. Mobile Fullscreen Immersion Logic
+  // =========================================================
+  // 9. MOBILE FULLSCREEN CHAT IMMERSION
+  // =========================================================
   const phoneMockup = document.getElementById("phoneMockup");
   const exitFullscreenBtn = document.getElementById("exitFullscreen");
 
-  // Click on phone on mobile to enter immersion
-  phoneMockup.addEventListener("click", (e) => {
-    // Only trigger if we are on mobile (< 768px) and not clicking a chat button
-    if (window.innerWidth <= 768 && !e.target.closest(".chat-btn")) {
-      if (!document.body.classList.contains("immersion-active")) {
+  if (phoneMockup && exitFullscreenBtn) {
+    phoneMockup.addEventListener("click", (e) => {
+      if (window.innerWidth <= 768 && !e.target.closest(".chat-btn")) {
         document.body.classList.add("immersion-active");
       }
-    }
-  });
+    });
 
-  // Click on exit button to leave immersion
-  exitFullscreenBtn.addEventListener("click", () => {
-    document.body.classList.remove("immersion-active");
-  });
+    exitFullscreenBtn.addEventListener("click", () => {
+      document.body.classList.remove("immersion-active");
+    });
+  }
 });
