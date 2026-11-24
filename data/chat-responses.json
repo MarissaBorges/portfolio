@@ -1,0 +1,460 @@
+{
+  "version": 1,
+  "topics": {
+    "experiences": {
+      "highlight": ["python", "django", "postgresql", "docker"],
+      "en": {
+        "prompt": "Experiences",
+        "replies": [
+          "Borges started as an apprentice at HPE, moved to São Nicolau Hospital as an apprentice, and grew into an IT Technician role building internal software, automations, and ERP integrations.",
+          "Her path began in corporate IT at HPE before transitioning into healthcare tech at São Nicolau Hospital, where she went from apprentice to IT Technician shipping real internal tools.",
+          "From apprentice at HPE to IT Technician at São Nicolau Hospital, her experience blends hands-on infrastructure support with full-stack Python development and ERP automation.",
+          "At São Nicolau Hospital, she progressed from apprentice to IT Technician, turning repetitive clinical and administrative bottlenecks into custom web systems and automated workflows.",
+          "Before focusing deeply on AI and Python backends, she cut her teeth as an apprentice at HPE and then earned a promotion to IT Technician at São Nicolau Hospital.",
+          "Her work experience is grounded in real operations: starting at HPE, joining São Nicolau Hospital as an apprentice, and stepping up as an IT Technician solving day-to-day software needs.",
+          "Working inside São Nicolau Hospital as an IT Technician taught her to build resilient tools that integrate directly with legacy hospital ERPs and actually survive production use.",
+          "HPE gave her early exposure to structured enterprise environments; São Nicolau Hospital gave her the room to grow from apprentice to IT Technician shipping internal systems.",
+          "Instead of staying only in theory, she built her foundation in the field: apprentice at HPE, apprentice at São Nicolau Hospital, and then IT Technician automating workflows end to end.",
+          "Across HPE and São Nicolau Hospital, she moved quickly from learning IT fundamentals as an apprentice to developing internal web apps, scripts, and ERP integrations as an IT Technician."
+        ]
+      },
+      "pt": {
+        "prompt": "Experiências",
+        "replies": [
+          "Borges começou como aprendiz na HPE, passou a aprendiz no Hospital São Nicolau e evoluiu para Técnica em TI desenvolvendo sistemas internos, automações e integrações com ERP.",
+          "A trajetória dela começou em TI corporativa na HPE e seguiu para a área hospitalar no Hospital São Nicolau, onde cresceu de aprendiz a Técnica em TI entregando ferramentas internas.",
+          "De aprendiz na HPE a Técnica em TI no Hospital São Nicolau, a experiência dela une vivência prática de operação com desenvolvimento Python full-stack e automação de ERP.",
+          "No Hospital São Nicolau, ela evoluiu de aprendiz para Técnica em TI, transformando gargalos administrativos e operacionais em sistemas web sob medida e fluxos automatizados.",
+          "Antes de mergulhar fundo em IA e backends Python, ela construiu base como aprendiz na HPE e conquistou a efetivação como Técnica em TI no Hospital São Nicolau.",
+          "A experiência dela vem de operação real: início na HPE, passagem como aprendiz no Hospital São Nicolau e atuação como Técnica em TI resolvendo demandas reais com software.",
+          "Atuar como Técnica em TI no Hospital São Nicolau ensinou na prática a construir ferramentas resilientes, integradas a ERPs hospitalares e feitas para aguentar o uso diário.",
+          "A HPE trouxe o primeiro contato com ambiente corporativo estruturado; o Hospital São Nicolau abriu espaço para ela crescer de aprendiz a Técnica em TI criando sistemas internos.",
+          "Em vez de ficar só na teoria, ela formou base em campo: aprendiz na HPE, aprendiz no Hospital São Nicolau e depois Técnica em TI automatizando processos de ponta a ponta.",
+          "Entre a HPE e o Hospital São Nicolau, ela saiu rápido dos fundamentos de TI como aprendiz para criar aplicações internas, scripts e integrações de ERP como Técnica em TI."
+        ]
+      }
+    },
+    "about": {
+      "highlight": ["python", "agents", "gsap"],
+      "en": {
+        "prompt": "About",
+        "replies": [
+          "Systems Analysis and Development student driven by curiosity. She likes opening the black box, understanding systems end to end, and turning ideas into real software.",
+          "Marissa Borges studies Systems Analysis and Development and treats code as a way to dissect how things really work under the hood.",
+          "Curiosity is her main engine: she studies Systems Analysis and Development and builds everything from local AI agents to interactive web interfaces from scratch.",
+          "She is a Python developer and Systems Analysis and Development student who prefers shipping working prototypes over just reading documentation.",
+          "Half backend architect, half interactive builder. Studying Systems Analysis and Development while crafting AI systems, automations, and interfaces that feel alive.",
+          "She doesn't stop at making code run; she wants to understand every layer, from database queries and agent loops all the way to browser motion.",
+          "A Systems Analysis and Development student with a builder mindset, focused on Python, applied AI, and turning complex workflows into clean software.",
+          "Moved by how systems fit together, she blends backend reliability with visual craft so technical projects also feel sharp to use.",
+          "Whenever she hits a problem that seems tedious or opaque, her instinct is to inspect the internals and build a tool that handles it cleanly.",
+          "Marissa Borges is a Systems Analysis and Development student building practical Python and AI products, always chasing that moment when an idea clicks into working code."
+        ]
+      },
+      "pt": {
+        "prompt": "Sobre",
+        "replies": [
+          "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade. Gosta de abrir a caixa-preta, entender sistemas de ponta a ponta e transformar ideias em software real.",
+          "Marissa Borges cursa Análise e Desenvolvimento de Sistemas e usa o código como forma de desmontar e entender como as coisas realmente funcionam por baixo dos panos.",
+          "Curiosidade é o motor principal: estuda Análise e Desenvolvimento de Sistemas e constrói do zero, de agentes de IA locais até interfaces web interativas.",
+          "Desenvolvedora Python e estudante de Análise e Desenvolvimento de Sistemas que prefere colocar um protótipo de pé a ficar só na teoria.",
+          "Metade arquitetura de backend, metade cuidado visual. Cursa Análise e Desenvolvimento de Sistemas enquanto cria sistemas de IA, automações e interfaces com vida.",
+          "Ela não se contenta em fazer funcionar; gosta de entender cada camada, das queries no banco e loops de agentes até a fluidez do movimento na tela.",
+          "Estudante de Análise e Desenvolvimento de Sistemas com perfil construtor, focada em Python, IA aplicada e em transformar fluxos complexos em software limpo.",
+          "Fascinada por como sistemas se conectam, ela combina solidez no backend com cuidado estético para que ferramentas técnicas também sejam gostosas de usar.",
+          "Sempre que encontra um processo repetitivo ou opaco, o instinto dela é investigar a fundo e criar uma ferramenta própria para resolver de forma elegante.",
+          "Marissa Borges é estudante de Análise e Desenvolvimento de Sistemas criando produtos práticos em Python e IA, sempre atrás daquele clique em que uma ideia vira sistema rodando."
+        ]
+      }
+    },
+    "stack": {
+      "highlight": ["python", "django", "fastapi", "langchain", "rag", "playwright", "postgresql", "docker"],
+      "en": {
+        "prompt": "Stack",
+        "replies": [
+          "Core stack: Python, Django, FastAPI, LangChain/LangGraph, RAG pipelines, Playwright browser automation, PostgreSQL, Docker, and GSAP for interactive interfaces.",
+          "Python sits at the center of her toolkit, surrounded by Django and FastAPI on the web side, LangChain and RAG for AI, PostgreSQL for data, and Docker for shipping.",
+          "For full-stack apps she reaches for Django and PostgreSQL; for async AI services, FastAPI and LangGraph; for automation, Playwright; and for motion, GSAP.",
+          "Her daily stack bridges backend and intelligence: Python, FastAPI, Django, LangChain, ChromaDB/FTS5 retrieval, Playwright scrapers, PostgreSQL, and Docker Compose.",
+          "Backend-first with Python, Django, and FastAPI, extended with AI agent orchestration, RAG memory layers, headless browser automation via Playwright, and Dockerized deploys.",
+          "She picks tools that compose well together: Django for structured apps, FastAPI for async microservices, PostgreSQL for reliable state, and Docker to keep environments reproducible.",
+          "On the AI side: LangChain, LangGraph, local Ollama runtimes, and custom RAG pipelines. On the web side: Django, FastAPI, PostgreSQL, and GSAP animations.",
+          "Think Python all the way down: APIs in FastAPI, complete platforms in Django, data in PostgreSQL, browser jobs in Playwright, containers in Docker, and front-end polish with GSAP.",
+          "Her toolkit covers the full lifecycle of a modern product: data ingestion with Playwright, storage in PostgreSQL, AI reasoning with LangChain/RAG, and deployment in Docker.",
+          "Python anchors everything she builds, paired with Django, FastAPI, LangChain, RAG architectures, Playwright, PostgreSQL, Docker, and tactile GSAP motion on the front end."
+        ]
+      },
+      "pt": {
+        "prompt": "Stack",
+        "replies": [
+          "Stack principal: Python, Django, FastAPI, LangChain/LangGraph, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP para interfaces interativas.",
+          "Python fica no centro do repertório, cercado por Django e FastAPI na web, LangChain e RAG para IA, PostgreSQL para dados e Docker para colocar tudo no ar.",
+          "Para aplicações completas ela escolhe Django e PostgreSQL; para serviços assíncronos de IA, FastAPI e LangGraph; para automação, Playwright; e para movimento, GSAP.",
+          "A stack do dia a dia une backend e inteligência: Python, FastAPI, Django, LangChain, busca com ChromaDB/FTS5, scrapers em Playwright, PostgreSQL e Docker Compose.",
+          "Base forte em Python, Django e FastAPI, expandida com orquestração de agentes de IA, camadas de memória RAG, automação de navegador com Playwright e deploy em Docker.",
+          "Ela escolhe peças que conversam bem entre si: Django para sistemas estruturados, FastAPI para microserviços assíncronos, PostgreSQL para dados sólidos e Docker para padronizar o ambiente.",
+          "No lado de IA: LangChain, LangGraph, modelos locais com Ollama e pipelines RAG próprios. Na web: Django, FastAPI, PostgreSQL e animações com GSAP.",
+          "É Python de ponta a ponta: APIs em FastAPI, plataformas em Django, persistência em PostgreSQL, rotinas de navegador em Playwright, containers Docker e acabamento visual com GSAP.",
+          "O conjunto cobre o ciclo inteiro de um produto moderno: coleta com Playwright, armazenamento em PostgreSQL, raciocínio de IA com LangChain/RAG e entrega via Docker.",
+          "Python sustenta quase tudo que ela cria, acompanhado de Django, FastAPI, LangChain, arquiteturas RAG, Playwright, PostgreSQL, Docker e movimento tátil em GSAP no frontend."
+        ]
+      }
+    },
+    "projects": {
+      "highlight": ["agents", "rag", "django", "fastapi", "playwright"],
+      "cta": "#Projects",
+      "en": {
+        "prompt": "Projects",
+        "replies": [
+          "Her flagship systems include OROS (local-first AI voice assistant), Tallenn (career & job collection platform), Help na Escolha (commercial BI + AI SaaS), and Signa (signature studio integrated with Tasy ERP).",
+          "Four highlights lead her portfolio: OROS for local voice AI, Tallenn for automated career discovery, Help na Escolha for commercial BI with AI, and Signa for hospital ERP signatures.",
+          "She builds real products with distinct architectures: OROS runs local Ollama agents, Tallenn orchestrates Playwright job collectors, Help na Escolha powers commercial BI + AI, and Signa integrates with Tasy ERP.",
+          "From local-first voice intelligence (OROS) to commercial SaaS analytics (Help na Escolha), automated job scouting (Tallenn), and Tasy ERP signature workflows (Signa), every project solves a concrete problem.",
+          "Want to see the range? OROS explores local AI orchestration, Tallenn automates job hunting, Help na Escolha delivers BI insights via AI agents, and Signa streamlines digital signatures for Tasy ERP.",
+          "Her portfolio spans personal R&D and production software: OROS, Tallenn, Help na Escolha, and Signa, plus supporting tools like GitHermes and Haffe's Design System.",
+          "Each flagship tackles a different domain: voice & desktop agents in OROS, career pipelines in Tallenn, multi-tenant business intelligence in Help na Escolha, and ERP-connected document signing in Signa.",
+          "Look out for OROS (local AI deck), Tallenn (FastAPI + Django career hub), Help na Escolha (production BI + LangGraph SaaS), and Signa (Tasy ERP signature studio).",
+          "She doesn't build throwaway demos. OROS, Tallenn, Help na Escolha, and Signa were architected with real databases, background workers, AI pipelines, and custom interfaces.",
+          "The main four to explore right below are OROS, Tallenn, Help na Escolha, and Signa, covering local AI, browser automation, commercial BI SaaS, and hospital ERP integration."
+        ]
+      },
+      "pt": {
+        "prompt": "Projetos",
+        "replies": [
+          "Entre os principais sistemas estão o OROS (assistente IA local-first com voz), Tallenn (plataforma de carreira e coleta de vagas), Help na Escolha (SaaS comercial de BI + IA) e Signa (estúdio de assinaturas integrado ao ERP Tasy).",
+          "Quatro destaques lideram o portfólio: OROS para IA local com voz, Tallenn para descoberta automatizada de vagas, Help na Escolha para BI comercial com IA e Signa para assinaturas integradas ao ERP Tasy.",
+          "Cada projeto explora uma arquitetura própria: o OROS orquestra agentes locais no Ollama, o Tallenn coordena coletores com Playwright, o Help na Escolha une BI e IA em produção e o Signa conversa com o ERP Tasy.",
+          "De assistente local por voz (OROS) a SaaS comercial de analytics (Help na Escolha), passando por coleta inteligente de vagas (Tallenn) e fluxo de assinaturas no Tasy (Signa), cada sistema nasce de um problema real.",
+          "Quer ver a amplitude? OROS foca em IA local, Tallenn automatiza a busca por vagas, Help na Escolha entrega BI com agentes de IA e Signa simplifica assinaturas digitais integradas ao ERP Tasy.",
+          "O portfólio combina pesquisa autoral e software em produção: OROS, Tallenn, Help na Escolha e Signa, além de ferramentas como o GitHermes e o Haffe's Design System.",
+          "Cada destaque resolve um domínio diferente: voz e agentes locais no OROS, pipelines de carreira no Tallenn, BI multi-tenant no Help na Escolha e gestão de assinaturas no Signa.",
+          "Vale conferir o OROS (central de IA local), Tallenn (hub de carreira em FastAPI + Django), Help na Escolha (SaaS de BI com LangGraph) e Signa (estúdio de assinaturas para ERP Tasy).",
+          "Nada de demo descartável: OROS, Tallenn, Help na Escolha e Signa foram desenhados com banco de dados real, workers assíncronos, pipelines de IA e interfaces próprias.",
+          "Os quatro carros-chefe logo abaixo são OROS, Tallenn, Help na Escolha e Signa, passando por IA local, automação de navegador, SaaS comercial de BI e integração hospitalar."
+        ]
+      }
+    }
+  },
+  "skills": {
+    "python": {
+      "en": {
+        "prompt": "Tell me about Python",
+        "replies": [
+          "Python is the backbone of almost everything Borges builds, from Django and FastAPI backends to local AI orchestrators, ETL pipelines, and automation workers.",
+          "It is her primary engineering language, powering web APIs, background job queues, RAG indexing scripts, and local voice assistants alike.",
+          "She uses Python across the full backend spectrum: structured MVC apps in Django, high-throughput async services in FastAPI, and custom AI tooling.",
+          "Whether she is parsing hospital ERP data, orchestrating Ollama agents in OROS, or running Playwright scrapers in Tallenn, Python is usually what ties it all together.",
+          "Clean typing, async concurrency, and modular packaging are how she keeps Python codebases maintainable as projects scale past prototypes.",
+          "Python lets her move fast without giving up architecture: she uses it for production SaaS microservices, CLI utilities, and experimental AI pipelines.",
+          "From quick internal automation scripts to multi-service Dockerized platforms, Python is her default tool for turning messy requirements into clear logic.",
+          "In Help na Escolha, Tallenn, OROS, and GitHermes, Python handles the heavy lifting: data normalization, LLM orchestration, database migrations, and worker scheduling.",
+          "She leans into the Python ecosystem deeply, combining Pydantic, SQLAlchemy, Django ORM, asyncio, and LangChain depending on what the system demands.",
+          "Python is where her curiosity turns into shipping code: readable enough to iterate quickly, powerful enough to run real AI and data workloads."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você usa Python?",
+        "replies": [
+          "Python é a base de quase tudo que a Borges constrói, de backends em Django e FastAPI até orquestradores de IA locais, pipelines ETL e workers de automação.",
+          "É a linguagem principal da engenharia dela, sustentando APIs web, filas de tarefas em segundo plano, scripts de indexação RAG e assistentes locais por voz.",
+          "Ela usa Python em todo o espectro de backend: aplicações estruturadas em Django, serviços assíncronos rápidos em FastAPI e ferramentas próprias de IA.",
+          "Seja tratando dados de ERP, orquestrando agentes locais no OROS ou rodando coletores Playwright no Tallenn, Python quase sempre é o fio condutor.",
+          "Tipagem clara, programação assíncrona e organização modular são o jeito que ela mantém projetos Python fáceis de evoluir depois que saem do protótipo.",
+          "Python permite iterar rápido sem abrir mão de arquitetura: ela usa a linguagem em microserviços de SaaS, utilitários de linha de comando e pipelines de IA.",
+          "De scripts internos de automação até plataformas multi-serviço em Docker, Python é a escolha padrão dela para transformar regras confusas em código limpo.",
+          "No Help na Escolha, Tallenn, OROS e GitHermes, Python faz o trabalho pesado: normalização de dados, orquestração de LLMs, migrações e agendamento de workers.",
+          "Ela explora bem o ecossistema moderno da linguagem, combinando Pydantic, SQLAlchemy, Django ORM, asyncio e LangChain conforme a necessidade do sistema.",
+          "Python é onde a curiosidade dela vira software rodando: legível para testar ideias rápido e robusto o suficiente para cargas reais de dados e IA."
+        ]
+      }
+    },
+    "agents": {
+      "en": {
+        "prompt": "How do you build AI Agents?",
+        "replies": [
+          "She builds tool-calling agents with strict safety boundaries: in OROS (local Ollama + OpenJarvis orchestrator with voice and system tools) and in Help na Escolha (LangGraph ReAct agent with ORM-level row security).",
+          "Her agents aren't just chat wrappers; they execute real tools, read structured memory, and respect explicit permission boundaries before touching data.",
+          "In OROS, she designed a local-first agent loop running on Ollama that handles voice input, desktop commands, and persistent learned notes without leaving the machine.",
+          "In Help na Escolha, her LangGraph agent answers business questions by querying multi-tenant BI data through controlled, read-safe ORM tools.",
+          "She treats agent engineering like distributed systems work: deterministic tool schemas, bounded loops, fallback paths, and clear auditability.",
+          "Instead of giving an LLM raw SQL or unrestricted shell access, she designs narrow, validated tools so the agent stays useful without becoming reckless.",
+          "Her agent setups combine reasoning with real context: semantic search over documents, structured database lookups, and short/long-term memory layers.",
+          "She works comfortably with both cloud LLM providers and local open-weights models via Ollama, optimizing prompts and tool definitions for smaller context windows too.",
+          "Observability matters in her agent loops: every tool call, retrieval hit, and state transition is structured so errors can be debugged instead of guessed.",
+          "For her, a good AI agent feels invisible when it works: it picks the right tool, pulls grounded facts, and answers without hallucinating outside its scope."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você cria AI Agents?",
+        "replies": [
+          "Ela projeta agentes com tool-calling e limites claros de segurança: no OROS (orquestrador local Ollama + OpenJarvis com voz e ferramentas do sistema) e no Help na Escolha (agente LangGraph com segurança no nível do ORM).",
+          "Os agentes dela não são só wrappers de chat; eles executam ferramentas reais, consultam memória estruturada e respeitam barreiras explícitas de permissão.",
+          "No OROS, ela desenhou um loop de agente local-first rodando em Ollama que lida com voz, comandos do sistema e memória persistente sem depender da nuvem.",
+          "No Help na Escolha, o agente em LangGraph responde perguntas de negócio consultando dados de BI multi-tenant por meio de ferramentas seguras sobre o ORM.",
+          "Ela encara engenharia de agentes como engenharia de sistemas: schemas rígidos de ferramentas, loops limitados, fallbacks previsíveis e rastreabilidade.",
+          "Em vez de liberar SQL cru ou shell aberto para o modelo, ela cria ferramentas específicas e validadas para o agente ser útil sem perder o controle.",
+          "As arquiteturas dela combinam raciocínio com contexto real: busca semântica em documentos, consultas estruturadas no banco e camadas de memória curta e longa.",
+          "Ela transita bem entre APIs em nuvem e modelos locais via Ollama, ajustando prompts e definições de tools para rodar bem mesmo com janelas menores.",
+          "Observabilidade faz parte do desenho: cada chamada de ferramenta, trecho recuperado e mudança de estado é estruturado para facilitar debug de verdade.",
+          "Para ela, um bom agente de IA parece natural quando acerta: escolhe a ferramenta certa, busca fatos reais e responde sem inventar fora do escopo."
+        ]
+      }
+    },
+    "django": {
+      "en": {
+        "prompt": "Where do you use Django?",
+        "replies": [
+          "Django powers her full-stack systems: Help na Escolha (multi-tenant BI SaaS), OROS (API + web deck), Tallenn (authenticated workspace UI), and NeoGestão (HR platform).",
+          "Whenever a product needs authentication, permissions, relational modeling, and a solid admin layer out of the box, Django is her first pick.",
+          "In Help na Escolha, Django anchors the multi-tenant workspace isolation, user permissions, and dashboards while talking to a dedicated FastAPI AI service.",
+          "She uses Django both as a classic server-rendered web framework and as a structured API backend paired with modern interactive front ends.",
+          "In NeoGestão, Django organized complex HR records, workflows, and role-based access cleanly without reinventing boilerplate.",
+          "Tallenn relies on Django for its authenticated career workspace, keeping user sessions, saved opportunities, and profile state cleanly modeled.",
+          "Even in OROS, Django serves the web control deck and REST endpoints that let the user inspect agent sessions, memories, and tools.",
+          "She appreciates Django's ORM and migrations because they keep database schemas disciplined while letting features ship fast.",
+          "Rather than fighting the framework, she leans into Django's conventions for security, CSRF protection, and modular apps.",
+          "Django is her go-to foundation when an idea needs to become a complete, multi-user web platform with real business rules."
+        ]
+      },
+      "pt": {
+        "prompt": "Onde você usa Django?",
+        "replies": [
+          "Django sustenta seus sistemas full-stack: Help na Escolha (SaaS de BI), OROS (API + interface web), Tallenn (workspace autenticado) e NeoGestão (sistema de RH).",
+          "Sempre que um produto precisa de autenticação, permissões, modelagem relacional forte e base sólida desde o dia um, Django é a primeira escolha dela.",
+          "No Help na Escolha, o Django segura o isolamento multi-tenant, as permissões de usuário e os painéis, conversando com um microserviço FastAPI de IA.",
+          "Ela usa Django tanto para aplicações web renderizadas no servidor quanto como backend de APIs estruturadas integradas a interfaces modernas.",
+          "No NeoGestão, o Django organizou cadastros de RH, fluxos internos e controle de acesso por perfil sem precisar reinventar infraestrutura básica.",
+          "O Tallenn apoia no Django o workspace autenticado de carreira, mantendo sessões, vagas salvas e estado do perfil modelados com clareza.",
+          "Até no OROS, o Django serve o painel web e os endpoints que permitem acompanhar sessões do agente, memórias e ferramentas ativas.",
+          "Ela valoriza o ORM e o sistema de migrações do Django porque mantêm o banco disciplinado sem frear o ritmo de entrega.",
+          "Em vez de brigar com o framework, ela aproveita as convenções do Django para segurança, proteção CSRF e divisão limpa em apps modulares.",
+          "Django é a fundação favorita dela quando uma ideia precisa virar plataforma web completa, multiusuário e com regras de negócio reais."
+        ]
+      }
+    },
+    "fastapi": {
+      "en": {
+        "prompt": "How do you use FastAPI?",
+        "replies": [
+          "Used for high-throughput async services, including the dedicated AI microservice in Help na Escolha and the job collection API plus background worker architecture in Tallenn.",
+          "FastAPI is her weapon of choice for async APIs, streaming AI responses, and lightweight microservices with strict Pydantic contracts.",
+          "In Help na Escolha, separating the AI brain into a FastAPI service keeps heavy LLM calls decoupled from the main Django web app.",
+          "In Tallenn, FastAPI coordinates scraping jobs, exposes clean REST endpoints, and dispatches asynchronous browser workers without blocking requests.",
+          "She loves combining FastAPI with Pydantic v2 so every request payload, tool response, and internal event is validated before hitting business logic.",
+          "Automatic OpenAPI docs and native async/await make FastAPI ideal for services that talk to LLMs, queues, and external APIs concurrently.",
+          "When latency and concurrency matter more than full-stack batteries, she spins up a focused FastAPI service and connects it cleanly over HTTP.",
+          "She structures FastAPI projects with clear routers, dependency injection, lifespan hooks, and health endpoints ready for Docker Compose.",
+          "Pairing FastAPI for async AI/worker pipelines with Django for core product workflows has become one of her favorite hybrid architectures.",
+          "FastAPI gives her the speed and clarity needed for modern Python backends that handle streaming, background tasks, and structured JSON at scale."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você usa FastAPI?",
+        "replies": [
+          "Usado em serviços assíncronos de alta performance, incluindo o microserviço dedicado de IA no Help na Escolha e a API de coleta com fila de workers no Tallenn.",
+          "FastAPI é a escolha dela para APIs assíncronas, streaming de respostas de IA e microserviços enxutos com contratos rígidos em Pydantic.",
+          "No Help na Escolha, isolar o cérebro de IA em um serviço FastAPI mantém chamadas pesadas de LLM desacopladas da aplicação principal em Django.",
+          "No Tallenn, o FastAPI coordena tarefas de coleta, expõe endpoints REST limpos e dispara workers assíncronos de navegador sem travar requisições.",
+          "Ela combina FastAPI com Pydantic v2 para garantir que cada payload, retorno de ferramenta e evento interno seja validado antes da regra de negócio.",
+          "Documentação OpenAPI automática e async/await nativo tornam o FastAPI ideal para serviços que falam em paralelo com LLMs, filas e APIs externas.",
+          "Quando concorrência e baixa latência pesam mais que baterias full-stack, ela sobe um serviço focado em FastAPI e integra via HTTP de forma limpa.",
+          "Ela organiza projetos FastAPI com routers bem divididos, injeção de dependências, hooks de lifespan e rotas de health check prontas para Docker.",
+          "Unir FastAPI para pipelines assíncronos de IA e workers com Django para o núcleo do produto virou uma das arquiteturas híbridas favoritas dela.",
+          "FastAPI entrega a velocidade e clareza que ela precisa em backends Python modernos com streaming, tarefas em background e contratos bem definidos."
+        ]
+      }
+    },
+    "langchain": {
+      "en": {
+        "prompt": "What about LangChain?",
+        "replies": [
+          "Applied together with LangGraph for structured tool-calling workflows, retrieval chains, and semantic context management across projects like Help na Escolha and GitHermes.",
+          "She uses LangChain and LangGraph where stateful agent graphs shine: routing user intent, calling validated tools, and controlling retry loops.",
+          "In Help na Escolha, LangGraph manages the multi-step reasoning flow that translates business questions into grounded analytical answers.",
+          "Rather than hiding everything behind magic chains, she uses LangChain's structured primitives alongside explicit Python state graphs for predictability.",
+          "She relies on LangChain for model-agnostic abstractions, making it easy to switch or benchmark different LLM providers without rewriting app logic.",
+          "Combined with vector stores and document splitters, LangChain helps her wire ingestion-to-retrieval pipelines cleanly in projects like GitHermes.",
+          "She pairs LangChain tool definitions with Pydantic schemas so the LLM receives unambiguous parameter contracts every time it calls a function.",
+          "LangGraph lets her model branching conversations, memory persistence, and guardrails explicitly instead of cramming everything into one giant prompt.",
+          "Her approach to LangChain is pragmatic: use the orchestration and graph state tools where they save real complexity, and keep core logic pure Python.",
+          "Across commercial BI assistants and developer tools, LangChain and LangGraph are how she structures repeatable, multi-step AI workflows."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você usa LangChain?",
+        "replies": [
+          "Aplicado junto com LangGraph para fluxos estruturados de tool-calling, cadeias de recuperação e gestão de contexto semântico em projetos como Help na Escolha e GitHermes.",
+          "Ela usa LangChain e LangGraph onde grafos de estado realmente brilham: roteamento de intenção, chamada de ferramentas validadas e controle de tentativas.",
+          "No Help na Escolha, o LangGraph coordena o raciocínio em múltiplas etapas que transforma perguntas de negócio em respostas analíticas confiáveis.",
+          "Em vez de esconder tudo em cadeias mágicas, ela usa os blocos do LangChain junto com grafos de estado explícitos em Python para manter previsibilidade.",
+          "Ela aproveita o LangChain para manter abstração entre modelos, facilitando testar ou trocar provedores de LLM sem reescrever a lógica do produto.",
+          "Combinado com bancos vetoriais e chunking de documentos, o LangChain ajuda a conectar ingestão e recuperação de contexto em projetos como o GitHermes.",
+          "Ela define ferramentas do LangChain com schemas Pydantic para o modelo receber contratos claros de parâmetros em toda chamada de função.",
+          "O LangGraph permite modelar ramificações, persistência de memória e guardrails de forma clara, sem jogar toda a lógica num prompt gigante.",
+          "A abordagem dela com LangChain é pragmática: usar orquestração e grafos onde eles reduzem complexidade real, mantendo o núcleo em Python limpo.",
+          "Entre assistentes comerciais de BI e ferramentas para devs, LangChain e LangGraph estruturam os fluxos de IA multi-etapa que ela constrói."
+        ]
+      }
+    },
+    "rag": {
+      "en": {
+        "prompt": "How do you implement RAG?",
+        "replies": [
+          "From hybrid crawlers (GitHermes) and ChromaDB vector memory (Help na Escolha) to zero-dependency SQLite FTS5 plus Markdown learned memory running locally in OROS.",
+          "She adapts the retrieval layer to the problem: vector embeddings in ChromaDB when semantic similarity rules, or fast SQLite FTS5 full-text search when staying local-first.",
+          "Good RAG starts before the LLM ever runs. She focuses heavily on clean extraction, thoughtful chunking, and metadata filtering so retrieval stays sharp.",
+          "In GitHermes, she built a hybrid crawler that turns live documentation sites and repositories into clean, structured knowledge ready for LLM context.",
+          "In OROS, her local memory system pairs Markdown notes with SQLite FTS5 indexing, giving the voice assistant instant recall with zero external vector infrastructure.",
+          "In Help na Escolha, ChromaDB backs semantic retrieval so the assistant surfaces relevant business knowledge alongside live relational metrics.",
+          "She avoids stuffing huge noisy chunks into prompts; instead, she ranks concise snippets with clear source attribution to cut down hallucinations.",
+          "Her RAG pipelines respect boundaries: tenant-scoped filtering in multi-user apps ensures one workspace never leaks context into another.",
+          "She treats RAG as an iterative data engineering loop, tuning chunk overlap, query rewriting, and hybrid keyword + semantic scoring.",
+          "Whether fully offline on a laptop or running inside a Dockerized SaaS, her RAG setups prioritize grounded answers over flashy demos."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você implementa RAG?",
+        "replies": [
+          "Desde crawlers híbridos (GitHermes) e memória vetorial com ChromaDB (Help na Escolha) até memória local em SQLite FTS5 com Markdown rodando no OROS.",
+          "Ela adapta a camada de busca ao cenário: embeddings vetoriais no ChromaDB quando semântica manda, ou SQLite FTS5 ultrarrápido quando o foco é rodar local.",
+          "Um bom RAG começa antes do LLM entrar em cena. Ela dá atenção pesada à limpeza de texto, estratégia de chunking e filtros de metadados.",
+          "No GitHermes, ela criou um crawler híbrido que transforma documentações web e repositórios em conhecimento limpo e pronto para contexto de IA.",
+          "No OROS, a memória local combina arquivos Markdown com índice SQLite FTS5, dando lembrança instantânea ao assistente sem precisar de infraestrutura externa.",
+          "No Help na Escolha, o ChromaDB sustenta a recuperação semântica para o assistente cruzar conhecimento do negócio com métricas reais do banco.",
+          "Ela evita entupir o prompt com blocos gigantes cheios de ruído; prefere trechos curtos bem ranqueados e rastreáveis para reduzir alucinações.",
+          "Os pipelines RAG dela respeitam isolamento: filtros por workspace em apps multiusuário garantem que o contexto de um cliente nunca vaze para outro.",
+          "Ela trata RAG como engenharia de dados iterativa, calibrando tamanho de chunk, reescrita de consulta e combinação de busca lexical com semântica.",
+          "Seja 100% offline num notebook ou em produção num SaaS em Docker, os sistemas RAG dela priorizam respostas ancoradas em fatos reais."
+        ]
+      }
+    },
+    "playwright": {
+      "en": {
+        "prompt": "Where do you use Playwright?",
+        "replies": [
+          "Powers real-browser automation and testing: dynamic doc crawling in GitHermes, career-portal scraping with Browser-use Actor in Tallenn, and responsive UI regression tests.",
+          "Whenever static HTTP requests hit JavaScript-heavy pages, she brings in Playwright to drive a real browser cleanly and reliably.",
+          "In Tallenn, Playwright works under Browser-use Actor to navigate real career portals and collect structured job openings automatically.",
+          "In GitHermes, Playwright renders dynamic documentation sites that plain scrapers miss, feeding complete pages into her Markdown and RAG pipeline.",
+          "She also uses Playwright as a visual and responsive QA guardrail, verifying layouts across desktop and mobile viewports automatically.",
+          "Waiting for real DOM states instead of fragile sleeps is how she keeps her Playwright scripts fast and resilient against flaky pages.",
+          "Running headless Chromium inside Docker containers lets her schedule Playwright workers reliably in background queues.",
+          "She pairs Playwright with clean extraction heuristics so scraped pages turn into normalized data instead of brittle raw HTML.",
+          "From end-to-end UI checks to intelligent web agents, Playwright bridges her Python backend with the live browser world.",
+          "Playwright turns tedious manual web workflows into repeatable, observable Python automation across her projects."
+        ]
+      },
+      "pt": {
+        "prompt": "Onde você usa Playwright?",
+        "replies": [
+          "Move automações e testes em navegador real: coleta de documentações dinâmicas no GitHermes, scraping de portais de vagas com Browser-use no Tallenn e testes responsivos de interface.",
+          "Sempre que requisições HTTP simples barram em páginas cheias de JavaScript, ela usa Playwright para controlar um navegador real com estabilidade.",
+          "No Tallenn, o Playwright trabalha junto ao Browser-use Actor para navegar portais de carreira reais e estruturar vagas automaticamente.",
+          "No GitHermes, o Playwright renderiza documentações dinâmicas que scrapers comuns não enxergam, alimentando o pipeline de Markdown e RAG.",
+          "Ela também usa Playwright como rede de segurança visual e responsiva, validando layouts em telas desktop e mobile de forma automatizada.",
+          "Esperar estados reais do DOM em vez de sleeps frágeis é o que mantém os scripts Playwright dela rápidos e resistentes a páginas instáveis.",
+          "Rodar Chromium headless dentro de containers Docker permite agendar workers Playwright com segurança em filas de background.",
+          "Ela combina Playwright com heurísticas limpas de extração para transformar páginas coletadas em dados padronizados em vez de HTML bagunçado.",
+          "De testes ponta a ponta de interface até agentes web inteligentes, o Playwright conecta o backend Python dela ao navegador real.",
+          "Com Playwright, fluxos manuais repetitivos na web viram automações Python reproduzíveis e fáceis de monitorar nos projetos dela."
+        ]
+      }
+    },
+    "postgresql": {
+      "en": {
+        "prompt": "How do you use PostgreSQL?",
+        "replies": [
+          "Production relational database behind Help na Escolha and Tallenn, handling multi-tenant workspaces, concurrent job queues, Alembic/Django migrations, and analytical views.",
+          "PostgreSQL is her default relational store whenever data integrity, indexing, and complex queries matter.",
+          "In Help na Escolha, PostgreSQL backs multi-tenant BI data with strict workspace scoping and analytical views tuned for fast dashboard queries.",
+          "In Tallenn, it persists collected jobs, user profiles, and concurrent worker state safely without race-condition headaches.",
+          "She treats schema evolution seriously, managing clean migrations through Django Migrations and Alembic depending on the service.",
+          "From proper foreign keys and composite indexes to JSONB columns when flexibility helps, she uses PostgreSQL features pragmatically.",
+          "Pairing PostgreSQL with Docker health checks ensures her apps wait for a ready database before booting workers or web processes.",
+          "When building AI tools over business data, having clean relational modeling in PostgreSQL makes agent queries dramatically more accurate.",
+          "She prefers pushing aggregations and filtering down to SQL and indexed views instead of loading bloated tables into Python memory.",
+          "Reliable transactions, solid concurrency, and expressive SQL make PostgreSQL the quiet backbone of her production stacks."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você usa PostgreSQL?",
+        "replies": [
+          "Banco relacional de produção no Help na Escolha e no Tallenn, com isolamento por workspace, filas concorrentes, migrações Alembic/Django e views analíticas.",
+          "PostgreSQL é o banco relacional padrão dela sempre que integridade dos dados, índices bem pensados e consultas ricas fazem diferença.",
+          "No Help na Escolha, o PostgreSQL sustenta dados de BI multi-tenant com isolamento rigoroso por workspace e views analíticas rápidas para os painéis.",
+          "No Tallenn, ele persiste vagas coletadas, perfis de usuário e estado de workers concorrentes com segurança e consistência.",
+          "Ela leva evolução de schema a sério, controlando migrações limpas via Django Migrations ou Alembic conforme o serviço.",
+          "De chaves estrangeiras e índices compostos até colunas JSONB quando faz sentido, ela aproveita os recursos do PostgreSQL de forma pragmática.",
+          "Combinar PostgreSQL com health checks no Docker garante que a aplicação só suba workers e APIs quando o banco estiver realmente pronto.",
+          "Na hora de criar agentes de IA sobre dados de negócio, uma modelagem relacional limpa no PostgreSQL deixa as respostas muito mais precisas.",
+          "Ela prefere empurrar agregações e filtros para o SQL e views indexadas em vez de carregar tabelas enormes na memória do Python.",
+          "Transações confiáveis, boa concorrência e SQL expressivo fazem do PostgreSQL a base silenciosa das arquiteturas de produção dela."
+        ]
+      }
+    },
+    "docker": {
+      "en": {
+        "prompt": "How do you use Docker?",
+        "replies": [
+          "Containerizes multi-service stacks with Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers, and Nginx) with health checks for reliable deployment.",
+          "Docker is how she guarantees that a stack with web servers, AI services, queues, and databases boots identically on dev and production.",
+          "Her Docker Compose setups wire Django, FastAPI, PostgreSQL, Redis, and background workers into one reproducible command.",
+          "She adds health checks and clean dependency ordering so databases and brokers are genuinely ready before app containers start.",
+          "Isolating Playwright browsers, Python dependencies, and system libraries inside containers eliminates the classic 'works on my machine' drift.",
+          "She keeps Dockerfiles lean with layered caching and explicit environment configs, separating secrets cleanly into env files.",
+          "Putting Nginx in front of container networks lets her route web apps, static assets, and internal APIs cleanly in production.",
+          "Multi-container orchestration makes it easy for her to split monoliths from specialized services, like keeping AI inference isolated from web requests.",
+          "Even during local development, Docker Compose lets her spin up full realistic stacks with PostgreSQL and Redis in seconds.",
+          "Docker turns complex Python + AI architectures into predictable, portable deployments that any teammate can run cleanly."
+        ]
+      },
+      "pt": {
+        "prompt": "Como você usa Docker?",
+        "replies": [
+          "Containeriza stacks multi-serviço com Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers e Nginx) com health checks para deploy reproduzível.",
+          "Docker é o jeito que ela garante que uma stack com servidores web, IA, filas e banco suba do mesmo jeito em dev e em produção.",
+          "Os arquivos Docker Compose dela conectam Django, FastAPI, PostgreSQL, Redis e workers de background em um único comando reproduzível.",
+          "Ela configura health checks e ordem de inicialização para bancos e filas ficarem realmente prontos antes dos containers da aplicação subirem.",
+          "Isolar navegadores do Playwright, pacotes Python e bibliotecas de sistema em containers acaba com o clássico 'na minha máquina funciona'.",
+          "Ela mantém Dockerfiles enxutos com cache bem aproveitado e variáveis de ambiente organizadas, separando segredos fora da imagem.",
+          "Colocar Nginx na frente da rede de containers permite rotear aplicações web, arquivos estáticos e APIs internas com clareza em produção.",
+          "A arquitetura multi-container facilita separar responsabilidades, como manter o serviço de IA isolado das requisições web principais.",
+          "Mesmo no desenvolvimento local, o Docker Compose deixa ela subir stacks completas com PostgreSQL e Redis em segundos.",
+          "Docker transforma arquiteturas complexas de Python e IA em entregas portáveis e previsíveis que qualquer pessoa consegue rodar."
+        ]
+      }
+    },
+    "gsap": {
+      "en": {
+        "prompt": "Why GSAP?",
+        "replies": [
+          "For motion that feels physical instead of generic: ScrollTrigger choreography, Draggable physics (like the words you're playing with right now!), and animated SVG scenes in Tallenn and Haffe's Design System.",
+          "She uses GSAP when CSS transitions aren't enough, crafting responsive timelines, scroll-linked motion, and tactile drag interactions.",
+          "Right here in this portfolio, GSAP drives the expanding language wave, the hero parallax, and the physics arena of floating skills beside this phone.",
+          "In Tallenn and Haffe's Design System, she used GSAP to bring custom SVG scenes and interactive components to life without sluggish frames.",
+          "She treats animation as feedback, not decoration: smooth inertia, snappy easing curves, and respect for reduced-motion preferences.",
+          "GSAP's ticker and quickSetter let her run 60 to 144Hz physics loops cleanly while staying synced with Draggable bounds.",
+          "ScrollTrigger gives her fine control over pacing so sections reveal naturally as the reader scrolls instead of flashing all at once.",
+          "Pairing strong backend skills with GSAP motion lets her ship personal projects that feel crafted down to the micro-interactions.",
+          "She favors crisp, deliberate timing like expo curves and spring-like easing over bouncy, noisy animations.",
+          "GSAP is how she bridges engineering and visual craft, turning static layouts into interfaces that react to every scroll, hover, and throw."
+        ]
+      },
+      "pt": {
+        "prompt": "Por que GSAP?",
+        "replies": [
+          "Para criar movimento com sensação física de verdade: coreografias com ScrollTrigger, física com Draggable (como essas palavras ao lado!) e cenas SVG animadas no Tallenn e no Haffe's Design System.",
+          "Ela recorre ao GSAP quando transições CSS simples não bastam, criando timelines precisas, movimento ligado ao scroll e interações táteis de arrasto.",
+          "Aqui mesmo neste portfólio, o GSAP comanda a bolha de troca de idioma, o parallax da home e a arena física das palavras flutuantes ao lado deste celular.",
+          "No Tallenn e no Haffe's Design System, ela usou GSAP para dar vida a cenas SVG personalizadas e componentes interativos sem engasgos.",
+          "Ela trata animação como resposta tátil, não enfeite: inércia suave, curvas bem escolhidas e respeito à preferência de movimento reduzido.",
+          "O ticker e o quickSetter do GSAP permitem rodar física fluida de 60 a 144Hz mantendo tudo sincronizado com o Draggable.",
+          "O ScrollTrigger dá controle fino de ritmo para cada seção aparecer no tempo certo durante a leitura, sem poluição visual.",
+          "Somar base forte de backend com domínio de GSAP permite entregar projetos autorais cuidados até nas microinterações.",
+          "Ela prefere curvas limpas e precisas como expo e desacelerações naturais em vez de efeitos exagerados ou barulhentos.",
+          "GSAP é a ponte dela entre engenharia e cuidado visual, transformando páginas estáticas em interfaces que reagem a cada scroll, clique e arremesso."
+        ]
+      }
+    }
+  }
+}

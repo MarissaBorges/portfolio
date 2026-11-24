@@ -71,184 +71,137 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  const CHAT_TOPICS = {
-    experiences: {
-      highlight: ["python", "django", "postgresql", "docker"],
-      en: {
-        prompt: "Experiences",
-        reply:
-          "Borges worked as an apprentice at HPE, later as an apprentice at São Nicolau Hospital, and grew into an IT Technician role — building internal software, automations, and ERP integrations.",
+  // Compact fallback used only if ./data/chat-responses.json cannot be fetched (e.g. file://)
+  const FALLBACK_CHAT_DATASET = {
+    topics: {
+      experiences: {
+        highlight: ["python", "django", "postgresql", "docker"],
+        en: {
+          prompt: "Experiences",
+          replies: [
+            "Borges started as an apprentice at HPE, moved to São Nicolau Hospital as an apprentice, and grew into an IT Technician role building internal software, automations, and ERP integrations.",
+          ],
+        },
+        pt: {
+          prompt: "Experiências",
+          replies: [
+            "Borges começou como aprendiz na HPE, passou a aprendiz no Hospital São Nicolau e evoluiu para Técnica em TI desenvolvendo sistemas internos, automações e integrações com ERP.",
+          ],
+        },
       },
-      pt: {
-        prompt: "Experiências",
-        reply:
-          "Borges atuou como aprendiz na HPE, depois como aprendiz no Hospital São Nicolau e evoluiu para Técnica em TI — desenvolvendo sistemas internos, automações e integrações com ERP.",
+      about: {
+        highlight: ["python", "agents", "gsap"],
+        en: {
+          prompt: "About",
+          replies: [
+            "Systems Analysis and Development student driven by curiosity. She likes opening the black box, understanding systems end to end, and turning ideas into real software.",
+          ],
+        },
+        pt: {
+          prompt: "Sobre",
+          replies: [
+            "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade. Gosta de abrir a caixa-preta, entender sistemas de ponta a ponta e transformar ideias em software real.",
+          ],
+        },
+      },
+      stack: {
+        highlight: ["python", "django", "fastapi", "langchain", "rag", "playwright", "postgresql", "docker"],
+        en: {
+          prompt: "Stack",
+          replies: [
+            "Core stack: Python, Django, FastAPI, LangChain/LangGraph, RAG pipelines, Playwright browser automation, PostgreSQL, Docker, and GSAP for interactive interfaces.",
+          ],
+        },
+        pt: {
+          prompt: "Stack",
+          replies: [
+            "Stack principal: Python, Django, FastAPI, LangChain/LangGraph, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP para interfaces interativas.",
+          ],
+        },
+      },
+      projects: {
+        highlight: ["agents", "rag", "django", "fastapi", "playwright"],
+        cta: "#Projects",
+        en: {
+          prompt: "Projects",
+          replies: [
+            "Her flagship systems include OROS (local-first AI voice assistant), Tallenn (career & job collection platform), Help na Escolha (commercial BI + AI SaaS), and Signa (signature studio integrated with Tasy ERP).",
+          ],
+        },
+        pt: {
+          prompt: "Projetos",
+          replies: [
+            "Entre os principais sistemas estão o OROS (assistente IA local-first com voz), Tallenn (plataforma de carreira e coleta de vagas), Help na Escolha (SaaS comercial de BI + IA) e Signa (estúdio de assinaturas integrado ao ERP Tasy).",
+          ],
+        },
       },
     },
-    about: {
-      highlight: ["python", "agents", "gsap"],
-      en: {
-        prompt: "About",
-        reply:
-          "Systems Analysis and Development student driven by curiosity. She likes opening the black box, understanding systems end to end, and turning ideas into real software.",
+    skills: {
+      python: {
+        en: { prompt: "Tell me about Python", replies: ["Python is the backbone of almost everything Borges builds, from Django and FastAPI backends to local AI orchestrators and automation workers."] },
+        pt: { prompt: "Como você usa Python?", replies: ["Python é a base de quase tudo que a Borges constrói, de backends em Django e FastAPI até orquestradores de IA locais e workers de automação."] },
       },
-      pt: {
-        prompt: "Sobre",
-        reply:
-          "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade. Gosta de abrir a caixa-preta, entender sistemas de ponta a ponta e transformar ideias em software real.",
+      agents: {
+        en: { prompt: "How do you build AI Agents?", replies: ["She builds tool-calling agents with strict safety boundaries in OROS (local Ollama + OpenJarvis) and Help na Escolha (LangGraph ReAct agent)."] },
+        pt: { prompt: "Como você cria AI Agents?", replies: ["Ela projeta agentes com tool-calling e limites claros de segurança no OROS (Ollama local + OpenJarvis) e no Help na Escolha (LangGraph)."] },
       },
-    },
-    stack: {
-      highlight: ["python", "django", "fastapi", "langchain", "rag", "playwright", "postgresql", "docker"],
-      en: {
-        prompt: "Stack",
-        reply:
-          "Core stack: Python, Django, FastAPI, LangChain/LangGraph, RAG pipelines, Playwright browser automation, PostgreSQL, Docker, and GSAP for interactive interfaces.",
+      django: {
+        en: { prompt: "Where do you use Django?", replies: ["Django powers her full-stack systems: Help na Escolha, OROS, Tallenn, and NeoGestão."] },
+        pt: { prompt: "Onde você usa Django?", replies: ["Django sustenta seus sistemas full-stack: Help na Escolha, OROS, Tallenn e NeoGestão."] },
       },
-      pt: {
-        prompt: "Stack",
-        reply:
-          "Stack principal: Python, Django, FastAPI, LangChain/LangGraph, pipelines RAG, automação com Playwright, PostgreSQL, Docker e GSAP para interfaces interativas.",
+      fastapi: {
+        en: { prompt: "How do you use FastAPI?", replies: ["Used for high-throughput async services, including the AI microservice in Help na Escolha and the job collection API in Tallenn."] },
+        pt: { prompt: "Como você usa FastAPI?", replies: ["Usado em serviços assíncronos de alta performance, incluindo o microserviço de IA no Help na Escolha e a API de coleta no Tallenn."] },
       },
-    },
-    projects: {
-      highlight: ["agents", "rag", "django", "fastapi", "playwright"],
-      cta: "#Projects",
-      en: {
-        prompt: "Projects",
-        reply:
-          "Her flagship systems include OROS (local-first AI voice assistant), Tallenn (career & job collection platform), Help na Escolha (commercial BI + AI SaaS), and Signa (signature studio integrated with Tasy ERP).",
+      langchain: {
+        en: { prompt: "What about LangChain?", replies: ["Applied together with LangGraph for structured tool-calling workflows and retrieval chains in Help na Escolha and GitHermes."] },
+        pt: { prompt: "Como você usa LangChain?", replies: ["Aplicado junto com LangGraph para fluxos estruturados de tool-calling e cadeias de recuperação no Help na Escolha e no GitHermes."] },
       },
-      pt: {
-        prompt: "Projetos",
-        reply:
-          "Entre os principais sistemas estão o OROS (assistente IA local-first com voz), Tallenn (plataforma de carreira e coleta de vagas), Help na Escolha (SaaS comercial de BI + IA) e Signa (estúdio de assinaturas integrado ao ERP Tasy).",
+      rag: {
+        en: { prompt: "How do you implement RAG?", replies: ["From hybrid crawlers (GitHermes) and ChromaDB vector memory (Help na Escolha) to SQLite FTS5 + Markdown local memory in OROS."] },
+        pt: { prompt: "Como você implementa RAG?", replies: ["Desde crawlers híbridos (GitHermes) e ChromaDB (Help na Escolha) até memória local em SQLite FTS5 + Markdown no OROS."] },
+      },
+      playwright: {
+        en: { prompt: "Where do you use Playwright?", replies: ["Powers real-browser automation and testing: dynamic doc crawling in GitHermes, career-portal scraping in Tallenn, and UI regression checks."] },
+        pt: { prompt: "Onde você usa Playwright?", replies: ["Move automações e testes em navegador real: coleta de documentações no GitHermes, scraping de portais de vagas no Tallenn e testes de interface."] },
+      },
+      postgresql: {
+        en: { prompt: "How do you use PostgreSQL?", replies: ["Production relational database behind Help na Escolha and Tallenn, handling multi-tenant workspaces, concurrent queues, and analytical views."] },
+        pt: { prompt: "Como você usa PostgreSQL?", replies: ["Banco relacional de produção no Help na Escolha e no Tallenn, com isolamento por workspace, filas concorrentes e views analíticas."] },
+      },
+      docker: {
+        en: { prompt: "How do you use Docker?", replies: ["Containerizes multi-service stacks with Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers, and Nginx) with health checks."] },
+        pt: { prompt: "Como você usa Docker?", replies: ["Containeriza stacks multi-serviço com Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers e Nginx) com health checks."] },
+      },
+      gsap: {
+        en: { prompt: "Why GSAP?", replies: ["For motion that feels physical: ScrollTrigger choreography, Draggable physics, and animated SVG scenes in Tallenn and Haffe's Design System."] },
+        pt: { prompt: "Por que GSAP?", replies: ["Para criar movimento com sensação física: ScrollTrigger, física com Draggable e cenas SVG animadas no Tallenn e no Haffe's Design System."] },
       },
     },
   };
 
-  const SKILL_RESPONSES = {
-    python: {
-      en: {
-        prompt: "Tell me about Python",
-        reply:
-          "Python is the backbone of almost everything Borges builds — from Django and FastAPI backends to local AI orchestrators, ETL pipelines, and automation workers.",
-      },
-      pt: {
-        prompt: "Como você usa Python?",
-        reply:
-          "Python é a base de quase tudo que a Borges constrói — de backends em Django e FastAPI até orquestradores de IA locais, pipelines ETL e workers de automação.",
-      },
-    },
-    agents: {
-      en: {
-        prompt: "How do you build AI Agents?",
-        reply:
-          "She builds tool-calling agents with strict safety boundaries: in OROS (local Ollama + OpenJarvis orchestrator with voice and system tools) and in Help na Escolha (LangGraph ReAct agent with ORM-level row security).",
-      },
-      pt: {
-        prompt: "Como você cria AI Agents?",
-        reply:
-          "Ela projeta agentes com tool-calling e limites claros de segurança: no OROS (orquestrador local Ollama + OpenJarvis com voz e ferramentas do sistema) e no Help na Escolha (agente LangGraph com segurança no nível do ORM).",
-      },
-    },
-    django: {
-      en: {
-        prompt: "Where do you use Django?",
-        reply:
-          "Django powers her full-stack systems: Help na Escolha (multi-tenant BI SaaS), OROS (API + web deck), Tallenn (authenticated workspace UI), and NeoGestão (HR platform).",
-      },
-      pt: {
-        prompt: "Onde você usa Django?",
-        reply:
-          "Django sustenta seus sistemas full-stack: Help na Escolha (SaaS de BI), OROS (API + interface web), Tallenn (workspace autenticado) e NeoGestão (sistema de RH).",
-      },
-    },
-    fastapi: {
-      en: {
-        prompt: "How do you use FastAPI?",
-        reply:
-          "Used for high-throughput async services — including the dedicated AI microservice in Help na Escolha and the job collection API + background worker architecture in Tallenn.",
-      },
-      pt: {
-        prompt: "Como você usa FastAPI?",
-        reply:
-          "Usado em serviços assíncronos de alta performance — incluindo o microserviço dedicado de IA no Help na Escolha e a API de coleta + fila de workers no Tallenn.",
-      },
-    },
-    langchain: {
-      en: {
-        prompt: "What about LangChain?",
-        reply:
-          "Applied together with LangGraph for structured tool-calling workflows, retrieval chains, and semantic context management across projects like Help na Escolha and GitHermes.",
-      },
-      pt: {
-        prompt: "Como você usa LangChain?",
-        reply:
-          "Aplicado junto com LangGraph para fluxos estruturados de tool-calling, cadeias de recuperação e gestão de contexto semântico em projetos como Help na Escolha e GitHermes.",
-      },
-    },
-    rag: {
-      en: {
-        prompt: "How do you implement RAG?",
-        reply:
-          "From hybrid crawlers (GitHermes) and ChromaDB vector memory (Help na Escolha) to zero-dependency SQLite FTS5 + Markdown learned memory running locally in OROS.",
-      },
-      pt: {
-        prompt: "Como você implementa RAG?",
-        reply:
-          "Desde crawlers híbridos (GitHermes) e memória vetorial com ChromaDB (Help na Escolha) até memória local de aprendizado em SQLite FTS5 + Markdown rodando no OROS.",
-      },
-    },
-    playwright: {
-      en: {
-        prompt: "Where do you use Playwright?",
-        reply:
-          "Powers real-browser automation and testing: dynamic doc crawling in GitHermes, career-portal scraping with Browser-use Actor in Tallenn, and responsive UI regression tests.",
-      },
-      pt: {
-        prompt: "Onde você usa Playwright?",
-        reply:
-          "Move automações e testes em navegador real: coleta de documentações dinâmicas no GitHermes, scraping de portais de vagas com Browser-use no Tallenn e testes responsivos de interface.",
-      },
-    },
-    postgresql: {
-      en: {
-        prompt: "How do you use PostgreSQL?",
-        reply:
-          "Production relational database behind Help na Escolha and Tallenn — handling multi-tenant workspaces, concurrent job queues, Alembic/Django migrations, and analytical views.",
-      },
-      pt: {
-        prompt: "Como você usa PostgreSQL?",
-        reply:
-          "Banco relacional de produção no Help na Escolha e no Tallenn — com isolamento por workspace, filas concorrentes, migrações Alembic/Django e views analíticas.",
-      },
-    },
-    docker: {
-      en: {
-        prompt: "How do you use Docker?",
-        reply:
-          "Containerizes multi-service stacks with Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers, and Nginx) with health checks for reliable deployment.",
-      },
-      pt: {
-        prompt: "Como você usa Docker?",
-        reply:
-          "Containeriza stacks multi-serviço com Docker Compose (Django, FastAPI, PostgreSQL, Redis, workers e Nginx) com health checks para deploy reproduzível.",
-      },
-    },
-    gsap: {
-      en: {
-        prompt: "Why GSAP?",
-        reply:
-          "For motion that feels physical instead of generic: ScrollTrigger choreography, Draggable physics (like the words you're playing with right now!), and animated SVG scenes in Tallenn and Haffe's Design System.",
-      },
-      pt: {
-        prompt: "Por que GSAP?",
-        reply:
-          "Para criar movimento com sensação física de verdade: coreografias com ScrollTrigger, física com Draggable (como essas palavras ao lado!) e cenas SVG animadas no Tallenn e no Haffe's Design System.",
-      },
-    },
-  };
+  let chatDataset = null;
+  const chatDataReady = fetch("./data/chat-responses.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((json) => {
+      if (json && json.topics && json.skills) {
+        chatDataset = json;
+      } else {
+        chatDataset = FALLBACK_CHAT_DATASET;
+      }
+    })
+    .catch(() => {
+      chatDataset = FALLBACK_CHAT_DATASET;
+    });
+
+  function getChatSource(kind, key) {
+    const data = chatDataset || FALLBACK_CHAT_DATASET;
+    const bucket = kind === "skill" ? data.skills : data.topics;
+    return bucket ? bucket[key] || null : null;
+  }
 
   let currentLang = "en";
   try {
@@ -1439,7 +1392,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // 7. ABOUT CHAT INTERACTION (BIDIRECTIONAL + LIVE I18N)
+  // 7. ABOUT CHAT INTERACTION (JSON RESPONSES + TOKEN STREAM)
   // =========================================================
   const chatInterface = document.getElementById("chatInterface");
   const chatOptions = document.getElementById("chatOptions");
@@ -1447,31 +1400,119 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatResetBtn = document.getElementById("chatResetBtn");
   const chatBtns = document.querySelectorAll(".chat-btn");
   let pendingReplyTimer = null;
+  let activeStream = null;
+  let interactionSeq = 0;
 
-  function renderBubbleContent(msgDiv, text, ctaTarget = null) {
+  // Non-repeating shuffle bag per (kind:key) so consecutive clicks vary naturally
+  const replyDecks = new Map();
+  const lastVariantByKey = new Map();
+
+  function pickVariantIndex(kind, key, count) {
+    if (count <= 1) return 0;
+    const deckKey = `${kind}:${key}`;
+    let deck = replyDecks.get(deckKey);
+
+    if (!deck || deck.length === 0) {
+      deck = Array.from({ length: count }, (_, idx) => idx);
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+      const prev = lastVariantByKey.get(deckKey);
+      if (prev !== undefined && deck[deck.length - 1] === prev) {
+        const swapIdx = Math.floor(Math.random() * (deck.length - 1));
+        [deck[deck.length - 1], deck[swapIdx]] = [
+          deck[swapIdx],
+          deck[deck.length - 1],
+        ];
+      }
+      replyDecks.set(deckKey, deck);
+    }
+
+    const picked = deck.pop();
+    lastVariantByKey.set(deckKey, picked);
+    return picked;
+  }
+
+  function getReplyText(source, lang, variantIdx) {
+    const localized = source[lang];
+    if (!localized) return "";
+    const list = Array.isArray(localized.replies) ? localized.replies : [];
+    if (list.length === 0) return "";
+    return list[variantIdx % list.length];
+  }
+
+  // Split text into BPE-like subword / word tokens for realistic LLM streaming
+  function tokenizeForStream(text) {
+    const rawWords = text.match(/\S+\s*/g) || [text];
+    const tokens = [];
+
+    for (let i = 0; i < rawWords.length; i++) {
+      const chunk = rawWords[i];
+      const core = chunk.trimEnd();
+      const trailing = chunk.slice(core.length);
+
+      if (core.length >= 9 && !core.includes("://")) {
+        const cut = Math.floor(core.length * (0.45 + Math.random() * 0.16));
+        tokens.push(core.slice(0, cut));
+        tokens.push(core.slice(cut) + trailing);
+      } else {
+        tokens.push(chunk);
+      }
+    }
+
+    return tokens;
+  }
+
+  function createCtaLink(ctaTarget, lang, animateEnter = false) {
+    const link = document.createElement("a");
+    link.href = ctaTarget;
+    link.className = animateEnter
+      ? "chat-inline-link is-entering"
+      : "chat-inline-link";
+    link.textContent = TRANSLATIONS[lang]["about.jumpProjects"];
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      document.body.classList.remove("immersion-active");
+      const target = document.querySelector(ctaTarget);
+      if (target) {
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      }
+    });
+    return link;
+  }
+
+  function renderBubbleContent(
+    msgDiv,
+    text,
+    ctaTarget = null,
+    lang = currentLang,
+    animateCta = false,
+  ) {
     msgDiv.textContent = "";
     const textSpan = document.createElement("span");
     textSpan.textContent = text;
     msgDiv.appendChild(textSpan);
 
     if (ctaTarget) {
-      const link = document.createElement("a");
-      link.href = ctaTarget;
-      link.className = "chat-inline-link";
-      link.textContent = TRANSLATIONS[currentLang]["about.jumpProjects"];
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.body.classList.remove("immersion-active");
-        const target = document.querySelector(ctaTarget);
-        if (target) {
-          target.scrollIntoView({
-            behavior: prefersReducedMotion ? "auto" : "smooth",
-          });
-        }
-      });
       msgDiv.appendChild(document.createElement("br"));
-      msgDiv.appendChild(link);
+      msgDiv.appendChild(createCtaLink(ctaTarget, lang, animateCta));
     }
+  }
+
+  function isChatNearBottom() {
+    return (
+      chatHistory.scrollHeight -
+        chatHistory.scrollTop -
+        chatHistory.clientHeight <
+      56
+    );
+  }
+
+  function scrollToBottom() {
+    chatHistory.scrollTop = chatHistory.scrollHeight;
   }
 
   function addMessage(text, sender, meta = {}) {
@@ -1479,9 +1520,12 @@ document.addEventListener("DOMContentLoaded", () => {
     msgDiv.className = `chat-bubble ${sender === "user" ? "chat-user" : "chat-ai"}`;
     if (meta.kind) msgDiv.dataset.chatKind = meta.kind;
     if (meta.key) msgDiv.dataset.chatKey = meta.key;
+    if (meta.variantIdx !== undefined) {
+      msgDiv.dataset.chatVariant = String(meta.variantIdx);
+    }
     msgDiv.dataset.chatRole = sender;
 
-    renderBubbleContent(msgDiv, text, meta.cta || null);
+    renderBubbleContent(msgDiv, text, meta.cta || null, currentLang);
     chatHistory.appendChild(msgDiv);
 
     if (!prefersReducedMotion) {
@@ -1493,10 +1537,130 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     scrollToBottom();
+    return msgDiv;
   }
 
-  function scrollToBottom() {
-    chatHistory.scrollTop = chatHistory.scrollHeight;
+  function finishActiveStream(preserveText = true, overrideLang = null) {
+    if (!activeStream) return;
+    const stream = activeStream;
+    activeStream = null;
+    if (stream.timerId) {
+      clearTimeout(stream.timerId);
+    }
+    if (preserveText && stream.bubble.isConnected) {
+      const targetLang = overrideLang || currentLang;
+      const source = getChatSource(stream.kind, stream.key);
+      const finalText = source
+        ? getReplyText(source, targetLang, stream.variantIdx)
+        : stream.fullText;
+      renderBubbleContent(
+        stream.bubble,
+        finalText,
+        stream.cta,
+        targetLang,
+        false,
+      );
+    }
+  }
+
+  function streamAssistantMessage(fullText, meta = {}) {
+    if (prefersReducedMotion) {
+      addMessage(fullText, "ai", meta);
+      return;
+    }
+
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "chat-bubble chat-ai";
+    if (meta.kind) msgDiv.dataset.chatKind = meta.kind;
+    if (meta.key) msgDiv.dataset.chatKey = meta.key;
+    if (meta.variantIdx !== undefined) {
+      msgDiv.dataset.chatVariant = String(meta.variantIdx);
+    }
+    msgDiv.dataset.chatRole = "ai";
+
+    const textContainer = document.createElement("span");
+    const cursor = document.createElement("span");
+    cursor.className = "stream-cursor";
+    cursor.setAttribute("aria-hidden", "true");
+
+    msgDiv.appendChild(textContainer);
+    msgDiv.appendChild(cursor);
+    chatHistory.appendChild(msgDiv);
+
+    gsap.fromTo(
+      msgDiv,
+      { opacity: 0, y: 10, scale: 0.985 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.28, ease: "expo.out" },
+    );
+    scrollToBottom();
+
+    const tokens = tokenizeForStream(fullText);
+    let idx = 0;
+
+    const streamState = {
+      timerId: null,
+      bubble: msgDiv,
+      fullText,
+      cta: meta.cta || null,
+      kind: meta.kind,
+      key: meta.key,
+      variantIdx: meta.variantIdx || 0,
+    };
+    activeStream = streamState;
+
+    function emitNextToken() {
+      if (activeStream !== streamState) return;
+
+      if (idx >= tokens.length) {
+        activeStream = null;
+        renderBubbleContent(
+          msgDiv,
+          fullText,
+          streamState.cta,
+          currentLang,
+          Boolean(streamState.cta),
+        );
+        if (isChatNearBottom()) scrollToBottom();
+        return;
+      }
+
+      const shouldFollowScroll = isChatNearBottom();
+
+      // Occasional 2-token micro-burst on short chunks to mimic real SSE streaming
+      const burstCount =
+        idx + 1 < tokens.length &&
+        tokens[idx].length <= 4 &&
+        Math.random() < 0.24
+          ? 2
+          : 1;
+
+      let emitted = "";
+      for (let b = 0; b < burstCount && idx < tokens.length; b++) {
+        emitted += tokens[idx++];
+      }
+
+      const tokenSpan = document.createElement("span");
+      tokenSpan.className = "stream-token";
+      tokenSpan.textContent = emitted;
+      textContainer.appendChild(tokenSpan);
+
+      if (shouldFollowScroll) {
+        scrollToBottom();
+      }
+
+      const trimmed = emitted.trimEnd();
+      const lastChar = trimmed.charAt(trimmed.length - 1);
+      let delay = 20 + Math.random() * 26;
+      if (lastChar === "." || lastChar === "!" || lastChar === "?") {
+        delay += 85 + Math.random() * 55;
+      } else if (lastChar === "," || lastChar === ":" || lastChar === ";") {
+        delay += 45 + Math.random() * 35;
+      }
+
+      streamState.timerId = setTimeout(emitNextToken, delay);
+    }
+
+    emitNextToken();
   }
 
   function clearTypingIndicators() {
@@ -1505,9 +1669,14 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((el) => el.remove());
   }
 
-  triggerChatInteraction = (kind, key, sourceEl = null) => {
-    const source =
-      kind === "skill" ? SKILL_RESPONSES[key] : CHAT_TOPICS[key];
+  triggerChatInteraction = async (kind, key, sourceEl = null) => {
+    const seq = ++interactionSeq;
+    if (!chatDataset) {
+      await chatDataReady;
+    }
+    if (seq !== interactionSeq) return;
+
+    const source = getChatSource(kind, key);
     if (!source) return;
 
     const localized = source[currentLang];
@@ -1518,9 +1687,17 @@ document.addEventListener("DOMContentLoaded", () => {
       pendingReplyTimer = null;
       clearTypingIndicators();
     }
+    if (activeStream) {
+      finishActiveStream(true);
+    }
 
     chatInterface.classList.add("chat-active");
     if (chatResetBtn) chatResetBtn.hidden = false;
+
+    const replyCount = Array.isArray(localized.replies)
+      ? localized.replies.length
+      : 1;
+    const variantIdx = pickVariantIndex(kind, key, replyCount);
 
     addMessage(localized.prompt, "user", { kind, key });
 
@@ -1540,31 +1717,41 @@ document.addEventListener("DOMContentLoaded", () => {
     chatHistory.appendChild(typingIndicator);
     scrollToBottom();
 
+    const thinkDelay = prefersReducedMotion ? 120 : 340 + Math.random() * 180;
     pendingReplyTimer = setTimeout(() => {
       pendingReplyTimer = null;
       typingIndicator.remove();
-      const freshLocalized = source[currentLang];
-      addMessage(freshLocalized.reply, "ai", {
+      const freshText = getReplyText(source, currentLang, variantIdx);
+      streamAssistantMessage(freshText, {
         kind,
         key,
+        variantIdx,
         cta: source.cta || null,
       });
-    }, 680);
+    }, thinkDelay);
   };
 
   window.__retranslateChatHistory = (lang) => {
     if (!chatHistory) return;
-    chatHistory.querySelectorAll(".chat-bubble[data-chat-key]").forEach((bubble) => {
-      const kind = bubble.dataset.chatKind;
-      const key = bubble.dataset.chatKey;
-      const role = bubble.dataset.chatRole;
-      const source =
-        kind === "skill" ? SKILL_RESPONSES[key] : CHAT_TOPICS[key];
-      if (!source || !source[lang]) return;
-      const text = role === "user" ? source[lang].prompt : source[lang].reply;
-      const cta = role === "ai" ? source.cta || null : null;
-      renderBubbleContent(bubble, text, cta);
-    });
+    if (activeStream) {
+      finishActiveStream(true, lang);
+    }
+    chatHistory
+      .querySelectorAll(".chat-bubble[data-chat-key]")
+      .forEach((bubble) => {
+        const kind = bubble.dataset.chatKind;
+        const key = bubble.dataset.chatKey;
+        const role = bubble.dataset.chatRole;
+        const variantIdx = Number(bubble.dataset.chatVariant) || 0;
+        const source = getChatSource(kind, key);
+        if (!source || !source[lang]) return;
+        const text =
+          role === "user"
+            ? source[lang].prompt
+            : getReplyText(source, lang, variantIdx);
+        const cta = role === "ai" ? source.cta || null : null;
+        renderBubbleContent(bubble, text, cta, lang);
+      });
   };
 
   chatBtns.forEach((btn) => {
@@ -1576,10 +1763,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (chatResetBtn) {
     chatResetBtn.addEventListener("click", () => {
+      interactionSeq++;
       if (pendingReplyTimer) {
         clearTimeout(pendingReplyTimer);
         pendingReplyTimer = null;
       }
+      finishActiveStream(false);
       chatHistory.innerHTML = "";
       chatInterface.classList.remove("chat-active");
       chatResetBtn.hidden = true;
