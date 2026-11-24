@@ -159,6 +159,10 @@ button:focus-visible {
   text-shadow: 0 0 14px rgba(192, 192, 205, 0.35);
 }
 
+.background-text.i18n-wave-hit {
+  text-shadow: none;
+}
+
 /* =========================================================
    FLOATING NAVIGATION HEADER
    ========================================================= */

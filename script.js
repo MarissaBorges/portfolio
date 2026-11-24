@@ -131,6 +131,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function swapElementWithRipple(el, newText) {
+    if (el.classList.contains("background-text")) {
+      gsap.killTweensOf(el, "opacity");
+      gsap
+        .timeline()
+        .to(el, {
+          opacity: 0,
+          duration: 0.16,
+          ease: "power2.in",
+          onComplete: () => {
+            el.textContent = newText;
+          },
+        })
+        .to(el, {
+          opacity: 1,
+          duration: 0.42,
+          ease: "expo.out",
+        });
+      return;
+    }
+
     gsap.killTweensOf(el, "opacity,y,filter");
     el.classList.add("i18n-wave-hit");
 
