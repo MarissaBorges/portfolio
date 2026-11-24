@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Borges — Python &amp; AI Developer</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,10 +183,7 @@
         </div>
 
         <div class="about-container">
-            <!-- Mobile Exit Button -->
-            <button type="button" class="exit-fullscreen-btn" id="exitFullscreen" aria-label="Close fullscreen chat">✕</button>
-
-            <!-- Phone Mockup -->
+            <!-- Phone Mockup (Native Fullscreen Chat on Mobile) -->
             <div class="phone-mockup" id="phoneMockup">
                 <div class="phone-statusbar" aria-hidden="true">
                     <span class="phone-time" id="phoneClock">--:--</span>
@@ -206,31 +203,52 @@
                             <span class="chat-profile-sub" data-i18n="about.status">Interactive Bio</span>
                         </div>
                     </div>
-                    <button
-                        type="button"
-                        class="chat-reset-btn"
-                        id="chatResetBtn"
-                        aria-label="Clear conversation"
-                        title="Clear conversation"
-                        hidden>
-                        <i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>
-                    </button>
+                    <div class="chat-topbar-actions">
+                        <button
+                            type="button"
+                            class="chat-reset-btn"
+                            id="chatResetBtn"
+                            aria-label="Clear conversation"
+                            title="Clear conversation"
+                            hidden>
+                            <i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="chat-fullscreen-btn"
+                            id="enterFullscreen"
+                            aria-label="Open fullscreen chat"
+                            title="Open fullscreen chat">
+                            <i class="ph ph-arrows-out-simple" aria-hidden="true"></i>
+                        </button>
+                        <button
+                            type="button"
+                            class="chat-exit-btn"
+                            id="exitFullscreen"
+                            aria-label="Exit fullscreen chat">
+                            <span data-i18n="about.exitChat">Exit</span>
+                            <i class="ph ph-x" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="phone-screen">
                     <div class="chat-interface" id="chatInterface">
                         <div class="chat-header" id="chatHeader">
                             <h3 data-i18n="about.chatTitle">What would you like to know about Borges?</h3>
-                            <p class="chat-subtitle" data-i18n="about.chatSub">Pick a topic below or click any skill on the right.</p>
+                            <p class="chat-subtitle" data-i18n="about.chatSub">Pick a topic below or click any skill.</p>
                         </div>
                         <div class="chat-history" id="chatHistory" aria-live="polite">
                             <!-- Messages will appear here -->
                         </div>
-                        <div class="chat-options" id="chatOptions">
-                            <button type="button" class="chat-btn" data-topic="experiences"><i class="ph ph-briefcase" aria-hidden="true"></i> <span data-i18n="about.btnExperiences">Experiences</span></button>
-                            <button type="button" class="chat-btn" data-topic="about"><i class="ph ph-user" aria-hidden="true"></i> <span data-i18n="about.btnAbout">About</span></button>
-                            <button type="button" class="chat-btn" data-topic="stack"><i class="ph ph-code" aria-hidden="true"></i> <span data-i18n="about.btnStack">Stack</span></button>
-                            <button type="button" class="chat-btn" data-topic="projects"><i class="ph ph-folder" aria-hidden="true"></i> <span data-i18n="about.btnProjects">Projects</span></button>
+                        <div class="chat-dock">
+                            <div class="chat-skills-rail" id="chatSkillsRail" aria-label="Skills"></div>
+                            <div class="chat-options" id="chatOptions">
+                                <button type="button" class="chat-btn" data-topic="experiences"><i class="ph ph-briefcase" aria-hidden="true"></i> <span data-i18n="about.btnExperiences">Experiences</span></button>
+                                <button type="button" class="chat-btn" data-topic="about"><i class="ph ph-user" aria-hidden="true"></i> <span data-i18n="about.btnAbout">About</span></button>
+                                <button type="button" class="chat-btn" data-topic="stack"><i class="ph ph-code" aria-hidden="true"></i> <span data-i18n="about.btnStack">Stack</span></button>
+                                <button type="button" class="chat-btn" data-topic="projects"><i class="ph ph-folder" aria-hidden="true"></i> <span data-i18n="about.btnProjects">Projects</span></button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -31,12 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "about.hint": "DRAG, THROW OR CLICK ANY SKILL",
       "about.status": "Interactive Bio",
       "about.chatTitle": "What would you like to know about Borges?",
-      "about.chatSub": "Pick a topic below or click any skill on the right.",
+      "about.chatSub": "Pick a topic below or click any skill.",
       "about.btnExperiences": "Experiences",
       "about.btnAbout": "About",
       "about.btnStack": "Stack",
       "about.btnProjects": "Projects",
       "about.jumpProjects": "Jump to Projects ↓",
+      "about.exitChat": "Exit",
       "projects.heading": "Projects",
       "projects.view": "View Project →",
       "contact.heading": "Contact",
@@ -59,12 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "about.hint": "ARRASTE, JOGUE OU CLIQUE EM UMA SKILL",
       "about.status": "Bio Interativa",
       "about.chatTitle": "O que você quer saber sobre a Borges?",
-      "about.chatSub": "Escolha um tópico abaixo ou clique em qualquer skill ao lado.",
+      "about.chatSub": "Escolha um tópico abaixo ou clique em qualquer skill.",
       "about.btnExperiences": "Experiências",
       "about.btnAbout": "Sobre",
       "about.btnStack": "Stack",
       "about.btnProjects": "Projetos",
       "about.jumpProjects": "Ir para Projetos ↓",
+      "about.exitChat": "Sair",
       "projects.heading": "Projetos",
       "projects.view": "Ver Projeto →",
       "contact.heading": "Contato",
@@ -1337,8 +1339,17 @@ document.addEventListener("DOMContentLoaded", () => {
       tags.forEach((tag) => {
         tag.classList.toggle("is-highlighted", targetSet.has(tag.dataset.skill));
       });
+      document.querySelectorAll(".chat-skill-chip").forEach((chip) => {
+        chip.classList.toggle(
+          "is-highlighted",
+          targetSet.has(chip.dataset.skill),
+        );
+      });
       highlightTimer = setTimeout(() => {
         tags.forEach((tag) => tag.classList.remove("is-highlighted"));
+        document
+          .querySelectorAll(".chat-skill-chip")
+          .forEach((chip) => chip.classList.remove("is-highlighted"));
       }, 2400);
     };
 
@@ -1473,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
     link.textContent = TRANSLATIONS[lang]["about.jumpProjects"];
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      document.body.classList.remove("immersion-active");
+      exitMobileImmersion(true);
       const target = document.querySelector(ctaTarget);
       if (target) {
         target.scrollIntoView({
@@ -1905,23 +1916,124 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // =========================================================
-  // 9. MOBILE FULLSCREEN CHAT IMMERSION
+  // 9. MOBILE NATIVE FULLSCREEN CHAT IMMERSION
   // =========================================================
+  const aboutSection = document.getElementById("About");
   const phoneMockup = document.getElementById("phoneMockup");
+  const enterFullscreenBtn = document.getElementById("enterFullscreen");
   const exitFullscreenBtn = document.getElementById("exitFullscreen");
+  const chatSkillsRail = document.getElementById("chatSkillsRail");
 
-  if (phoneMockup && exitFullscreenBtn) {
+  // Populate the mobile fullscreen skills rail from the floating tags (single source of truth)
+  if (chatSkillsRail && tags.length > 0) {
+    tags.forEach((tag) => {
+      const skillKey = tag.dataset.skill || "";
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chat-skill-chip";
+      chip.dataset.skill = skillKey;
+      chip.textContent = tag.textContent.trim();
+      chip.addEventListener("click", () => {
+        markArenaDiscovered();
+        triggerChatInteraction("skill", skillKey, null);
+      });
+      chatSkillsRail.appendChild(chip);
+    });
+  }
+
+  let immersionDismissed = false;
+
+  function isMobileViewport() {
+    return window.innerWidth <= 768;
+  }
+
+  function enterMobileImmersion() {
+    if (!isMobileViewport() || !phoneMockup) return;
+    if (document.body.classList.contains("immersion-active")) return;
+    document.body.classList.add("immersion-active");
+    if (chatHistory) scrollToBottom();
+  }
+
+  function exitMobileImmersion(markDismissed = true) {
+    if (!document.body.classList.contains("immersion-active")) return;
+    document.body.classList.remove("immersion-active");
+    if (markDismissed) {
+      immersionDismissed = true;
+    }
+  }
+
+  if (aboutSection && phoneMockup) {
+    // Automatically take over the mobile viewport when scrolling into About
+    ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "top 38%",
+      end: "bottom 62%",
+      onEnter: () => {
+        if (isMobileViewport() && !immersionDismissed) {
+          enterMobileImmersion();
+        }
+      },
+      onEnterBack: () => {
+        if (isMobileViewport() && !immersionDismissed) {
+          enterMobileImmersion();
+        }
+      },
+      onLeave: () => {
+        immersionDismissed = false;
+      },
+      onLeaveBack: () => {
+        immersionDismissed = false;
+      },
+    });
+
+    // Tapping #About in navigation re-arms immersion on mobile
+    document.querySelectorAll('a[href="#About"]').forEach((link) => {
+      link.addEventListener("click", () => {
+        immersionDismissed = false;
+      });
+    });
+
+    // Manual re-entry button (shown on mobile after user exits fullscreen)
+    if (enterFullscreenBtn) {
+      enterFullscreenBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        immersionDismissed = false;
+        enterMobileImmersion();
+      });
+    }
+
+    // Tapping the phone card body on mobile also opens fullscreen
     phoneMockup.addEventListener("click", (e) => {
       if (
-        window.innerWidth <= 768 &&
-        !e.target.closest(".chat-btn, .chat-reset-btn, .chat-inline-link")
+        isMobileViewport() &&
+        !document.body.classList.contains("immersion-active") &&
+        !e.target.closest(
+          ".chat-btn, .chat-reset-btn, .chat-inline-link, .chat-fullscreen-btn, .chat-exit-btn, .chat-skill-chip",
+        )
       ) {
-        document.body.classList.add("immersion-active");
+        immersionDismissed = false;
+        enterMobileImmersion();
       }
     });
 
-    exitFullscreenBtn.addEventListener("click", () => {
-      document.body.classList.remove("immersion-active");
+    if (exitFullscreenBtn) {
+      exitFullscreenBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        exitMobileImmersion(true);
+      });
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        exitMobileImmersion(true);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (!isMobileViewport()) {
+        exitMobileImmersion(false);
+        immersionDismissed = false;
+      }
     });
   }
 });
