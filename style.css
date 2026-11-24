@@ -1812,6 +1812,11 @@ body.immersion-active {
   .project-info { padding: 2rem; }
 
   /* Native Fullscreen Mobile Chat Immersion */
+  body.immersion-active .About {
+    transform: none !important;
+    overflow: visible !important;
+  }
+
   body.immersion-active .top-menu {
     opacity: 0;
     pointer-events: none;
@@ -1830,7 +1835,7 @@ body.immersion-active {
     box-shadow: none;
     background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
     z-index: 999;
-    animation: mobileChatEnter 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: mobileChatEnter 0.22s ease-out both;
   }
 
   body.immersion-active .chat-topbar {
@@ -1957,12 +1962,10 @@ body.immersion-active {
 
 @keyframes mobileChatEnter {
   from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.985);
+    opacity: 0.92;
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 

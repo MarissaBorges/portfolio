@@ -972,6 +972,7 @@ document.addEventListener("DOMContentLoaded", () => {
           opacity: 1,
           duration: 1.2,
           ease: "expo.out",
+          clearProps: "transform",
           scrollTrigger: {
             trigger: sec,
             start: "top 82%",
@@ -1950,6 +1951,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function enterMobileImmersion() {
     if (!isMobileViewport() || !phoneMockup) return;
     if (document.body.classList.contains("immersion-active")) return;
+    // Clear any residual GSAP transform on #About so position:fixed anchors to the true viewport
+    if (aboutSection) {
+      gsap.killTweensOf(aboutSection);
+      gsap.set(aboutSection, { opacity: 1, clearProps: "transform" });
+    }
     document.body.classList.add("immersion-active");
     if (chatHistory) scrollToBottom();
   }
@@ -1963,11 +1969,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (aboutSection && phoneMockup) {
-    // Automatically take over the mobile viewport when scrolling into About
+    // Only engage fullscreen once the chat header actually reaches the top edge of the phone viewport
     ScrollTrigger.create({
-      trigger: aboutSection,
-      start: "top 38%",
-      end: "bottom 62%",
+      trigger: phoneMockup,
+      start: "top 6px",
+      end: "bottom 20%",
       onEnter: () => {
         if (isMobileViewport() && !immersionDismissed) {
           enterMobileImmersion();
@@ -1978,6 +1984,13 @@ document.addEventListener("DOMContentLoaded", () => {
           enterMobileImmersion();
         }
       },
+    });
+
+    // Re-arm immersion only after the user leaves the About section completely
+    ScrollTrigger.create({
+      trigger: aboutSection,
+      start: "top bottom",
+      end: "bottom top",
       onLeave: () => {
         immersionDismissed = false;
       },
