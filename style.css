@@ -23,21 +23,23 @@
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-accent: rgba(167, 139, 250, 0.32);
 
-  --bg-word-fill: rgba(109, 140, 171, 0.055);
-  --bg-word-stroke: rgba(130, 120, 146, 0.2);
-
-  --halo-primary: rgba(130, 120, 146, 0.26);
-  --halo-secondary: rgba(57, 73, 91, 0.24);
+  --bg-word-gradient: linear-gradient(
+    180deg,
+    rgba(109, 140, 171, 0.12) 0%,
+    rgba(57, 73, 91, 0.11) 50%,
+    rgba(30, 38, 50, 0.1) 75%,
+    rgba(4, 4, 10, 0.08) 100%
+  );
 
   --wave-fill: radial-gradient(
     circle,
-    rgba(167, 139, 250, 0.03) 0%,
-    rgba(130, 120, 146, 0.09) 76%,
-    rgba(167, 139, 250, 0.22) 96%,
-    rgba(217, 217, 235, 0.35) 100%
+    rgba(109, 140, 171, 0.02) 0%,
+    rgba(130, 120, 146, 0.06) 78%,
+    rgba(192, 192, 198, 0.14) 96%,
+    rgba(217, 217, 224, 0.24) 100%
   );
-  --wave-ring: rgba(188, 172, 235, 0.6);
-  --wave-glow: rgba(167, 139, 250, 0.35);
+  --wave-ring: rgba(192, 192, 205, 0.45);
+  --wave-glow: rgba(130, 120, 146, 0.22);
 
   --font-display: "Bricolage Grotesque", sans-serif;
   --font-body: "Archivo", sans-serif;
@@ -68,11 +70,12 @@
   --border-subtle: rgba(20, 20, 29, 0.1);
   --border-accent: rgba(109, 92, 231, 0.35);
 
-  --bg-word-fill: rgba(57, 73, 91, 0.05);
-  --bg-word-stroke: rgba(94, 83, 112, 0.2);
-
-  --halo-primary: rgba(130, 120, 146, 0.22);
-  --halo-secondary: rgba(57, 73, 91, 0.16);
+  --bg-word-gradient: linear-gradient(
+    180deg,
+    rgba(57, 73, 91, 0.14) 0%,
+    rgba(57, 73, 91, 0.09) 55%,
+    rgba(57, 73, 91, 0.03) 100%
+  );
 }
 
 /* =========================================================
@@ -143,7 +146,7 @@ button:focus-visible {
 }
 
 .i18n-wave-hit {
-  text-shadow: 0 0 18px rgba(167, 139, 250, 0.55);
+  text-shadow: 0 0 14px rgba(192, 192, 205, 0.35);
 }
 
 /* =========================================================
@@ -192,7 +195,7 @@ button:focus-visible {
 }
 
 .nav-brand span {
-  color: var(--accent-bright);
+  color: var(--accent);
 }
 
 .nav-brand:hover {
@@ -236,7 +239,7 @@ button:focus-visible {
   left: 0;
   height: 2px;
   width: 0;
-  background-color: var(--accent-bright);
+  background-color: var(--accent);
   border-radius: 999px;
   pointer-events: none;
   opacity: 0;
@@ -317,11 +320,11 @@ button:focus-visible {
   left: 0;
   bottom: -1px;
   width: 100%;
-  height: 2px;
-  background-color: var(--accent-bright);
+  height: 1.5px;
+  background-color: var(--accent);
   transform-origin: left center;
   transform: scaleX(0);
-  opacity: 0.7;
+  opacity: 0.65;
   pointer-events: none;
 }
 
@@ -341,25 +344,6 @@ button:focus-visible {
   align-items: center;
 }
 
-.hero-ambient {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(
-      circle at 74% 58%,
-      var(--halo-primary) 0%,
-      var(--halo-secondary) 26%,
-      transparent 58%
-    ),
-    radial-gradient(
-      circle at 18% 30%,
-      rgba(57, 73, 91, 0.14) 0%,
-      transparent 48%
-    );
-}
-
 .background-text-wrapper {
   position: absolute;
   inset: 0;
@@ -374,14 +358,17 @@ button:focus-visible {
 
 .background-text {
   font-family: var(--font-mono);
-  font-size: clamp(5.4rem, 9.6vw, 17.5rem);
+  font-size: clamp(4.6rem, 7.9vw, 16.5rem);
   font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  line-height: 1;
+  letter-spacing: -0.02em;
   text-align: center;
   white-space: nowrap;
-  color: var(--bg-word-fill);
-  -webkit-text-stroke: 1px var(--bg-word-stroke);
+  background: var(--bg-word-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   will-change: transform, opacity;
 }
 
@@ -407,30 +394,6 @@ button:focus-visible {
   padding-left: clamp(0rem, 3.5vw, 5.5rem);
   position: relative;
   z-index: 3;
-}
-
-.hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.65rem 1.3rem;
-  margin-bottom: 2.2rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: var(--surface-chip);
-  font-family: var(--font-mono);
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  color: var(--text-secondary);
-}
-
-.eyebrow-dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background-color: var(--accent-bright);
-  box-shadow: 0 0 12px var(--accent-bright);
 }
 
 .hero-title {
@@ -522,7 +485,12 @@ button:focus-visible {
 
 .btn-ghost i {
   font-size: 1.8rem;
-  color: var(--accent-bright);
+  color: var(--text-secondary);
+  transition: color 0.25s ease;
+}
+
+.btn-ghost:hover i {
+  color: var(--text-primary);
 }
 
 .btn-ghost:hover {
@@ -543,26 +511,6 @@ button:focus-visible {
   justify-content: center;
   align-items: flex-end;
   will-change: transform, opacity;
-}
-
-.photo-halo {
-  position: absolute;
-  width: 82%;
-  aspect-ratio: 1;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(167, 139, 250, 0.24) 0%,
-    rgba(130, 120, 146, 0.14) 38%,
-    rgba(57, 73, 91, 0.06) 62%,
-    transparent 74%
-  );
-  filter: blur(22px);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .photo-wrapper img {
@@ -606,7 +554,7 @@ button:focus-visible {
 .scroll-cue-line {
   width: 1px;
   height: 3.2rem;
-  background: linear-gradient(to bottom, var(--accent-bright), transparent);
+  background: linear-gradient(to bottom, var(--accent), transparent);
   transform-origin: top center;
   animation: scrollPulse 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
@@ -656,7 +604,7 @@ button:focus-visible {
 .skills-track {
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 4.4rem;
   width: max-content;
   will-change: transform;
 }
@@ -665,26 +613,22 @@ button:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.9rem 1.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.025);
-  color: var(--text-secondary);
+  padding: 0.4rem 0.2rem;
+  color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 500;
   white-space: nowrap;
   user-select: none;
+  opacity: 0.78;
   transition:
-    border-color 0.25s ease,
-    background-color 0.25s ease,
+    opacity 0.25s ease,
     color 0.25s ease,
     transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .skill-item:hover {
-  border-color: var(--border-accent);
-  background: var(--surface-chip-hover);
+  opacity: 1;
   color: var(--text-primary);
   transform: translateY(-2px);
 }

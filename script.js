@@ -14,16 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   const TRANSLATIONS = {
     en: {
-      "meta.title": "Borges — Python & AI Developer",
+      "meta.title": "Borges — Python Developer",
       "nav.home": "Home",
       "nav.about": "About",
       "nav.projects": "Projects",
       "nav.contact": "Contact",
       "hero.bg": "Python Developer",
-      "hero.eyebrow": "Python & Applied AI Engineering",
       "hero.greeting": "Hi, I'm Borges",
       "hero.desc":
-        "A Systems Analysis and Development student driven by curiosity — building local-first AI agents, full-stack systems, and interfaces that feel alive.",
+        "A Systems Analysis and Development student, driven by the curiosity to understand how things work.",
       "hero.ctaPrimary": "Explore my work",
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Scroll",
@@ -37,16 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
       "contact.heading": "Contact",
     },
     pt: {
-      "meta.title": "Borges — Desenvolvedora Python & IA",
+      "meta.title": "Borges — Desenvolvedora Python",
       "nav.home": "Início",
       "nav.about": "Sobre",
       "nav.projects": "Projetos",
       "nav.contact": "Contato",
-      "hero.bg": "Dev Python & IA",
-      "hero.eyebrow": "Engenharia Python & IA Aplicada",
+      "hero.bg": "Desenvolvedora Python",
       "hero.greeting": "Olá, eu sou Borges",
       "hero.desc":
-        "Estudante de Análise e Desenvolvimento de Sistemas movida pela curiosidade — construindo agentes de IA local-first, sistemas full-stack e interfaces que ganham vida.",
+        "Estudante de Análise e Desenvolvimento de Sistemas, movida pela curiosidade de entender como as coisas funcionam.",
       "hero.ctaPrimary": "Explorar projetos",
       "hero.ctaSecondary": "GitHub",
       "hero.scroll": "Rolar",
@@ -416,28 +414,22 @@ document.addEventListener("DOMContentLoaded", () => {
         0.1,
       )
       .fromTo(
-        ".hero-eyebrow",
-        { y: 18, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9 },
-        0.2,
-      )
-      .fromTo(
         ".hero-title .line-inner",
         { yPercent: 115, opacity: 0 },
         { yPercent: 0, opacity: 1, duration: 1.15 },
-        0.28,
+        0.2,
       )
       .fromTo(
         ".hero-desc",
         { y: 24, opacity: 0 },
         { y: 0, opacity: 1, duration: 1.0 },
-        0.44,
+        0.36,
       )
       .fromTo(
         ".hero-actions > *",
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.9, stagger: 0.1 },
-        0.56,
+        0.48,
       )
       .fromTo(
         ".photo-wrapper",
@@ -490,28 +482,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // Subtle Desktop Cursor Depth Parallax (Background Text vs Portrait)
     const homeSection = document.getElementById("Home");
     const bgWord = document.querySelector(".background-text");
-    const photoHalo = document.querySelector(".photo-halo");
     const heroPhoto = document.querySelector(".photo-wrapper");
 
     if (hasFinePointer && homeSection && bgWord && heroPhoto) {
       const bgX = gsap.quickTo(bgWord, "x", { duration: 0.9, ease: "power3.out" });
       const photoX = gsap.quickTo(heroPhoto, "x", { duration: 0.85, ease: "power3.out" });
-      const haloX = photoHalo
-        ? gsap.quickTo(photoHalo, "x", { duration: 1.1, ease: "power3.out" })
-        : null;
 
       homeSection.addEventListener("mousemove", (e) => {
         const rect = homeSection.getBoundingClientRect();
         const nx = (e.clientX - rect.left) / rect.width - 0.5;
         bgX(nx * -28);
         photoX(nx * 14);
-        if (haloX) haloX(nx * 24);
       });
 
       homeSection.addEventListener("mouseleave", () => {
         bgX(0);
         photoX(0);
-        if (haloX) haloX(0);
       });
     }
 
