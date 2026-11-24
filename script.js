@@ -588,8 +588,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function seedNodes() {
       const area = width * height;
       const targetCount = Math.max(
-        26,
-        Math.min(72, Math.round(area / 19500)),
+        40,
+        Math.min(105, Math.round(area / 13500)),
       );
       nodes = Array.from({ length: targetCount }, () => {
         const angle = Math.random() * Math.PI * 2;
@@ -601,8 +601,8 @@ document.addEventListener("DOMContentLoaded", () => {
           vy: Math.sin(angle) * speed,
           baseVx: Math.cos(angle) * speed,
           baseVy: Math.sin(angle) * speed,
-          r: 1.0 + Math.random() * 1.15,
-          alpha: 0.18 + Math.random() * 0.28,
+          r: 1.8 + Math.random() * 1.8,
+          alpha: 0.24 + Math.random() * 0.34,
           pulse: 0,
         };
       });
@@ -690,7 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Draw fine connecting filaments between nearby nodes
-      ctx.lineWidth = 0.85;
+      ctx.lineWidth = 1;
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
@@ -735,8 +735,8 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i];
         const energy = n.pulse;
-        const radius = n.r + energy * 1.1;
-        const alpha = Math.min(0.9, n.alpha + energy * 0.55);
+        const radius = n.r + energy * 1.4;
+        const alpha = Math.min(0.95, n.alpha + energy * 0.5);
         const rgb = energy > 0.2 ? palette.accent : palette.base;
         ctx.fillStyle = `rgba(${rgb}, ${alpha.toFixed(3)})`;
         ctx.beginPath();
