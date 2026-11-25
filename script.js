@@ -104,15 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "contact.heading": "Contact",
       "contact.kicker": "CONTACT",
       "contact.availability": "OPEN TO OPPORTUNITIES",
-      "contact.headlineA": "Have an idea,",
-      "contact.headlineB": "a role or a problem to solve?",
-      "contact.lede":
-        "I'm always up for a conversation about AI, backend systems or building something from scratch. The fastest way to reach me is email.",
-      "contact.copy": "Copy",
-      "contact.copied": "Copied",
-      "contact.noteEmail": "Best for proposals",
-      "contact.noteLinkedin": "Career & networking",
-      "contact.noteGithub": "Code & open source",
+      "contact.githubLine1": "Explore my",
+      "contact.linkedinLine1": "Explore my",
+      "contact.emailLine1": "Send me an",
+      "contact.whatsappLine1": "Chat with me",
+      "contact.whatsappLine2": "on WhatsApp",
       "contact.localTime": "LOCAL TIME",
       "contact.backTop": "Back to top",
     },
@@ -207,15 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "contact.heading": "Contato",
       "contact.kicker": "CONTATO",
       "contact.availability": "ABERTA A OPORTUNIDADES",
-      "contact.headlineA": "Tem uma ideia,",
-      "contact.headlineB": "uma vaga ou um problema pra resolver?",
-      "contact.lede":
-        "Estou sempre aberta a uma conversa sobre IA, sistemas de backend ou construir algo do zero. O jeito mais rápido de falar comigo é por e-mail.",
-      "contact.copy": "Copiar",
-      "contact.copied": "Copiado",
-      "contact.noteEmail": "Ideal para propostas",
-      "contact.noteLinkedin": "Carreira & networking",
-      "contact.noteGithub": "Código & open source",
+      "contact.githubLine1": "Conheça meu",
+      "contact.linkedinLine1": "Conheça meu",
+      "contact.emailLine1": "Me envie um",
+      "contact.whatsappLine1": "Fale comigo",
+      "contact.whatsappLine2": "pelo WhatsApp",
       "contact.localTime": "HORA LOCAL",
       "contact.backTop": "Voltar ao topo",
     },
@@ -943,45 +935,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     updateClock();
     setInterval(updateClock, 1000);
-  }
-
-  // Contact: copy-to-clipboard email + back to top
-  const contactEmailBtn = document.getElementById("contactEmailBtn");
-  const contactCopyLabel = document.getElementById("contactCopyLabel");
-  if (contactEmailBtn && contactCopyLabel) {
-    let copyResetTimer = null;
-    contactEmailBtn.addEventListener("click", async () => {
-      const email = contactEmailBtn.dataset.email || "";
-      let ok = false;
-      try {
-        await navigator.clipboard.writeText(email);
-        ok = true;
-      } catch (_) {
-        const ta = document.createElement("textarea");
-        ta.value = email;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          ok = document.execCommand("copy");
-        } catch (__) {
-          ok = false;
-        }
-        ta.remove();
-      }
-      if (!ok) {
-        window.location.href = `mailto:${email}`;
-        return;
-      }
-      contactEmailBtn.classList.add("is-copied");
-      contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copied"];
-      clearTimeout(copyResetTimer);
-      copyResetTimer = setTimeout(() => {
-        contactEmailBtn.classList.remove("is-copied");
-        contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copy"];
-      }, 1800);
-    });
   }
 
   const backToTop = document.getElementById("backToTop");
