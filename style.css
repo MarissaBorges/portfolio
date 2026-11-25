@@ -107,6 +107,8 @@
 
   --contact-card-hover: rgba(130, 120, 146, 0.08);
   --contact-arc-border: rgba(167, 139, 250, 0.16);
+  --contact-arc-beam: rgba(216, 204, 255, 0.9);
+  --contact-arc-beam-soft: rgba(167, 139, 250, 0.36);
   --contact-horizon: radial-gradient(
     ellipse 72% 60% at 50% 100%,
     rgba(130, 120, 146, 0.18) 0%,
@@ -226,6 +228,8 @@
 
   --contact-card-hover: rgba(18, 18, 16, 0.045);
   --contact-arc-border: rgba(109, 109, 89, 0.24);
+  --contact-arc-beam: rgba(78, 77, 61, 0.85);
+  --contact-arc-beam-soft: rgba(109, 109, 89, 0.32);
   --contact-horizon: radial-gradient(
     ellipse 72% 60% at 50% 100%,
     rgba(176, 167, 154, 0.34) 0%,
@@ -2472,6 +2476,59 @@ body.immersion-active {
   background: var(--contact-horizon);
 }
 
+.contact-horizon::before,
+.contact-horizon::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  clip-path: inset(0 0 50% 0);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 34%,
+    var(--contact-arc-beam-soft) 45%,
+    var(--contact-arc-beam) 50%,
+    var(--contact-arc-beam-soft) 55%,
+    transparent 66%,
+    transparent 100%
+  );
+  background-size: 230% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: horizonSweep 5.8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.contact-horizon::before {
+  padding: 1.5px;
+}
+
+.contact-horizon::after {
+  padding: 3.5px;
+  filter: blur(6px);
+  opacity: 0.7;
+}
+
+@keyframes horizonSweep {
+  0% {
+    background-position: 115% 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    background-position: -115% 0;
+    opacity: 0;
+  }
+}
+
 .contact-bg-word {
   position: absolute;
   left: 50%;
@@ -3328,5 +3385,10 @@ body.immersion-active {
   .strip-arrow,
   .strip-id i {
     transition: none;
+  }
+  .contact-horizon::before,
+  .contact-horizon::after {
+    animation: none;
+    display: none;
   }
 }
