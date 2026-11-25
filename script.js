@@ -1920,6 +1920,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 9. MOBILE NATIVE FULLSCREEN CHAT IMMERSION
   // =========================================================
   const aboutSection = document.getElementById("About");
+  const aboutContainer = aboutSection
+    ? aboutSection.querySelector(".about-container")
+    : null;
   const phoneMockup = document.getElementById("phoneMockup");
   const enterFullscreenBtn = document.getElementById("enterFullscreen");
   const exitFullscreenBtn = document.getElementById("exitFullscreen");
@@ -1951,6 +1954,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function enterMobileImmersion() {
     if (!isMobileViewport() || !phoneMockup) return;
     if (document.body.classList.contains("immersion-active")) return;
+    // Preserve layout height before detaching #phoneMockup into fixed fullscreen (zero scroll jump)
+    if (aboutContainer) {
+      aboutContainer.style.minHeight = `${aboutContainer.offsetHeight}px`;
+    }
     // Clear any residual GSAP transform on #About so position:fixed anchors to the true viewport
     if (aboutSection) {
       gsap.killTweensOf(aboutSection);
@@ -1963,6 +1970,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function exitMobileImmersion(markDismissed = true) {
     if (!document.body.classList.contains("immersion-active")) return;
     document.body.classList.remove("immersion-active");
+    if (aboutContainer) {
+      aboutContainer.style.minHeight = "";
+    }
     if (markDismissed) {
       immersionDismissed = true;
     }

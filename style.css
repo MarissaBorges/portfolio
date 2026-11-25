@@ -1813,8 +1813,19 @@ body.immersion-active {
 
   /* Native Fullscreen Mobile Chat Immersion */
   body.immersion-active .About {
+    position: relative;
+    z-index: 9999 !important;
     transform: none !important;
     overflow: visible !important;
+  }
+
+  body.immersion-active .about-container {
+    z-index: auto !important;
+  }
+
+  body.immersion-active .projects-left {
+    visibility: hidden;
+    pointer-events: none;
   }
 
   body.immersion-active .top-menu {
@@ -1834,7 +1845,7 @@ body.immersion-active {
     border: none;
     box-shadow: none;
     background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-    z-index: 999;
+    z-index: 10000;
     animation: mobileChatEnter 0.22s ease-out both;
   }
 
