@@ -1928,20 +1928,105 @@ document.addEventListener("DOMContentLoaded", () => {
   const exitFullscreenBtn = document.getElementById("exitFullscreen");
   const chatSkillsRail = document.getElementById("chatSkillsRail");
 
-  // Populate the mobile fullscreen skills rail from the floating tags (single source of truth)
+  // Populate the mobile skills carousel (2x items for seamless loop + manual swipe/drag)
   if (chatSkillsRail && tags.length > 0) {
-    tags.forEach((tag) => {
-      const skillKey = tag.dataset.skill || "";
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "chat-skill-chip";
-      chip.dataset.skill = skillKey;
-      chip.textContent = tag.textContent.trim();
-      chip.addEventListener("click", () => {
-        markArenaDiscovered();
-        triggerChatInteraction("skill", skillKey, null);
+    const appendSkillChips = (isClone) => {
+      tags.forEach((tag) => {
+        const skillKey = tag.dataset.skill || "";
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chat-skill-chip";
+        chip.dataset.skill = skillKey;
+        chip.textContent = tag.textContent.trim();
+        if (isClone) {
+          chip.setAttribute("aria-hidden", "true");
+          chip.tabIndex = -1;
+        }
+        chip.addEventListener("click", (e) => {
+          if (railDragged) {
+            e.preventDefault();
+            return;
+          }
+          markArenaDiscovered();
+          triggerChatInteraction("skill", skillKey, null);
+        });
+        chatSkillsRail.appendChild(chip);
       });
-      chatSkillsRail.appendChild(chip);
+    };
+
+    let railPausedUntil = 0;
+    let railPointerDown = false;
+    let railStartX = 0;
+    let railStartScroll = 0;
+    let railDragged = false;
+    let railScrollPos = 0;
+
+    appendSkillChips(false);
+    appendSkillChips(true);
+
+    const pauseRail = (ms = 2200) => {
+      railPausedUntil = performance.now() + ms;
+      railScrollPos = chatSkillsRail.scrollLeft;
+    };
+
+    chatSkillsRail.addEventListener("touchstart", () => pauseRail(3000), {
+      passive: true,
+    });
+    chatSkillsRail.addEventListener("touchend", () => pauseRail(2000), {
+      passive: true,
+    });
+    chatSkillsRail.addEventListener("wheel", () => pauseRail(2200), {
+      passive: true,
+    });
+
+    // Support mouse drag-to-scroll as well (handy on DevTools mobile emulation)
+    chatSkillsRail.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      railPointerDown = true;
+      railDragged = false;
+      railStartX = e.clientX;
+      railStartScroll = chatSkillsRail.scrollLeft;
+      pauseRail(4000);
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!railPointerDown) return;
+      const dx = e.clientX - railStartX;
+      if (Math.abs(dx) > 5) railDragged = true;
+      chatSkillsRail.scrollLeft = railStartScroll - dx;
+      railScrollPos = chatSkillsRail.scrollLeft;
+    });
+
+    window.addEventListener("pointerup", () => {
+      if (!railPointerDown) return;
+      railPointerDown = false;
+      pauseRail(2000);
+      setTimeout(() => {
+        railDragged = false;
+      }, 40);
+    });
+
+    gsap.ticker.add((_time, deltaTime) => {
+      if (prefersReducedMotion || window.innerWidth > 768) return;
+      if (railPointerDown || performance.now() < railPausedUntil) return;
+      if (!aboutVisible && !document.body.classList.contains("immersion-active")) {
+        return;
+      }
+
+      const halfWidth = chatSkillsRail.scrollWidth / 2;
+      if (halfWidth <= 0) return;
+
+      // Sync in case native momentum scrolling moved scrollLeft
+      if (Math.abs(chatSkillsRail.scrollLeft - railScrollPos) > 2) {
+        railScrollPos = chatSkillsRail.scrollLeft;
+      }
+
+      const dt = Math.min(deltaTime / 1000, 0.05);
+      railScrollPos += 26 * dt;
+      if (railScrollPos >= halfWidth) {
+        railScrollPos -= halfWidth;
+      }
+      chatSkillsRail.scrollLeft = railScrollPos;
     });
   }
 
