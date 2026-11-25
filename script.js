@@ -2162,6 +2162,113 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+    // Zero-config auto-rotating banner gallery: activates whenever a card has 2+ <img> inside .project-media-inner
+    document.querySelectorAll(".project-media").forEach((media) => {
+      const slides = Array.from(media.querySelectorAll(".project-media-inner img"));
+      if (slides.length <= 1) return;
+
+      media.classList.add("has-gallery");
+      const intervalMs = Math.max(
+        1800,
+        Number(media.dataset.interval) || 4000,
+      );
+
+      let current = 0;
+      let timer = null;
+      let inView = false;
+      let hovered = false;
+
+      const dotsWrap = document.createElement("div");
+      dotsWrap.className = "project-media-dots";
+
+      const dots = slides.map((_, idx) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "project-media-dot";
+        dot.setAttribute("aria-label", `Slide ${idx + 1}`);
+        dot.addEventListener("click", () => {
+          goTo(idx);
+          restartAuto();
+        });
+        dotsWrap.appendChild(dot);
+        return dot;
+      });
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "project-media-nav project-media-nav--prev";
+      prevBtn.setAttribute("aria-label", "Previous image");
+      prevBtn.innerHTML = '<i class="ph ph-caret-left" aria-hidden="true"></i>';
+      prevBtn.addEventListener("click", () => {
+        goTo((current - 1 + slides.length) % slides.length);
+        restartAuto();
+      });
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "project-media-nav project-media-nav--next";
+      nextBtn.setAttribute("aria-label", "Next image");
+      nextBtn.innerHTML = '<i class="ph ph-caret-right" aria-hidden="true"></i>';
+      nextBtn.addEventListener("click", () => {
+        goTo((current + 1) % slides.length);
+        restartAuto();
+      });
+
+      media.appendChild(prevBtn);
+      media.appendChild(nextBtn);
+      media.appendChild(dotsWrap);
+
+      function goTo(index) {
+        current = index;
+        slides.forEach((img, idx) =>
+          img.classList.toggle("is-active", idx === current),
+        );
+        dots.forEach((dot, idx) =>
+          dot.classList.toggle("is-active", idx === current),
+        );
+      }
+
+      function stopAuto() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      function startAuto() {
+        if (prefersReducedMotion || hovered || !inView || timer) return;
+        timer = setInterval(() => {
+          goTo((current + 1) % slides.length);
+        }, intervalMs);
+      }
+
+      function restartAuto() {
+        stopAuto();
+        startAuto();
+      }
+
+      media.addEventListener("mouseenter", () => {
+        hovered = true;
+        stopAuto();
+      });
+      media.addEventListener("mouseleave", () => {
+        hovered = false;
+        startAuto();
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          inView = Boolean(entries[0] && entries[0].isIntersecting);
+          if (inView) startAuto();
+          else stopAuto();
+        },
+        { threshold: 0.25 },
+      );
+      observer.observe(media);
+
+      goTo(0);
+    });
+
     // Initialize counter for default view
     setActiveProject(activeProjectIdx);
   }

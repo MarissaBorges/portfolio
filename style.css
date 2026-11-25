@@ -1810,6 +1810,7 @@ body.immersion-active {
 }
 
 .project-media-inner {
+  position: relative;
   width: 100%;
   height: 112%;
   margin-top: -6%;
@@ -1821,17 +1822,104 @@ body.immersion-active {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.65s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-media.has-gallery .project-media-inner img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 0;
+}
+
+.project-media.has-gallery .project-media-inner img.is-active {
+  opacity: 1;
+  z-index: 1;
 }
 
 .project-card:hover .project-media-inner img {
   transform: scale(1.03);
 }
 
+.project-media-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--project-badge-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(232, 232, 238, 0.92);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.project-media:hover .project-media-nav,
+.project-media:focus-within .project-media-nav {
+  opacity: 1;
+}
+
+.project-media-nav:hover {
+  border-color: var(--border-accent);
+  background: rgba(16, 19, 32, 0.88);
+}
+
+.project-media-nav--prev { left: 1.1rem; }
+.project-media-nav--next { right: 1.1rem; }
+
+.project-media-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: var(--project-badge-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.project-media-dot {
+  width: 1.8rem;
+  height: 3px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-media-dot.is-active {
+  width: 2.8rem;
+  background: var(--accent-bright);
+}
+
 .project-media-meta {
   position: absolute;
   top: 1.25rem;
   left: 1.25rem;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
