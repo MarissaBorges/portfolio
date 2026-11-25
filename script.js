@@ -1671,6 +1671,25 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
+    const contactSection = document.getElementById("Contact");
+    const contactBgWord = document.querySelector(".contact-bg-word");
+    if (hasFinePointer && contactSection && contactBgWord) {
+      const contactBgX = gsap.quickTo(contactBgWord, "x", {
+        duration: 0.9,
+        ease: "power3.out",
+      });
+
+      contactSection.addEventListener("mousemove", (e) => {
+        const rect = contactSection.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        contactBgX(nx * -34);
+      });
+
+      contactSection.addEventListener("mouseleave", () => {
+        contactBgX(0);
+      });
+    }
+
     if (document.querySelector(".contact-horizon")) {
       gsap.fromTo(
         ".contact-horizon",
