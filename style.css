@@ -2628,10 +2628,10 @@ body.immersion-active {
   color: var(--accent-bright);
 }
 
-/* Single-Row 4-Element Contact Footer Strip */
+/* Single-Row 3-Element Institutional Contact Footer Strip */
 .contact-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   background: var(--surface-nav);
@@ -2834,18 +2834,6 @@ body.immersion-active {
   .corner-bl,
   .corner-br {
     display: none;
-  }
-
-  .contact-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .contact-strip-item:nth-child(2n) {
-    border-right: none;
-  }
-
-  .contact-strip-item:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--border-subtle);
   }
 }
 
@@ -3169,6 +3157,31 @@ body.immersion-active {
     align-items: flex-start;
   }
 
+  .contact-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-strip-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.8rem 1.4rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .contact-strip-item:last-child {
+    border-bottom: none;
+  }
+
+  .strip-top {
+    order: 2;
+    gap: 1rem;
+  }
+
+  .strip-bottom {
+    order: 1;
+  }
+
   /* Native Fullscreen Mobile Chat Immersion */
   body.immersion-active .About {
     position: relative;
@@ -3284,33 +3297,6 @@ body.immersion-active {
   }
   to {
     opacity: 1;
-  }
-}
-
-@media (max-width: 540px) {
-  .contact-strip {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-strip-item {
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
-    padding: 1.8rem 1.4rem;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .contact-strip-item:last-child {
-    border-bottom: none;
-  }
-
-  .strip-top {
-    order: 2;
-    gap: 1rem;
-  }
-
-  .strip-bottom {
-    order: 1;
   }
 }
 
