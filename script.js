@@ -866,6 +866,17 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     });
 
+    gsap.to(".Home .text", {
+      y: -38,
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".Home",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
     gsap.to("#scrollCue", {
       opacity: 0,
       y: 18,
@@ -1267,37 +1278,424 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // 5. SECTION REVEALS (About, Projects, Contact)
+  // 5. SCROLL REVEALS & MULTI-LAYER PARALLAX (ALL SECTIONS)
   // =========================================================
   if (!prefersReducedMotion) {
-    const sections = gsap.utils.toArray(".section:not(.Home)");
-    sections.forEach((sec) => {
+    // Skills Marquee Band
+    if (document.querySelector(".skills-carousel")) {
       gsap.fromTo(
-        sec,
-        { y: 50, opacity: 0 },
+        ".skills-carousel",
+        { opacity: 0, y: 24 },
         {
-          y: 0,
           opacity: 1,
-          duration: 1.2,
+          y: 0,
+          duration: 0.8,
           ease: "expo.out",
           clearProps: "transform",
           scrollTrigger: {
-            trigger: sec,
-            start: "top 82%",
-            toggleActions: "play none none reverse",
+            trigger: ".skills-carousel",
+            start: "top 92%",
+            once: true,
           },
         },
       );
+    }
+
+    // --- ABOUT SECTION ---
+    if (document.querySelector(".about-topbar")) {
+      gsap.fromTo(
+        ".about-topbar > *",
+        { opacity: 0, y: 18 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.75,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".about-topbar",
+            start: "top 88%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    if (document.getElementById("phoneMockup")) {
+      gsap.fromTo(
+        "#phoneMockup",
+        { opacity: 0, y: 46, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.0,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: "#phoneMockup",
+            start: "top 86%",
+            once: true,
+          },
+        },
+      );
+
+      gsap.fromTo(
+        "#chatOptions .chat-btn",
+        { opacity: 0, y: 14 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.06,
+          delay: 0.18,
+          duration: 0.65,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: "#phoneMockup",
+            start: "top 86%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    // Floating tags reveal ONLY opacity + scale so physics ticker owns x/y/rotation cleanly
+    if (document.getElementById("floatingTagsContainer")) {
+      gsap.fromTo(
+        ".floating-tags .tag",
+        { opacity: 0, scale: 0.76 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.85,
+          stagger: { each: 0.055, from: "random" },
+          ease: "back.out(1.35)",
+          clearProps: "opacity",
+          scrollTrigger: {
+            trigger: "#floatingTagsContainer",
+            start: "top 84%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    // Desktop-only About depth parallax (keeps mobile position:fixed immersion clean)
+    const aboutParallaxMm = gsap.matchMedia();
+    aboutParallaxMm.add("(min-width: 769px)", () => {
+      if (document.querySelector(".about-phone-lift")) {
+        gsap.fromTo(
+          ".about-phone-lift",
+          { y: -44 },
+          {
+            y: 44,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "#About",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          },
+        );
+      }
+
+      if (document.getElementById("phoneMockup")) {
+        gsap.fromTo(
+          "#phoneMockup",
+          { y: 20 },
+          {
+            y: -20,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "#About",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          },
+        );
+      }
     });
+
+    // --- PROJECTS SECTION ---
+    if (document.querySelector(".projects-topbar")) {
+      gsap.fromTo(
+        ".projects-topbar .section-meta, .projects-topbar .project-filter",
+        { opacity: 0, y: 18 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.06,
+          duration: 0.75,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".projects-topbar",
+            start: "top 88%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".projects-container")) {
+      gsap.fromTo(
+        ".projects-left .project-index-item, .projects-left .projects-index-footer",
+        { opacity: 0, x: -20 },
+        {
+          opacity: 1,
+          x: 0,
+          stagger: 0.08,
+          duration: 0.8,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".projects-container",
+            start: "top 84%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    gsap.utils.toArray(".project-card").forEach((card) => {
+      const media = card.querySelector(".project-media");
+      const mediaImgs = card.querySelectorAll(".project-media-inner img");
+      const copyItems = card.querySelectorAll(
+        ".project-head, .project-desc, .project-stack-line, .project-actions",
+      );
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: card,
+          start: "top 86%",
+          once: true,
+        },
+      });
+
+      tl.fromTo(
+        card,
+        { opacity: 0, y: 44 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "expo.out",
+          clearProps: "transform",
+        },
+        0,
+      );
+
+      if (media) {
+        tl.fromTo(
+          media,
+          { clipPath: "inset(8% 0% 8% 0% round 10px)" },
+          {
+            clipPath: "inset(0% 0% 0% 0% round 0px)",
+            duration: 0.95,
+            ease: "expo.out",
+            clearProps: "clipPath",
+          },
+          0.06,
+        );
+      }
+
+      if (mediaImgs.length) {
+        tl.fromTo(
+          mediaImgs,
+          { scale: 1.08 },
+          {
+            scale: 1,
+            duration: 1.1,
+            ease: "expo.out",
+            clearProps: "transform",
+          },
+          0.06,
+        );
+      }
+
+      if (copyItems.length) {
+        tl.fromTo(
+          copyItems,
+          { opacity: 0, y: 18 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.06,
+            ease: "expo.out",
+            clearProps: "transform",
+          },
+          0.14,
+        );
+      }
+    });
+
+    if (document.querySelector(".projects-ambient-lift")) {
+      gsap.fromTo(
+        ".projects-ambient-lift",
+        { y: -55 },
+        {
+          y: 55,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#Projects",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".projects-labs")) {
+      gsap.fromTo(
+        ".projects-labs-head, .projects-labs .lab-row",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.09,
+          duration: 0.75,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".projects-labs",
+            start: "top 88%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    // --- CONTACT SECTION ---
+    if (document.querySelector(".contact-topbar")) {
+      gsap.fromTo(
+        ".contact-topbar > *",
+        { opacity: 0, y: 18 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.75,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".contact-topbar",
+            start: "top 88%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".contact-cta")) {
+      gsap.fromTo(
+        ".contact-cta > *",
+        { opacity: 0, y: 30, filter: "blur(6px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          stagger: 0.1,
+          duration: 0.92,
+          ease: "expo.out",
+          clearProps: "transform,filter",
+          scrollTrigger: {
+            trigger: ".contact-cta",
+            start: "top 85%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".contact-strip")) {
+      gsap.fromTo(
+        ".contact-strip .contact-strip-item",
+        { opacity: 0, y: 26 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: 0.82,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".contact-strip",
+            start: "top 90%",
+            once: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".contact-footer")) {
+      gsap.fromTo(
+        ".contact-footer",
+        { opacity: 0, y: 14 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "expo.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: ".contact-footer",
+            start: "top 96%",
+            once: true,
+          },
+        },
+      );
+    }
 
     if (document.querySelector(".contact-bg-word")) {
       gsap.fromTo(
         ".contact-bg-word",
-        { xPercent: -50, yPercent: -50, y: -36 },
+        { xPercent: -50, yPercent: -50, y: -48 },
         {
           xPercent: -50,
           yPercent: -50,
-          y: 36,
+          y: 48,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#Contact",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".contact-horizon")) {
+      gsap.fromTo(
+        ".contact-horizon",
+        { xPercent: -50, y: 68, scale: 0.96 },
+        {
+          xPercent: -50,
+          y: 0,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#Contact",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    if (document.querySelector(".contact-dots")) {
+      gsap.fromTo(
+        ".contact-dots",
+        { y: -26 },
+        {
+          y: 26,
           ease: "none",
           scrollTrigger: {
             trigger: "#Contact",
@@ -1708,6 +2106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       cacheLayout();
       initDraggable();
       updateNavIndicator(false);
+      ScrollTrigger.refresh();
     });
 
     let resizeTimeout;
@@ -1726,7 +2125,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 200);
     });
   } else {
-    window.addEventListener("load", () => updateNavIndicator(false));
+    window.addEventListener("load", () => {
+      updateNavIndicator(false);
+      ScrollTrigger.refresh();
+    });
     window.addEventListener("resize", () => updateNavIndicator(false));
   }
 
@@ -2296,10 +2698,22 @@ document.addEventListener("DOMContentLoaded", () => {
           if (match) {
             if (firstVisibleIdx === -1) firstVisibleIdx = i;
             if (!prefersReducedMotion) {
+              gsap.set(
+                card.querySelectorAll(
+                  ".project-media, .project-media-inner img, .project-head, .project-desc, .project-stack-line, .project-actions",
+                ),
+                { opacity: 1, clearProps: "transform,filter,clipPath" },
+              );
               gsap.fromTo(
                 card,
                 { opacity: 0, y: 18 },
-                { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.45,
+                  ease: "expo.out",
+                  clearProps: "transform",
+                },
               );
             }
           }
