@@ -861,34 +861,67 @@ html.theme-transitioning * {
   mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
 }
 
-/* Minimal Scroll Cue */
+/* Scroll Cue */
 .scroll-cue {
   position: absolute;
   left: 50%;
-  bottom: 2.2rem;
+  bottom: clamp(3.8rem, 5.5vh, 5.8rem);
   transform: translateX(-50%);
-  z-index: 4;
+  z-index: 5;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.75rem;
   text-decoration: none;
-  font-family: var(--font-mono);
-  font-size: 1.05rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 0.25s ease;
 }
 
-.scroll-cue:hover {
+.scroll-cue-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.72rem 1.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface-nav);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 24px -8px var(--shadow-card);
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-cue:hover .scroll-cue-pill {
+  background: var(--surface-chip-hover);
+  transform: translateY(2px);
+}
+
+.scroll-cue-arrow {
+  font-size: 1.35rem;
+  color: var(--accent-bright);
+  animation: scrollArrowBob 1.9s ease-in-out infinite;
+}
+
+@keyframes scrollArrowBob {
+  0%, 100% {
+    transform: translateY(-1.5px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 .scroll-cue-line {
-  width: 1px;
-  height: 3.2rem;
-  background: linear-gradient(to bottom, var(--accent), transparent);
+  width: 1.5px;
+  height: 2.8rem;
+  background: linear-gradient(to bottom, var(--accent-bright), transparent);
   transform-origin: top center;
   animation: scrollPulse 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
@@ -3297,6 +3330,9 @@ body.immersion-active {
   .scroll-cue-line {
     animation: none;
     opacity: 0.5;
+  }
+  .scroll-cue-arrow {
+    animation: none;
   }
   body.immersion-active .phone-mockup {
     animation: none;
