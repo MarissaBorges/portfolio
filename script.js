@@ -1971,24 +1971,59 @@ document.addEventListener("DOMContentLoaded", () => {
           ease: "none",
           scrollTrigger: {
             trigger: projectsRight,
-            start: "top 65%",
-            end: "bottom 70%",
+            start: "top 40%",
+            end: "bottom 75%",
             scrub: true,
           },
         },
       );
     }
 
-    // Track which project card is currently in focus
-    projectCards.forEach((card, i) => {
-      ScrollTrigger.create({
-        trigger: card,
-        start: "top 55%",
-        end: "bottom 45%",
-        onEnter: () => setActiveProject(i),
-        onEnterBack: () => setActiveProject(i),
-      });
-    });
+    // Deterministic active project tracking based on the upper reading focal line (~28% from viewport top)
+    // Prevents switching early while the current card is still centered in view
+    let activeRafPending = false;
+    function syncActiveProjectByScroll() {
+      activeRafPending = false;
+      const visible = getVisibleCards();
+      if (visible.length === 0) return;
+
+      const focalY =
+        window.innerHeight * (window.innerWidth <= 768 ? 0.34 : 0.28);
+      let chosen = visible[0];
+
+      // Stay on the current card until its top-to-bottom reading band passes the focal line
+      for (let i = 0; i < visible.length; i++) {
+        const rect = visible[i].getBoundingClientRect();
+        if (rect.top <= focalY) {
+          chosen = visible[i];
+        } else {
+          break;
+        }
+      }
+
+      // Only fall through to the last card when the list itself finishes past mid-viewport
+      const lastCard = visible[visible.length - 1];
+      if (
+        projectsRight &&
+        projectsRight.getBoundingClientRect().bottom <= window.innerHeight * 0.52
+      ) {
+        chosen = lastCard;
+      }
+
+      const idx = Number(chosen.dataset.index);
+      if (idx !== activeProjectIdx) {
+        setActiveProject(idx);
+      }
+    }
+
+    const requestProjectSync = () => {
+      if (activeRafPending) return;
+      activeRafPending = true;
+      requestAnimationFrame(syncActiveProjectByScroll);
+    };
+
+    window.addEventListener("scroll", requestProjectSync, { passive: true });
+    window.addEventListener("resize", requestProjectSync);
 
     // Subtle vertical parallax on the 16:9 cover image (desktop only, where media-inner is 112% tall)
     if (!prefersReducedMotion) {
