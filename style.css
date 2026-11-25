@@ -122,6 +122,8 @@
   --font-mono: "JetBrains Mono", monospace;
 
   --nav-height: 7.2rem;
+  --container-max: 136rem;
+  --page-gutter: clamp(2rem, 4.5vw, 6rem);
 }
 
 /* =========================================================
@@ -280,7 +282,7 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 h1,
@@ -382,9 +384,10 @@ html.theme-transitioning * {
 
 .nav-inner {
   height: 100%;
-  max-width: 144rem;
+  width: 100%;
+  max-width: calc(var(--container-max) + 2 * var(--page-gutter));
   margin: 0 auto;
-  padding-inline: clamp(2rem, 5vw, 6vw);
+  padding-inline: var(--page-gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -603,7 +606,7 @@ html.theme-transitioning * {
 .Home {
   position: relative;
   overflow: hidden;
-  min-height: calc(100svh - clamp(5.8rem, 8vh, 8.6rem));
+  min-height: min(calc(100svh - clamp(5.8rem, 8vh, 8.6rem)), 104rem);
   padding-top: var(--nav-height);
   display: flex;
   align-items: center;
@@ -631,7 +634,12 @@ html.theme-transitioning * {
 
 .hero-frame {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: calc(var(--container-max) + 2 * var(--page-gutter));
+  transform: translateX(-50%);
   pointer-events: none;
   z-index: 2;
 }
@@ -652,22 +660,22 @@ html.theme-transitioning * {
 
 .corner-tl {
   top: calc(var(--nav-height) + 1.8rem);
-  left: clamp(2rem, 5vw, 6vw);
+  left: var(--page-gutter);
 }
 
 .corner-tr {
   top: calc(var(--nav-height) + 1.8rem);
-  right: clamp(2rem, 5vw, 6vw);
+  right: var(--page-gutter);
 }
 
 .corner-bl {
   bottom: 2.2rem;
-  left: clamp(2rem, 5vw, 6vw);
+  left: var(--page-gutter);
 }
 
 .corner-br {
   bottom: 2.2rem;
-  right: clamp(2rem, 5vw, 6vw);
+  right: var(--page-gutter);
 }
 
 .crop-mark {
@@ -696,7 +704,7 @@ html.theme-transitioning * {
 
 .background-text {
   font-family: var(--font-mono);
-  font-size: clamp(4.6rem, 7.9vw, 16.5rem);
+  font-size: clamp(4.2rem, 7vw, 14.8rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -713,10 +721,10 @@ html.theme-transitioning * {
 .home-content {
   position: relative;
   width: 100%;
-  max-width: 144rem;
+  max-width: calc(var(--container-max) + 2 * var(--page-gutter));
   margin: 0 auto;
   z-index: 2;
-  padding: clamp(3rem, 5vh, 6rem) clamp(2rem, 5vw, 6vw);
+  padding: clamp(3rem, 5vh, 6rem) var(--page-gutter);
 }
 
 .presentation {
@@ -724,7 +732,7 @@ html.theme-transitioning * {
   grid-template-columns: minmax(30rem, 1.05fr) minmax(28rem, 0.95fr);
   align-items: center;
   gap: clamp(3rem, 5vw, 7rem);
-  min-height: calc(100svh - var(--nav-height) - clamp(10rem, 14vh, 16rem));
+  min-height: min(calc(100svh - var(--nav-height) - clamp(10rem, 14vh, 16rem)), 82rem);
 }
 
 .text {
@@ -1023,16 +1031,8 @@ html.theme-transitioning * {
 .skill-icon--lime { color: var(--icon-lime); }
 
 /* =========================================================
-   REMAINING SECTIONS (About / Projects / Contact — Next Steps)
+   ABOUT SECTION — PHONE CHAT & PHYSICS ARENA
    ========================================================= */
-.About,
-.Projects {
-  padding: 10vh 6vw;
-  min-height: 50vh;
-  display: flex;
-  flex-direction: column;
-}
-
 .section h2 {
   font-size: clamp(3rem, 4vw, 6rem);
   font-weight: 800;
@@ -1040,12 +1040,12 @@ html.theme-transitioning * {
   margin-bottom: 2rem;
 }
 
-/* --- ABOUT SECTION & PHONE MOCKUP --- */
 .About {
+  display: block;
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding: clamp(7rem, 10vh, 11rem) clamp(2rem, 5vw, 6vw);
+  padding: clamp(7rem, 10vh, 11rem) var(--page-gutter);
 }
 
 .about-backdrop {
@@ -1067,7 +1067,7 @@ html.theme-transitioning * {
 .about-phone-lift {
   position: absolute;
   top: 56%;
-  left: max(18rem, 19%);
+  left: max(18rem, calc(50% - var(--container-max) / 2 + 17.2rem));
   width: 54rem;
   height: 68rem;
   transform: translate(-50%, -50%);
@@ -1077,7 +1077,8 @@ html.theme-transitioning * {
 .about-topbar {
   position: relative;
   z-index: 2;
-  max-width: 132rem;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto clamp(3rem, 4.5vh, 4.8rem);
   display: flex;
   align-items: center;
@@ -1118,7 +1119,7 @@ html.theme-transitioning * {
   justify-content: space-between;
   gap: clamp(3.6rem, 4.8vw, 6.4rem);
   width: 100%;
-  max-width: 132rem;
+  max-width: var(--container-max);
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -1690,10 +1691,11 @@ body.immersion-active {
    PROJECTS SECTION — EDITORIAL INDEX & SHOWCASES
    ========================================================= */
 .Projects {
+  display: block;
   position: relative;
   overflow-x: clip;
   width: 100%;
-  padding: clamp(8rem, 11vh, 12rem) clamp(2rem, 5vw, 6vw);
+  padding: clamp(8rem, 11vh, 12rem) var(--page-gutter);
 }
 
 .projects-backdrop {
@@ -1716,7 +1718,8 @@ body.immersion-active {
 .projects-grid-lines {
   position: absolute;
   inset: 0;
-  max-width: 132rem;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
   background-image: linear-gradient(
     90deg,
@@ -1749,7 +1752,8 @@ body.immersion-active {
 .projects-topbar {
   position: relative;
   z-index: 2;
-  max-width: 132rem;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto clamp(4rem, 6vh, 6.4rem);
   display: flex;
   align-items: center;
@@ -1808,11 +1812,12 @@ body.immersion-active {
 .projects-container {
   position: relative;
   z-index: 2;
-  max-width: 132rem;
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(25rem, 30rem) minmax(0, 1fr);
-  gap: clamp(3.6rem, 5.5vw, 7.6rem);
+  grid-template-columns: minmax(24rem, 29rem) minmax(0, 1fr);
+  gap: clamp(3.2rem, 4.5vw, 6.4rem);
   align-items: start;
 }
 
@@ -2003,24 +2008,25 @@ body.immersion-active {
 
 .project-card-main {
   display: grid;
-  grid-template-columns: minmax(28rem, 46%) minmax(0, 1fr);
+  grid-template-columns: minmax(28rem, 45%) minmax(0, 1fr);
   align-items: stretch;
 }
 
 .project-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
+  min-height: 27rem;
   overflow: hidden;
   background: var(--project-media-bg);
   border-right: 1px solid var(--border-subtle);
 }
 
 .project-media-inner {
-  position: relative;
+  position: absolute;
+  inset: -6% 0;
   width: 100%;
   height: 112%;
-  margin-top: -6%;
   will-change: transform;
 }
 
@@ -2335,7 +2341,8 @@ body.immersion-active {
 .projects-labs {
   position: relative;
   z-index: 2;
-  max-width: 132rem;
+  width: 100%;
+  max-width: var(--container-max);
   margin: clamp(6rem, 9vh, 9.6rem) auto 0;
   padding-top: 3.2rem;
   border-top: 1px solid var(--border-subtle);
@@ -2422,7 +2429,7 @@ body.immersion-active {
   overflow: hidden;
   width: 100%;
   min-height: auto;
-  padding: clamp(8rem, 11vh, 12rem) clamp(2rem, 5vw, 6vw) 3.2rem;
+  padding: clamp(8rem, 11vh, 12rem) var(--page-gutter) 3.2rem;
   display: flex;
   flex-direction: column;
 }
@@ -2535,7 +2542,7 @@ body.immersion-active {
   top: 44%;
   transform: translate(-50%, -50%);
   font-family: var(--font-mono);
-  font-size: clamp(5.2rem, 11vw, 17rem);
+  font-size: clamp(4.2rem, 9vw, 14.5rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 0.95;
@@ -2555,7 +2562,7 @@ body.immersion-active {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 132rem;
+  max-width: var(--container-max);
   margin-inline: auto;
 }
 
@@ -2838,15 +2845,44 @@ body.immersion-active {
    RESPONSIVE — TABLET & MOBILE
    ========================================================= */
 @media (max-width: 1120px) {
+  .about-container {
+    gap: 3.2rem;
+  }
+
+  .about-container::before {
+    left: calc(312px + 1.6rem);
+  }
+
+  .phone-mockup {
+    width: 312px;
+    height: 610px;
+  }
+
+  .tag-xl { font-size: clamp(3.6rem, 4.6vw, 4.6rem); }
+  .tag-l { font-size: clamp(2.8rem, 3.6vw, 3.6rem); }
+
+  .projects-container {
+    grid-template-columns: minmax(20rem, 23rem) minmax(0, 1fr);
+    gap: 2.8rem;
+  }
+
   .project-card-main {
     grid-template-columns: 1fr;
   }
 
   .project-media {
+    height: auto;
+    min-height: 0;
     aspect-ratio: 16 / 9;
-    max-height: 290px;
+    max-height: 30rem;
     border-right: none;
     border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .project-media-inner {
+    position: absolute;
+    inset: -6% 0;
+    height: 112%;
   }
 
   .project-arch-list {
@@ -3138,13 +3174,23 @@ body.immersion-active {
   }
 
   .project-media {
+    height: auto;
+    min-height: 0;
     aspect-ratio: 16 / 9;
-    max-height: 220px;
+    max-height: 22rem;
   }
 
   .project-media-inner {
+    position: relative;
+    inset: 0;
     height: 100%;
     margin-top: 0;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    padding: 1.1rem 1.8rem;
+    font-size: 1.45rem;
   }
 
   .project-body {
@@ -3207,6 +3253,17 @@ body.immersion-active {
     letter-spacing: 0.1em;
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .contact-copy-btn {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-copy-email {
+    font-size: 1.2rem;
+    overflow-wrap: anywhere;
   }
 
   .contact-footer {
@@ -3360,6 +3417,21 @@ body.immersion-active {
 @media (max-width: 520px) {
   .nav-links {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-inner {
+    gap: 1rem;
+  }
+
+  .contact-cta-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .contact-cta-actions > * {
+    width: 100%;
   }
 }
 
