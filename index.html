@@ -647,7 +647,9 @@
     <section class="Contact section" id="Contact">
         <div class="contact-backdrop" aria-hidden="true">
             <div class="contact-grain"></div>
-            <div class="contact-ambient"></div>
+            <div class="contact-dots"></div>
+            <div class="contact-horizon"></div>
+            <div class="contact-bg-word" data-i18n="contact.bgWord">Let's Talk</div>
         </div>
 
         <div class="contact-topbar">
@@ -657,101 +659,109 @@
             </div>
             <div class="contact-availability">
                 <span class="availability-dot" aria-hidden="true"></span>
-                <span data-i18n="contact.availability">OPEN TO OPPORTUNITIES</span>
+                <span data-i18n="contact.availability">OPEN TO PROJECTS &amp; ROLES</span>
             </div>
         </div>
 
-        <div class="contact-stage">
-            <div class="contact-grid">
-                <a
-                    class="contact-card"
-                    href="https://github.com/MarissaBorges"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub — MarissaBorges">
-                    <span class="contact-avatar" aria-hidden="true">
-                        <i class="ph ph-github-logo avatar-icon"></i>
-                        <!-- Optional Figma portrait: <img class="avatar-photo" src="src/contact/github.png" alt=""> -->
-                    </span>
-                    <span class="contact-copy">
-                        <span class="contact-title">
-                            <span data-i18n="contact.githubLine1">Explore my</span>
-                            <span>GitHub</span>
-                        </span>
-                        <span class="contact-handle">
-                            <span>MarissaBorges</span>
-                            <span class="contact-arrow" aria-hidden="true">↗</span>
-                        </span>
-                    </span>
+        <div class="contact-cta">
+            <div class="contact-cta-meta">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span>GOIÁS · BR</span>
+                <span class="corner-sep">/</span>
+                <span data-i18n="contact.metaStack">PYTHON · AI · FULL-STACK</span>
+                <span class="corner-sep">/</span>
+                <span>UTC-3</span>
+                <span class="crop-mark" aria-hidden="true">+</span>
+            </div>
+
+            <h2 class="contact-headline">
+                <span data-i18n="contact.headlineA">Let's build</span>
+                <span class="contact-headline-accent" data-i18n="contact.headlineB">something real.</span>
+            </h2>
+
+            <p class="contact-lede" data-i18n="contact.lede">
+                Available for backend systems, applied AI projects, and new engineering opportunities.
+            </p>
+
+            <div class="contact-cta-actions">
+                <a href="mailto:marissaborges2006@gmail.com" class="btn-primary magnetic">
+                    <span data-i18n="contact.ctaPrimary">Start a conversation</span>
+                    <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
                 </a>
 
-                <a
-                    class="contact-card"
-                    href="https://www.linkedin.com/in/marissaborges"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn — MarissaBorges">
-                    <span class="contact-avatar" aria-hidden="true">
-                        <i class="ph ph-linkedin-logo avatar-icon"></i>
-                        <!-- Optional Figma portrait: <img class="avatar-photo" src="src/contact/linkedin.png" alt=""> -->
-                    </span>
-                    <span class="contact-copy">
-                        <span class="contact-title">
-                            <span data-i18n="contact.linkedinLine1">Explore my</span>
-                            <span>LinkedIn</span>
-                        </span>
-                        <span class="contact-handle">
-                            <span>MarissaBorges</span>
-                            <span class="contact-arrow" aria-hidden="true">↗</span>
-                        </span>
-                    </span>
-                </a>
-
-                <a
-                    class="contact-card"
-                    href="mailto:marissaborges2006@gmail.com"
-                    aria-label="Email — marissaborges2006@gmail.com"
-                    title="marissaborges2006@gmail.com">
-                    <span class="contact-avatar" aria-hidden="true">
-                        <i class="ph ph-envelope-simple avatar-icon"></i>
-                        <!-- Optional Figma portrait: <img class="avatar-photo" src="src/contact/email.png" alt=""> -->
-                    </span>
-                    <span class="contact-copy">
-                        <span class="contact-title">
-                            <span data-i18n="contact.emailLine1">Send me an</span>
-                            <span>Email</span>
-                        </span>
-                        <span class="contact-handle">
-                            <span>MarissaBorges</span>
-                            <span class="contact-arrow" aria-hidden="true">↗</span>
-                        </span>
-                    </span>
-                </a>
-
-                <!-- Replace href with your full WhatsApp link including country/area code, e.g. https://wa.me/5562999999999 -->
-                <a
-                    class="contact-card"
-                    href="https://wa.me/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="WhatsApp — MarissaBorges">
-                    <span class="contact-avatar" aria-hidden="true">
-                        <i class="ph ph-whatsapp-logo avatar-icon"></i>
-                        <!-- Optional Figma portrait: <img class="avatar-photo" src="src/contact/whatsapp.png" alt=""> -->
-                    </span>
-                    <span class="contact-copy">
-                        <span class="contact-title">
-                            <span data-i18n="contact.whatsappLine1">Chat with me</span>
-                            <span data-i18n="contact.whatsappLine2">on WhatsApp</span>
-                        </span>
-                        <span class="contact-handle">
-                            <span>MarissaBorges</span>
-                            <span class="contact-arrow" aria-hidden="true">↗</span>
-                        </span>
-                    </span>
-                </a>
+                <button
+                    type="button"
+                    class="btn-ghost magnetic contact-copy-btn"
+                    id="contactCopyBtn"
+                    data-email="marissaborges2006@gmail.com"
+                    aria-label="Copy email address">
+                    <span class="contact-copy-email">marissaborges2006@gmail.com</span>
+                    <i class="ph ph-copy" id="contactCopyIcon" aria-hidden="true"></i>
+                    <span class="contact-copy-badge" id="contactCopyLabel" data-i18n="contact.copy">Copy</span>
+                </button>
             </div>
         </div>
+
+        <nav class="contact-strip" aria-label="Contact channels">
+            <a
+                class="contact-strip-item"
+                href="https://github.com/MarissaBorges"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span class="strip-top">
+                    <span class="strip-id">01 <i class="ph ph-github-logo" aria-hidden="true"></i></span>
+                    <span class="strip-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="strip-bottom">
+                    <span class="strip-name">GitHub</span>
+                    <span class="strip-handle">@MarissaBorges</span>
+                </span>
+            </a>
+
+            <a
+                class="contact-strip-item"
+                href="https://www.linkedin.com/in/marissaborges"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span class="strip-top">
+                    <span class="strip-id">02 <i class="ph ph-linkedin-logo" aria-hidden="true"></i></span>
+                    <span class="strip-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="strip-bottom">
+                    <span class="strip-name">LinkedIn</span>
+                    <span class="strip-handle">/in/marissaborges</span>
+                </span>
+            </a>
+
+            <a
+                class="contact-strip-item"
+                href="mailto:marissaborges2006@gmail.com">
+                <span class="strip-top">
+                    <span class="strip-id">03 <i class="ph ph-envelope-simple" aria-hidden="true"></i></span>
+                    <span class="strip-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="strip-bottom">
+                    <span class="strip-name">Email</span>
+                    <span class="strip-handle">marissaborges2006</span>
+                </span>
+            </a>
+
+            <!-- Replace href with your full WhatsApp link including country/area code, e.g. https://wa.me/5562999999999 -->
+            <a
+                class="contact-strip-item"
+                href="https://wa.me/"
+                target="_blank"
+                rel="noopener noreferrer">
+                <span class="strip-top">
+                    <span class="strip-id">04 <i class="ph ph-whatsapp-logo" aria-hidden="true"></i></span>
+                    <span class="strip-arrow" aria-hidden="true">↗</span>
+                </span>
+                <span class="strip-bottom">
+                    <span class="strip-name">WhatsApp</span>
+                    <span class="strip-handle">MarissaBorges</span>
+                </span>
+            </a>
+        </nav>
 
         <footer class="contact-footer">
             <span class="footer-item">© 2026 MARISSA BORGES</span>

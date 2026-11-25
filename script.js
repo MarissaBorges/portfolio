@@ -103,12 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
         "Internal HR management system handling staff records, roles, and structured workflows.",
       "contact.heading": "Contact",
       "contact.kicker": "CONTACT",
-      "contact.availability": "OPEN TO OPPORTUNITIES",
-      "contact.githubLine1": "Explore my",
-      "contact.linkedinLine1": "Explore my",
-      "contact.emailLine1": "Send me an",
-      "contact.whatsappLine1": "Chat with me",
-      "contact.whatsappLine2": "on WhatsApp",
+      "contact.availability": "OPEN TO PROJECTS & ROLES",
+      "contact.bgWord": "Let's Talk",
+      "contact.metaStack": "PYTHON · AI · FULL-STACK",
+      "contact.headlineA": "Let's build",
+      "contact.headlineB": "something real.",
+      "contact.lede":
+        "Available for backend systems, applied AI projects, and new engineering opportunities.",
+      "contact.ctaPrimary": "Start a conversation",
+      "contact.copy": "Copy",
+      "contact.copied": "Copied",
       "contact.localTime": "LOCAL TIME",
       "contact.backTop": "Back to top",
     },
@@ -202,12 +206,16 @@ document.addEventListener("DOMContentLoaded", () => {
         "Sistema interno de gestão de RH com cadastros de colaboradores, perfis e fluxos estruturados.",
       "contact.heading": "Contato",
       "contact.kicker": "CONTATO",
-      "contact.availability": "ABERTA A OPORTUNIDADES",
-      "contact.githubLine1": "Conheça meu",
-      "contact.linkedinLine1": "Conheça meu",
-      "contact.emailLine1": "Me envie um",
-      "contact.whatsappLine1": "Fale comigo",
-      "contact.whatsappLine2": "pelo WhatsApp",
+      "contact.availability": "ABERTA A PROJETOS & VAGAS",
+      "contact.bgWord": "Vamos Conversar",
+      "contact.metaStack": "PYTHON · IA · FULL-STACK",
+      "contact.headlineA": "Vamos construir",
+      "contact.headlineB": "algo de verdade.",
+      "contact.lede":
+        "Disponível para sistemas de backend, projetos com IA aplicada e novas oportunidades em engenharia.",
+      "contact.ctaPrimary": "Iniciar conversa",
+      "contact.copy": "Copiar",
+      "contact.copied": "Copiado",
       "contact.localTime": "HORA LOCAL",
       "contact.backTop": "Voltar ao topo",
     },
@@ -383,7 +391,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function swapElementWithRipple(el, newText) {
-    if (el.classList.contains("background-text")) {
+    if (
+      el.classList.contains("background-text") ||
+      el.classList.contains("contact-bg-word")
+    ) {
       gsap.killTweensOf(el, "opacity");
       gsap
         .timeline()
@@ -937,6 +948,51 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateClock, 1000);
   }
 
+  const contactCopyBtn = document.getElementById("contactCopyBtn");
+  const contactCopyIcon = document.getElementById("contactCopyIcon");
+  const contactCopyLabel = document.getElementById("contactCopyLabel");
+  if (contactCopyBtn && contactCopyLabel) {
+    let copyResetTimer = null;
+    contactCopyBtn.addEventListener("click", async () => {
+      const email = contactCopyBtn.dataset.email || "";
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(email);
+        ok = true;
+      } catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = email;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          ok = document.execCommand("copy");
+        } catch (__) {
+          ok = false;
+        }
+        ta.remove();
+      }
+      if (!ok) {
+        window.location.href = `mailto:${email}`;
+        return;
+      }
+      contactCopyBtn.classList.add("is-copied");
+      if (contactCopyIcon) {
+        contactCopyIcon.classList.replace("ph-copy", "ph-check");
+      }
+      contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copied"];
+      clearTimeout(copyResetTimer);
+      copyResetTimer = setTimeout(() => {
+        contactCopyBtn.classList.remove("is-copied");
+        if (contactCopyIcon) {
+          contactCopyIcon.classList.replace("ph-check", "ph-copy");
+        }
+        contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copy"];
+      }, 1800);
+    });
+  }
+
   const backToTop = document.getElementById("backToTop");
   if (backToTop) {
     backToTop.addEventListener("click", (e) => {
@@ -1233,6 +1289,25 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       );
     });
+
+    if (document.querySelector(".contact-bg-word")) {
+      gsap.fromTo(
+        ".contact-bg-word",
+        { xPercent: -50, yPercent: -50, y: -36 },
+        {
+          xPercent: -50,
+          yPercent: -50,
+          y: 36,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "#Contact",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        },
+      );
+    }
   }
 
   // =========================================================
