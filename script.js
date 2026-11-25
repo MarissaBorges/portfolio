@@ -367,6 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const langBubble = document.getElementById("langWaveBubble");
   let activeWaveTl = null;
   const heroNodeWave = { active: false, x: 0, y: 0, radius: 0, prevRadius: 0 };
+  let refreshHeroCanvasPalette = () => {};
 
   function applyToggleState(lang) {
     if (!langToggle) return;
@@ -595,6 +596,99 @@ document.addEventListener("DOMContentLoaded", () => {
     langToggle.addEventListener("click", () => {
       const nextLang = currentLang === "en" ? "pt" : "en";
       switchLanguageWithWave(nextLang, langToggle);
+    });
+  }
+
+  // =========================================================
+  // 1B. THEME SWITCHER (DARK / PYWAL LIGHT)
+  // =========================================================
+  const themeToggle = document.getElementById("themeToggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  let currentTheme =
+    document.documentElement.getAttribute("data-theme") === "light"
+      ? "light"
+      : "dark";
+
+  function applyTheme(theme) {
+    currentTheme = theme === "light" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    if (themeMeta) {
+      themeMeta.setAttribute(
+        "content",
+        currentTheme === "light" ? "#f3f1eb" : "#070711",
+      );
+    }
+    if (themeToggle) {
+      themeToggle.setAttribute(
+        "aria-pressed",
+        currentTheme === "light" ? "true" : "false",
+      );
+    }
+    try {
+      localStorage.setItem("borges-theme", currentTheme);
+    } catch (_) {
+      /* localStorage optional */
+    }
+    refreshHeroCanvasPalette();
+  }
+
+  function switchTheme(nextTheme, originEl) {
+    if (nextTheme === currentTheme) return;
+
+    if (
+      !prefersReducedMotion &&
+      typeof document.startViewTransition === "function" &&
+      originEl
+    ) {
+      const rect = originEl.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const maxRadius = Math.hypot(
+        Math.max(cx, window.innerWidth - cx),
+        Math.max(cy, window.innerHeight - cy),
+      );
+
+      const transition = document.startViewTransition(() => {
+        applyTheme(nextTheme);
+      });
+
+      transition.ready
+        .then(() => {
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${cx}px ${cy}px)`,
+                `circle(${maxRadius}px at ${cx}px ${cy}px)`,
+              ],
+            },
+            {
+              duration: 580,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              pseudoElement: "::view-transition-new(root)",
+            },
+          );
+        })
+        .catch(() => {});
+      return;
+    }
+
+    if (!prefersReducedMotion) {
+      document.documentElement.classList.add("theme-transitioning");
+      setTimeout(() => {
+        document.documentElement.classList.remove("theme-transitioning");
+      }, 380);
+    }
+    applyTheme(nextTheme);
+  }
+
+  if (themeToggle) {
+    themeToggle.setAttribute(
+      "aria-pressed",
+      currentTheme === "light" ? "true" : "false",
+    );
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = currentTheme === "light" ? "dark" : "light";
+      switchTheme(nextTheme, themeToggle);
     });
   }
 
@@ -924,6 +1018,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let palette = readNodeColors();
+
+    refreshHeroCanvasPalette = () => {
+      palette = readNodeColors();
+      renderNodes(true);
+    };
 
     function seedNodes() {
       const area = width * height;
