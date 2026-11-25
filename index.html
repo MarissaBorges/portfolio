@@ -625,7 +625,72 @@
 
     <!-- CONTACT SECTION -->
     <section class="Contact section" id="Contact">
-        <h2 data-i18n="contact.heading">Contact</h2>
+        <div class="contact-backdrop" aria-hidden="true">
+            <div class="contact-grain"></div>
+            <div class="contact-ambient"></div>
+        </div>
+
+        <div class="contact-topbar">
+            <div class="section-meta">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span class="section-index">04 <span class="corner-sep">/</span> <span data-i18n="contact.kicker">CONTACT</span></span>
+            </div>
+            <div class="contact-availability">
+                <span class="availability-dot" aria-hidden="true"></span>
+                <span data-i18n="contact.availability">OPEN TO OPPORTUNITIES</span>
+            </div>
+        </div>
+
+        <div class="contact-main">
+            <h2 class="contact-headline">
+                <span data-i18n="contact.headlineA">Have an idea,</span>
+                <span class="contact-headline-soft" data-i18n="contact.headlineB">a role or a problem to solve?</span>
+            </h2>
+
+            <p class="contact-lede" data-i18n="contact.lede">
+                I'm always up for a conversation about AI, backend systems or building something from scratch. The fastest way to reach me is email.
+            </p>
+
+            <button type="button" class="contact-email" id="contactEmailBtn" data-email="marissaborges2006@gmail.com" aria-label="Copy email address">
+                <span class="contact-email-text">marissaborges2006@gmail.com</span>
+                <span class="contact-email-action">
+                    <i class="ph ph-copy" aria-hidden="true"></i>
+                    <span id="contactCopyLabel" data-i18n="contact.copy">Copy</span>
+                </span>
+            </button>
+        </div>
+
+        <div class="contact-channels">
+            <a href="mailto:marissaborges2006@gmail.com" class="channel-row">
+                <span class="channel-name">Email</span>
+                <span class="channel-handle">marissaborges2006@gmail.com</span>
+                <span class="channel-note" data-i18n="contact.noteEmail">Best for proposals</span>
+                <i class="ph ph-arrow-up-right channel-arrow" aria-hidden="true"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/marissaborges" target="_blank" rel="noopener noreferrer" class="channel-row">
+                <span class="channel-name">LinkedIn</span>
+                <span class="channel-handle">/in/marissaborges</span>
+                <span class="channel-note" data-i18n="contact.noteLinkedin">Career &amp; networking</span>
+                <i class="ph ph-arrow-up-right channel-arrow" aria-hidden="true"></i>
+            </a>
+
+            <a href="https://github.com/MarissaBorges" target="_blank" rel="noopener noreferrer" class="channel-row">
+                <span class="channel-name">GitHub</span>
+                <span class="channel-handle">/MarissaBorges</span>
+                <span class="channel-note" data-i18n="contact.noteGithub">Code &amp; open source</span>
+                <i class="ph ph-arrow-up-right channel-arrow" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <footer class="contact-footer">
+            <span class="footer-item">© 2026 MARISSA BORGES</span>
+            <span class="footer-item footer-local"><span data-i18n="contact.localTime">LOCAL TIME</span> <span id="contactClock">--:--:--</span> BRT</span>
+            <a href="#Home" class="footer-top" id="backToTop">
+                <span data-i18n="contact.backTop">Back to top</span>
+                <i class="ph ph-arrow-up" aria-hidden="true"></i>
+            </a>
+        </footer>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>

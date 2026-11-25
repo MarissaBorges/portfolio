@@ -102,6 +102,19 @@ document.addEventListener("DOMContentLoaded", () => {
       "lab.neogestao.desc":
         "Internal HR management system handling staff records, roles, and structured workflows.",
       "contact.heading": "Contact",
+      "contact.kicker": "CONTACT",
+      "contact.availability": "OPEN TO OPPORTUNITIES",
+      "contact.headlineA": "Have an idea,",
+      "contact.headlineB": "a role or a problem to solve?",
+      "contact.lede":
+        "I'm always up for a conversation about AI, backend systems or building something from scratch. The fastest way to reach me is email.",
+      "contact.copy": "Copy",
+      "contact.copied": "Copied",
+      "contact.noteEmail": "Best for proposals",
+      "contact.noteLinkedin": "Career & networking",
+      "contact.noteGithub": "Code & open source",
+      "contact.localTime": "LOCAL TIME",
+      "contact.backTop": "Back to top",
     },
     pt: {
       "meta.title": "Borges — Desenvolvedora Python",
@@ -192,6 +205,19 @@ document.addEventListener("DOMContentLoaded", () => {
       "lab.neogestao.desc":
         "Sistema interno de gestão de RH com cadastros de colaboradores, perfis e fluxos estruturados.",
       "contact.heading": "Contato",
+      "contact.kicker": "CONTATO",
+      "contact.availability": "ABERTA A OPORTUNIDADES",
+      "contact.headlineA": "Tem uma ideia,",
+      "contact.headlineB": "uma vaga ou um problema pra resolver?",
+      "contact.lede":
+        "Estou sempre aberta a uma conversa sobre IA, sistemas de backend ou construir algo do zero. O jeito mais rápido de falar comigo é por e-mail.",
+      "contact.copy": "Copiar",
+      "contact.copied": "Copiado",
+      "contact.noteEmail": "Ideal para propostas",
+      "contact.noteLinkedin": "Carreira & networking",
+      "contact.noteGithub": "Código & open source",
+      "contact.localTime": "HORA LOCAL",
+      "contact.backTop": "Voltar ao topo",
     },
   };
 
@@ -803,8 +829,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3B. EDITORIAL CORNER DETAILS & INTERACTIVE NODE FIELD
   // =========================================================
   const heroClockEl = document.getElementById("heroClock");
+  const contactClockEl = document.getElementById("contactClock");
   const phoneClockEl = document.getElementById("phoneClock");
-  if (heroClockEl || phoneClockEl) {
+  if (heroClockEl || phoneClockEl || contactClockEl) {
     const clockFormatter = new Intl.DateTimeFormat("pt-BR", {
       timeZone: "America/Sao_Paulo",
       hour: "2-digit",
@@ -816,11 +843,62 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!document.hidden) {
         const formatted = clockFormatter.format(new Date());
         if (heroClockEl) heroClockEl.textContent = formatted;
+        if (contactClockEl) contactClockEl.textContent = formatted;
         if (phoneClockEl) phoneClockEl.textContent = formatted.slice(0, 5);
       }
     };
     updateClock();
     setInterval(updateClock, 1000);
+  }
+
+  // Contact: copy-to-clipboard email + back to top
+  const contactEmailBtn = document.getElementById("contactEmailBtn");
+  const contactCopyLabel = document.getElementById("contactCopyLabel");
+  if (contactEmailBtn && contactCopyLabel) {
+    let copyResetTimer = null;
+    contactEmailBtn.addEventListener("click", async () => {
+      const email = contactEmailBtn.dataset.email || "";
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(email);
+        ok = true;
+      } catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = email;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          ok = document.execCommand("copy");
+        } catch (__) {
+          ok = false;
+        }
+        ta.remove();
+      }
+      if (!ok) {
+        window.location.href = `mailto:${email}`;
+        return;
+      }
+      contactEmailBtn.classList.add("is-copied");
+      contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copied"];
+      clearTimeout(copyResetTimer);
+      copyResetTimer = setTimeout(() => {
+        contactEmailBtn.classList.remove("is-copied");
+        contactCopyLabel.textContent = TRANSLATIONS[currentLang]["contact.copy"];
+      }, 1800);
+    });
+  }
+
+  const backToTop = document.getElementById("backToTop");
+  if (backToTop) {
+    backToTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    });
   }
 
   const heroCoordsEl = document.getElementById("heroCoords");
