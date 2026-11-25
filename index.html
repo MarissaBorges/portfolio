@@ -277,116 +277,348 @@
 
     <!-- PROJECTS SECTION -->
     <section class="Projects section" id="Projects">
-        <div class="projects-container">
-            <!-- Sticky Left Slider -->
-            <div class="projects-left">
-                <div class="title-slider-wrapper">
-                    <div class="slider-line"></div>
-                    <div class="title-stack">
-                        <span class="title-word ghost" data-i18n="projects.heading">Projects</span>
-                        <span class="title-word active" data-i18n="projects.heading">Projects</span>
-                        <span class="title-word ghost" data-i18n="projects.heading">Projects</span>
-                        <span class="title-word ghost" data-i18n="projects.heading">Projects</span>
-                    </div>
-                </div>
+        <div class="projects-backdrop" aria-hidden="true">
+            <div class="projects-grain"></div>
+            <div class="projects-grid-lines"></div>
+            <div class="projects-ambient-lift"></div>
+        </div>
+
+        <div class="projects-topbar">
+            <div class="section-meta">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span class="section-index">03 <span class="corner-sep">/</span> <span data-i18n="projects.kicker">PROJECTS</span></span>
             </div>
 
-            <!-- Scrolling Right Cards -->
-            <div class="projects-right">
-                <!-- Card 1 -->
-                <div class="project-card">
-                    <div class="project-carousel">
-                        <div class="carousel-track">
-                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" alt="Project 1 - Img 1">
-                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80" alt="Project 1 - Img 2">
-                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Project 1 - Img 3">
-                        </div>
-                        <button class="carousel-btn prev-btn" aria-label="Previous slide">❮</button>
-                        <button class="carousel-btn next-btn" aria-label="Next slide">❯</button>
-                        <div class="carousel-indicators"></div>
+            <div class="projects-filters" id="projectFilters" role="tablist" aria-label="Filter projects">
+                <button type="button" class="project-filter is-active" data-filter="all" role="tab" aria-selected="true" data-i18n="projects.filterAll">All</button>
+                <button type="button" class="project-filter" data-filter="ai" role="tab" aria-selected="false" data-i18n="projects.filterAi">AI</button>
+                <button type="button" class="project-filter" data-filter="fullstack" role="tab" aria-selected="false" data-i18n="projects.filterFullstack">Full-Stack</button>
+                <button type="button" class="project-filter" data-filter="erp" role="tab" aria-selected="false" data-i18n="projects.filterErp">ERP</button>
+            </div>
+        </div>
+
+        <div class="projects-container">
+            <!-- Sticky Left Project Index -->
+            <aside class="projects-left" aria-label="Selected projects index">
+                <div class="projects-index-shell">
+                    <div class="projects-progress-track" aria-hidden="true">
+                        <div class="projects-progress-fill" id="projectsProgressFill"></div>
                     </div>
-                    <div class="project-info">
-                        <h3>Project Title 1</h3>
-                        <p>A brief description of the first project. It highlights the main challenges overcome and the overall impact of the solution built.</p>
-                        <div class="project-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                        </div>
-                        <a href="#" class="project-link" data-i18n="projects.view">View Project →</a>
+
+                    <div class="projects-index-list" id="projectsIndexList">
+                        <button type="button" class="project-index-item is-active" data-target="project-oros" data-index="0">
+                            <span class="project-index-num">01</span>
+                            <span class="project-index-meta">
+                                <span class="project-index-name">OROS</span>
+                                <span class="project-index-sub" data-i18n="proj.oros.sub">Local-First AI Assistant</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="project-index-item" data-target="project-tallenn" data-index="1">
+                            <span class="project-index-num">02</span>
+                            <span class="project-index-meta">
+                                <span class="project-index-name">Tallenn</span>
+                                <span class="project-index-sub" data-i18n="proj.tallenn.sub">Career &amp; Job Pipeline</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="project-index-item" data-target="project-hne" data-index="2">
+                            <span class="project-index-num">03</span>
+                            <span class="project-index-meta">
+                                <span class="project-index-name">Help na Escolha</span>
+                                <span class="project-index-sub" data-i18n="proj.hne.sub">Commercial BI + AI SaaS</span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="project-index-item" data-target="project-signa" data-index="3">
+                            <span class="project-index-num">04</span>
+                            <span class="project-index-meta">
+                                <span class="project-index-name">Signa</span>
+                                <span class="project-index-sub" data-i18n="proj.signa.sub">Tasy ERP Signature Studio</span>
+                            </span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Card 2 -->
-                <div class="project-card">
-                    <div class="project-carousel">
-                        <div class="carousel-track">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Project 2 - Img 1">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Project 2 - Img 2">
-                            <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80" alt="Project 2 - Img 3">
+                <div class="projects-index-footer">
+                    <span class="projects-counter" id="projectsCounter">01 / 04</span>
+                    <a href="https://github.com/MarissaBorges" target="_blank" rel="noopener noreferrer" class="projects-github-link">
+                        <span data-i18n="projects.moreGithub">More on GitHub</span>
+                        <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Scrolling Right Project Showcases -->
+            <div class="projects-right" id="projectsList">
+                <!-- 01 · OROS -->
+                <article class="project-card" id="project-oros" data-index="0" data-categories="ai fullstack">
+                    <div class="project-media">
+                        <div class="project-media-inner">
+                            <img src="src/projects/oros-cover.jpg" alt="OROS — Local-First AI Voice Assistant" loading="lazy">
                         </div>
-                        <button class="carousel-btn prev-btn" aria-label="Previous slide">❮</button>
-                        <button class="carousel-btn next-btn" aria-label="Next slide">❯</button>
-                        <div class="carousel-indicators"></div>
+                        <div class="project-media-meta">
+                            <span class="project-badge-num">01</span>
+                            <span class="project-badge-kind" data-i18n="proj.oros.badge">LOCAL AI</span>
+                        </div>
                     </div>
-                    <div class="project-info">
-                        <h3>Project Title 2</h3>
-                        <p>An overview of the second project. This platform allowed users to seamlessly analyze their data in real-time using advanced dashboards.</p>
-                        <div class="project-tech">
+
+                    <div class="project-body">
+                        <div class="project-head">
+                            <h3 class="project-title">OROS</h3>
+                            <span class="project-role" data-i18n="proj.oros.role">Open Source · Voice &amp; Desktop Agent</span>
+                        </div>
+
+                        <p class="project-desc" data-i18n="proj.oros.desc">
+                            Local-first AI voice assistant that runs offline with Ollama and OpenJarvis, pairing system tool execution with persistent learned memory and a Django control deck.
+                        </p>
+
+                        <div class="project-stack-line" aria-label="Technology stack">
                             <span>Python</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Ollama</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
                             <span>Django</span>
-                            <span>Pandas</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>SQLite FTS5</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Voice Pipeline</span>
                         </div>
-                        <a href="#" class="project-link" data-i18n="projects.view">View Project →</a>
-                    </div>
-                </div>
 
-                <!-- Card 3 -->
-                <div class="project-card">
-                    <div class="project-carousel">
-                        <div class="carousel-track">
-                            <img src="https://images.unsplash.com/photo-1618477247222-acaff0b2a758?auto=format&fit=crop&w=800&q=80" alt="Project 3 - Img 1">
-                            <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80" alt="Project 3 - Img 2">
-                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" alt="Project 3 - Img 3">
+                        <div class="project-arch" data-arch>
+                            <button type="button" class="project-arch-toggle" aria-expanded="false">
+                                <span data-i18n="projects.archLabel">Architecture</span>
+                                <i class="ph ph-caret-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="project-arch-panel" hidden>
+                                <ul class="project-arch-list">
+                                    <li data-i18n="proj.oros.arch1">Local LLM orchestration over Ollama + OpenJarvis with bounded system tools and voice capture.</li>
+                                    <li data-i18n="proj.oros.arch2">Zero-dependency learned memory backed by Markdown files and SQLite FTS5 full-text indexing.</li>
+                                    <li data-i18n="proj.oros.arch3">Django API and web deck for live session inspection, memory auditing, and tool control.</li>
+                                </ul>
+                            </div>
                         </div>
-                        <button class="carousel-btn prev-btn" aria-label="Previous slide">❮</button>
-                        <button class="carousel-btn next-btn" aria-label="Next slide">❯</button>
-                        <div class="carousel-indicators"></div>
-                    </div>
-                    <div class="project-info">
-                        <h3>Project Title 3</h3>
-                        <p>A smart automation tool that reduces manual workload by 80%. Integrated deeply with multiple third-party APIs for seamless data flow.</p>
-                        <div class="project-tech">
-                            <span>Automation</span>
-                            <span>Selenium</span>
-                            <span>APIs</span>
-                        </div>
-                        <a href="#" class="project-link" data-i18n="projects.view">View Project →</a>
-                    </div>
-                </div>
 
-                <!-- Card 4 -->
-                <div class="project-card">
-                    <div class="project-carousel">
-                        <div class="carousel-track">
-                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" alt="Project 4 - Img 1">
-                            <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80" alt="Project 4 - Img 2">
-                            <img src="https://images.unsplash.com/photo-1627398240411-a83d29d89201?auto=format&fit=crop&w=800&q=80" alt="Project 4 - Img 3">
+                        <div class="project-actions">
+                            <a href="https://github.com/MarissaBorges/oros" target="_blank" rel="noopener noreferrer" class="project-link project-link--primary">
+                                <i class="ph ph-github-logo" aria-hidden="true"></i>
+                                <span data-i18n="projects.viewRepo">View Repository</span>
+                                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                            </a>
                         </div>
-                        <button class="carousel-btn prev-btn" aria-label="Previous slide">❮</button>
-                        <button class="carousel-btn next-btn" aria-label="Next slide">❯</button>
-                        <div class="carousel-indicators"></div>
                     </div>
-                    <div class="project-info">
-                        <h3>Project Title 4</h3>
-                        <p>An AI-powered agent interface built with modern web standards, featuring interactive 3D physics and natural language processing capabilities.</p>
-                        <div class="project-tech">
-                            <span>Langchain</span>
-                            <span>CSS</span>
-                            <span>HTMX</span>
+                </article>
+
+                <!-- 02 · Tallenn -->
+                <article class="project-card" id="project-tallenn" data-index="1" data-categories="ai fullstack">
+                    <div class="project-media">
+                        <div class="project-media-inner">
+                            <img src="src/projects/tallenn-cover.jpg" alt="Tallenn — Career & Job Collection Platform" loading="lazy">
                         </div>
-                        <a href="#" class="project-link" data-i18n="projects.view">View Project →</a>
+                        <div class="project-media-meta">
+                            <span class="project-badge-num">02</span>
+                            <span class="project-badge-kind" data-i18n="proj.tallenn.badge">AUTOMATION</span>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="project-body">
+                        <div class="project-head">
+                            <h3 class="project-title">Tallenn</h3>
+                            <span class="project-role" data-i18n="proj.tallenn.role">Open Source · Career Hub &amp; Scraper</span>
+                        </div>
+
+                        <p class="project-desc" data-i18n="proj.tallenn.desc">
+                            Career discovery platform that automates job collection across real career portals using Playwright and Browser-use workers, unified inside an authenticated Django workspace.
+                        </p>
+
+                        <div class="project-stack-line" aria-label="Technology stack">
+                            <span>Python</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>FastAPI</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Django</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Playwright</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>PostgreSQL</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>GSAP</span>
+                        </div>
+
+                        <div class="project-arch" data-arch>
+                            <button type="button" class="project-arch-toggle" aria-expanded="false">
+                                <span data-i18n="projects.archLabel">Architecture</span>
+                                <i class="ph ph-caret-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="project-arch-panel" hidden>
+                                <ul class="project-arch-list">
+                                    <li data-i18n="proj.tallenn.arch1">FastAPI ingestion service dispatching asynchronous Playwright + Browser-use Actor scraping workers.</li>
+                                    <li data-i18n="proj.tallenn.arch2">Authenticated Django workspace paired with PostgreSQL for job normalization, tracking, and saved states.</li>
+                                    <li data-i18n="proj.tallenn.arch3">Custom GSAP animated SVG scenes and containerized Docker Compose deployment.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://github.com/MarissaBorges/tallenn" target="_blank" rel="noopener noreferrer" class="project-link project-link--primary">
+                                <i class="ph ph-github-logo" aria-hidden="true"></i>
+                                <span data-i18n="projects.viewRepo">View Repository</span>
+                                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 03 · Help na Escolha -->
+                <article class="project-card" id="project-hne" data-index="2" data-categories="ai fullstack">
+                    <div class="project-media">
+                        <div class="project-media-inner">
+                            <img src="src/projects/help-na-escolha-cover.jpg" alt="Help na Escolha — Commercial BI & AI SaaS" loading="lazy">
+                        </div>
+                        <div class="project-media-meta">
+                            <span class="project-badge-num">03</span>
+                            <span class="project-badge-kind" data-i18n="proj.hne.badge">COMMERCIAL SAAS</span>
+                        </div>
+                    </div>
+
+                    <div class="project-body">
+                        <div class="project-head">
+                            <h3 class="project-title">Help na Escolha</h3>
+                            <span class="project-role" data-i18n="proj.hne.role">Production SaaS · Multi-Tenant BI + AI</span>
+                        </div>
+
+                        <p class="project-desc" data-i18n="proj.hne.desc">
+                            Commercial business intelligence SaaS combining real-time analytical dashboards with a dedicated LangGraph AI assistant that answers business questions safely per tenant.
+                        </p>
+
+                        <div class="project-stack-line" aria-label="Technology stack">
+                            <span>Django</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>FastAPI</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>LangGraph</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>ChromaDB</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>PostgreSQL</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Docker</span>
+                        </div>
+
+                        <div class="project-arch" data-arch>
+                            <button type="button" class="project-arch-toggle" aria-expanded="false">
+                                <span data-i18n="projects.archLabel">Architecture</span>
+                                <i class="ph ph-caret-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="project-arch-panel" hidden>
+                                <ul class="project-arch-list">
+                                    <li data-i18n="proj.hne.arch1">Hybrid architecture separating core multi-tenant Django dashboards from an async FastAPI AI microservice.</li>
+                                    <li data-i18n="proj.hne.arch2">LangGraph ReAct agent constrained to validated ORM tools with strict workspace row-level isolation.</li>
+                                    <li data-i18n="proj.hne.arch3">ChromaDB semantic retrieval combined with PostgreSQL analytical views and Dockerized Nginx routing.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://plataformahne.com.br" target="_blank" rel="noopener noreferrer" class="project-link project-link--primary">
+                                <i class="ph ph-globe" aria-hidden="true"></i>
+                                <span data-i18n="projects.visitPlatform">Open Platform</span>
+                                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://helpnaescolha.com" target="_blank" rel="noopener noreferrer" class="project-link project-link--secondary">
+                                <span data-i18n="projects.visitSite">Product Site</span>
+                                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 04 · Signa -->
+                <article class="project-card" id="project-signa" data-index="3" data-categories="erp fullstack">
+                    <div class="project-media">
+                        <div class="project-media-inner">
+                            <img src="src/projects/signa-cover.jpg" alt="Signa — Hospital ERP Signature Studio" loading="lazy">
+                        </div>
+                        <div class="project-media-meta">
+                            <span class="project-badge-num">04</span>
+                            <span class="project-badge-kind" data-i18n="proj.signa.badge">ERP INTEGRATION</span>
+                        </div>
+                    </div>
+
+                    <div class="project-body">
+                        <div class="project-head">
+                            <h3 class="project-title">Signa</h3>
+                            <span class="project-role" data-i18n="proj.signa.role">Open Source · Tasy ERP Signature Studio</span>
+                        </div>
+
+                        <p class="project-desc" data-i18n="proj.signa.desc">
+                            Visual signature studio designed to standardize, capture, and export clinical staff signatures ready for seamless integration with the Tasy Hospital ERP.
+                        </p>
+
+                        <div class="project-stack-line" aria-label="Technology stack">
+                            <span>PHP</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Oracle / Tasy ERP</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Canvas API</span>
+                            <span class="stack-sep" aria-hidden="true">·</span>
+                            <span>Image Pipeline</span>
+                        </div>
+
+                        <div class="project-arch" data-arch>
+                            <button type="button" class="project-arch-toggle" aria-expanded="false">
+                                <span data-i18n="projects.archLabel">Architecture</span>
+                                <i class="ph ph-caret-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="project-arch-panel" hidden>
+                                <ul class="project-arch-list">
+                                    <li data-i18n="proj.signa.arch1">Interactive capture and crop studio producing consistent transparent signature assets with zero manual editing.</li>
+                                    <li data-i18n="proj.signa.arch2">Direct formatting and synchronization rules aligned with Tasy Hospital ERP document requirements.</li>
+                                    <li data-i18n="proj.signa.arch3">Environment-driven configuration and clean separation between visual studio UI and ERP integration adapters.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="project-actions">
+                            <a href="https://github.com/MarissaBorges/signa" target="_blank" rel="noopener noreferrer" class="project-link project-link--primary">
+                                <i class="ph ph-github-logo" aria-hidden="true"></i>
+                                <span data-i18n="projects.viewRepo">View Repository</span>
+                                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- Compact Editorial Strip: Other Projects & Labs -->
+        <div class="projects-labs">
+            <div class="projects-labs-head">
+                <span class="crop-mark" aria-hidden="true">+</span>
+                <span class="projects-labs-title" data-i18n="projects.labsHeading">OTHER PROJECTS &amp; LABS</span>
+            </div>
+
+            <div class="labs-list">
+                <a href="https://github.com/MarissaBorges/githermes" target="_blank" rel="noopener noreferrer" class="lab-row">
+                    <span class="lab-name">GitHermes</span>
+                    <span class="lab-desc" data-i18n="lab.githermes.desc">Hybrid documentation crawler &amp; clean Markdown pipeline built for RAG ingestion.</span>
+                    <span class="lab-stack">Python · Playwright · RAG</span>
+                    <i class="ph ph-arrow-up-right lab-arrow" aria-hidden="true"></i>
+                </a>
+
+                <a href="https://github.com/MarissaBorges/haffes" target="_blank" rel="noopener noreferrer" class="lab-row">
+                    <span class="lab-name">Haffe's Design System</span>
+                    <span class="lab-desc" data-i18n="lab.haffes.desc">Modular UI component architecture paired with custom GSAP SVG motion scenes.</span>
+                    <span class="lab-stack">HTML · CSS · GSAP</span>
+                    <i class="ph ph-arrow-up-right lab-arrow" aria-hidden="true"></i>
+                </a>
+
+                <a href="https://github.com/MarissaBorges/NeoGestao" target="_blank" rel="noopener noreferrer" class="lab-row">
+                    <span class="lab-name">NeoGestão</span>
+                    <span class="lab-desc" data-i18n="lab.neogestao.desc">Internal HR management system handling staff records, roles, and structured workflows.</span>
+                    <span class="lab-stack">Python · Django · PostgreSQL</span>
+                    <i class="ph ph-arrow-up-right lab-arrow" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </section>

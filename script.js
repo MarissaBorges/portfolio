@@ -40,6 +40,67 @@ document.addEventListener("DOMContentLoaded", () => {
       "about.exitChat": "Exit",
       "projects.heading": "Projects",
       "projects.view": "View Project →",
+      "projects.kicker": "PROJECTS",
+      "projects.filterAll": "All",
+      "projects.filterAi": "AI",
+      "projects.filterFullstack": "Full-Stack",
+      "projects.filterErp": "ERP",
+      "projects.moreGithub": "More on GitHub",
+      "projects.archLabel": "Architecture",
+      "projects.viewRepo": "View Repository",
+      "projects.visitPlatform": "Open Platform",
+      "projects.visitSite": "Product Site",
+      "projects.labsHeading": "OTHER PROJECTS & LABS",
+      "proj.oros.sub": "Local-First AI Assistant",
+      "proj.oros.badge": "LOCAL AI",
+      "proj.oros.role": "Open Source · Voice & Desktop Agent",
+      "proj.oros.desc":
+        "Local-first AI voice assistant that runs offline with Ollama and OpenJarvis, pairing system tool execution with persistent learned memory and a Django control deck.",
+      "proj.oros.arch1":
+        "Local LLM orchestration over Ollama + OpenJarvis with bounded system tools and voice capture.",
+      "proj.oros.arch2":
+        "Zero-dependency learned memory backed by Markdown files and SQLite FTS5 full-text indexing.",
+      "proj.oros.arch3":
+        "Django API and web deck for live session inspection, memory auditing, and tool control.",
+      "proj.tallenn.sub": "Career & Job Pipeline",
+      "proj.tallenn.badge": "AUTOMATION",
+      "proj.tallenn.role": "Open Source · Career Hub & Scraper",
+      "proj.tallenn.desc":
+        "Career discovery platform that automates job collection across real career portals using Playwright and Browser-use workers, unified inside an authenticated Django workspace.",
+      "proj.tallenn.arch1":
+        "FastAPI ingestion service dispatching asynchronous Playwright + Browser-use Actor scraping workers.",
+      "proj.tallenn.arch2":
+        "Authenticated Django workspace paired with PostgreSQL for job normalization, tracking, and saved states.",
+      "proj.tallenn.arch3":
+        "Custom GSAP animated SVG scenes and containerized Docker Compose deployment.",
+      "proj.hne.sub": "Commercial BI + AI SaaS",
+      "proj.hne.badge": "COMMERCIAL SAAS",
+      "proj.hne.role": "Production SaaS · Multi-Tenant BI + AI",
+      "proj.hne.desc":
+        "Commercial business intelligence SaaS combining real-time analytical dashboards with a dedicated LangGraph AI assistant that answers business questions safely per tenant.",
+      "proj.hne.arch1":
+        "Hybrid architecture separating core multi-tenant Django dashboards from an async FastAPI AI microservice.",
+      "proj.hne.arch2":
+        "LangGraph ReAct agent constrained to validated ORM tools with strict workspace row-level isolation.",
+      "proj.hne.arch3":
+        "ChromaDB semantic retrieval combined with PostgreSQL analytical views and Dockerized Nginx routing.",
+      "proj.signa.sub": "Tasy ERP Signature Studio",
+      "proj.signa.badge": "ERP INTEGRATION",
+      "proj.signa.role": "Open Source · Tasy ERP Signature Studio",
+      "proj.signa.desc":
+        "Visual signature studio designed to standardize, capture, and export clinical staff signatures ready for seamless integration with the Tasy Hospital ERP.",
+      "proj.signa.arch1":
+        "Interactive capture and crop studio producing consistent transparent signature assets with zero manual editing.",
+      "proj.signa.arch2":
+        "Direct formatting and synchronization rules aligned with Tasy Hospital ERP document requirements.",
+      "proj.signa.arch3":
+        "Environment-driven configuration and clean separation between visual studio UI and ERP integration adapters.",
+      "lab.githermes.desc":
+        "Hybrid documentation crawler & clean Markdown pipeline built for RAG ingestion.",
+      "lab.haffes.desc":
+        "Modular UI component architecture paired with custom GSAP SVG motion scenes.",
+      "lab.neogestao.desc":
+        "Internal HR management system handling staff records, roles, and structured workflows.",
       "contact.heading": "Contact",
     },
     pt: {
@@ -69,6 +130,67 @@ document.addEventListener("DOMContentLoaded", () => {
       "about.exitChat": "Sair",
       "projects.heading": "Projetos",
       "projects.view": "Ver Projeto →",
+      "projects.kicker": "PROJETOS",
+      "projects.filterAll": "Todos",
+      "projects.filterAi": "IA",
+      "projects.filterFullstack": "Full-Stack",
+      "projects.filterErp": "ERP",
+      "projects.moreGithub": "Mais no GitHub",
+      "projects.archLabel": "Arquitetura",
+      "projects.viewRepo": "Ver Repositório",
+      "projects.visitPlatform": "Acessar Plataforma",
+      "projects.visitSite": "Site do Produto",
+      "projects.labsHeading": "OUTROS PROJETOS & LABS",
+      "proj.oros.sub": "Assistente IA Local-First",
+      "proj.oros.badge": "IA LOCAL",
+      "proj.oros.role": "Open Source · Agente de Voz & Desktop",
+      "proj.oros.desc":
+        "Assistente de IA local-first com voz rodando offline via Ollama e OpenJarvis, unindo execução segura de ferramentas do sistema, memória persistente e painel web em Django.",
+      "proj.oros.arch1":
+        "Orquestração local de LLMs em Ollama + OpenJarvis com captura de voz e ferramentas do sistema com limites claros.",
+      "proj.oros.arch2":
+        "Memória de aprendizado sem dependências externas baseada em arquivos Markdown e índice SQLite FTS5.",
+      "proj.oros.arch3":
+        "API e painel web em Django para acompanhar sessões ao vivo, auditar memórias e gerenciar ferramentas.",
+      "proj.tallenn.sub": "Hub de Carreira & Coleta",
+      "proj.tallenn.badge": "AUTOMAÇÃO",
+      "proj.tallenn.role": "Open Source · Plataforma de Carreira",
+      "proj.tallenn.desc":
+        "Plataforma de carreira que automatiza a coleta de vagas em portais reais usando workers em Playwright e Browser-use, reunidos em um workspace autenticado em Django.",
+      "proj.tallenn.arch1":
+        "Serviço de ingestão em FastAPI disparando workers assíncronos de scraping com Playwright + Browser-use Actor.",
+      "proj.tallenn.arch2":
+        "Workspace autenticado em Django integrado ao PostgreSQL para normalização, acompanhamento e histórico de vagas.",
+      "proj.tallenn.arch3":
+        "Cenas SVG animadas sob medida com GSAP e infraestrutura containerizada via Docker Compose.",
+      "proj.hne.sub": "SaaS Comercial de BI + IA",
+      "proj.hne.badge": "SAAS COMERCIAL",
+      "proj.hne.role": "SaaS em Produção · BI Multi-Tenant + IA",
+      "proj.hne.desc":
+        "SaaS comercial de business intelligence que combina painéis analíticos em tempo real com um assistente dedicado em LangGraph respondendo perguntas de negócio com segurança por cliente.",
+      "proj.hne.arch1":
+        "Arquitetura híbrida separando painéis multi-tenant em Django de um microserviço assíncrono de IA em FastAPI.",
+      "proj.hne.arch2":
+        "Agente ReAct em LangGraph restrito a ferramentas ORM validadas com isolamento rigoroso por workspace.",
+      "proj.hne.arch3":
+        "Recuperação semântica em ChromaDB combinada a views analíticas no PostgreSQL e roteamento Nginx em Docker.",
+      "proj.signa.sub": "Estúdio de Assinaturas Tasy",
+      "proj.signa.badge": "INTEGRAÇÃO ERP",
+      "proj.signa.role": "Open Source · Assinaturas para ERP Tasy",
+      "proj.signa.desc":
+        "Estúdio visual criado para padronizar, capturar e exportar assinaturas de profissionais de saúde prontas para integração direta com o ERP Hospitalar Tasy.",
+      "proj.signa.arch1":
+        "Estúdio interativo de captura e recorte gerando assinaturas padronizadas com fundo transparente sem edição manual.",
+      "proj.signa.arch2":
+        "Regras de formatação e sincronização alinhadas aos requisitos de documentos do ERP Hospitalar Tasy.",
+      "proj.signa.arch3":
+        "Configuração orientada por variáveis de ambiente e separação limpa entre interface visual e adaptadores do ERP.",
+      "lab.githermes.desc":
+        "Crawler híbrido de documentações e pipeline de Markdown limpo feito para ingestão em RAG.",
+      "lab.haffes.desc":
+        "Arquitetura modular de componentes UI combinada com cenas SVG animadas em GSAP.",
+      "lab.neogestao.desc":
+        "Sistema interno de gestão de RH com cadastros de colaboradores, perfis e fluxos estruturados.",
       "contact.heading": "Contato",
     },
   };
@@ -1789,132 +1911,225 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // 8. PROJECTS SECTION — STICKY SCROLL & CAROUSELS
+  // 8. PROJECTS SECTION — STICKY INDEX, FILTERS, PARALLAX & ARCH
   // =========================================================
   const projectsContainer = document.querySelector(".projects-container");
   if (projectsContainer) {
-    const titleStack = document.querySelector(".title-stack");
-    const titleWords = gsap.utils.toArray(".title-word");
     const projectCards = gsap.utils.toArray(".project-card");
-    const sliderLine = document.querySelector(".slider-line");
+    const indexItems = gsap.utils.toArray(".project-index-item");
+    const progressFill = document.getElementById("projectsProgressFill");
+    const projectsCounter = document.getElementById("projectsCounter");
+    const filterButtons = gsap.utils.toArray(".project-filter");
+    const projectsRight = document.getElementById("projectsList");
 
-    gsap.fromTo(
-      sliderLine,
-      { background: "#39495b" },
-      {
-        background: "#e5e7eb",
-        ease: "none",
-        scrollTrigger: {
-          trigger: projectsContainer,
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
+    let activeProjectIdx = 0;
+
+    function getVisibleCards() {
+      return projectCards.filter((card) => !card.classList.contains("is-hidden"));
+    }
+
+    function padTwo(num) {
+      return String(num).padStart(2, "0");
+    }
+
+    function updateProjectsCounter(cardEl) {
+      if (!projectsCounter) return;
+      const visible = getVisibleCards();
+      const total = visible.length;
+      const pos = Math.max(1, visible.indexOf(cardEl) + 1);
+      projectsCounter.textContent = `${padTwo(pos)} / ${padTwo(total)}`;
+    }
+
+    function setActiveProject(idx) {
+      const targetCard = projectCards[idx];
+      if (!targetCard || targetCard.classList.contains("is-hidden")) return;
+      activeProjectIdx = idx;
+
+      indexItems.forEach((btn) => {
+        const btnIdx = Number(btn.dataset.index);
+        const isActive = btnIdx === idx;
+        btn.classList.toggle("is-active", isActive);
+        if (isActive && window.innerWidth <= 768) {
+          btn.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest",
+          });
+        }
+      });
+
+      updateProjectsCounter(targetCard);
+    }
+
+    // Continuous vertical progress hairline synced to project list scroll
+    if (progressFill && projectsRight) {
+      gsap.fromTo(
+        progressFill,
+        { scaleY: 0.14 },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: projectsRight,
+            start: "top 65%",
+            end: "bottom 70%",
+            scrub: true,
+          },
         },
-      },
-    );
+      );
+    }
 
+    // Track which project card is currently in focus
     projectCards.forEach((card, i) => {
       ScrollTrigger.create({
         trigger: card,
-        start: "top 60%",
-        end: "bottom 40%",
-        onEnter: () => updateActiveWord(i),
-        onEnterBack: () => updateActiveWord(i),
+        start: "top 55%",
+        end: "bottom 45%",
+        onEnter: () => setActiveProject(i),
+        onEnterBack: () => setActiveProject(i),
       });
     });
 
-    function updateActiveWord(index) {
-      const wordIndex = Math.min(index, titleWords.length - 1);
-      titleWords.forEach((word, w) => {
-        word.classList.toggle("active", w === wordIndex);
-        word.classList.toggle("ghost", w !== wordIndex);
-      });
-
-      const activeWord = titleWords[wordIndex];
-      if (!activeWord) return;
-      const wrapperCenter = 100;
-      const wordCenter = activeWord.offsetTop + activeWord.offsetHeight / 2;
-      const shiftY = wrapperCenter - wordCenter;
-
-      gsap.to(titleStack, {
-        y: shiftY,
-        duration: 0.8,
-        ease: "expo.out",
-        overwrite: "auto",
+    // Subtle vertical parallax on the 16:9 cover image (desktop only, where media-inner is 112% tall)
+    if (!prefersReducedMotion) {
+      const projMm = gsap.matchMedia();
+      projMm.add("(min-width: 769px)", () => {
+        projectCards.forEach((card) => {
+          const mediaInner = card.querySelector(".project-media-inner");
+          if (!mediaInner) return;
+          gsap.fromTo(
+            mediaInner,
+            { yPercent: -4.5 },
+            {
+              yPercent: 4.5,
+              ease: "none",
+              scrollTrigger: {
+                trigger: card,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            },
+          );
+        });
       });
     }
+
+    // Clicking an item in the sticky index scrolls cleanly to that project
+    indexItems.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.dataset.target;
+        const targetCard = targetId ? document.getElementById(targetId) : null;
+        if (!targetCard || targetCard.classList.contains("is-hidden")) return;
+
+        const navOffset = window.innerWidth <= 768 ? 132 : 96;
+        const top =
+          targetCard.getBoundingClientRect().top + window.scrollY - navOffset;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+        setActiveProject(Number(btn.dataset.index));
+      });
+    });
+
+    // Category filters (All / AI / Full-Stack / ERP)
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const filter = btn.dataset.filter || "all";
+
+        filterButtons.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        let firstVisibleIdx = -1;
+        projectCards.forEach((card, i) => {
+          const cats = (card.dataset.categories || "").split(/\s+/);
+          const match = filter === "all" || cats.includes(filter);
+          card.classList.toggle("is-hidden", !match);
+
+          const idxBtn = indexItems[i];
+          if (idxBtn) idxBtn.classList.toggle("is-filtered-out", !match);
+
+          if (match) {
+            if (firstVisibleIdx === -1) firstVisibleIdx = i;
+            if (!prefersReducedMotion) {
+              gsap.fromTo(
+                card,
+                { opacity: 0, y: 18 },
+                { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" },
+              );
+            }
+          }
+        });
+
+        if (firstVisibleIdx !== -1) {
+          setActiveProject(firstVisibleIdx);
+        }
+        ScrollTrigger.refresh();
+      });
+    });
+
+    // Expandable Architecture Peek accordion per project
+    document.querySelectorAll("[data-arch]").forEach((arch) => {
+      const toggle = arch.querySelector(".project-arch-toggle");
+      const panel = arch.querySelector(".project-arch-panel");
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener("click", () => {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        const nextOpen = !isOpen;
+        toggle.setAttribute("aria-expanded", nextOpen ? "true" : "false");
+
+        if (prefersReducedMotion) {
+          panel.hidden = !nextOpen;
+          ScrollTrigger.refresh();
+          return;
+        }
+
+        gsap.killTweensOf(panel);
+        if (nextOpen) {
+          panel.hidden = false;
+          const targetHeight = panel.scrollHeight;
+          gsap.fromTo(
+            panel,
+            { height: 0, opacity: 0 },
+            {
+              height: targetHeight,
+              opacity: 1,
+              duration: 0.36,
+              ease: "expo.out",
+              onComplete: () => {
+                panel.style.height = "auto";
+                ScrollTrigger.refresh();
+              },
+            },
+          );
+        } else {
+          gsap.fromTo(
+            panel,
+            { height: panel.scrollHeight, opacity: 1 },
+            {
+              height: 0,
+              opacity: 0,
+              duration: 0.28,
+              ease: "power2.inOut",
+              onComplete: () => {
+                panel.hidden = true;
+                panel.style.height = "";
+                ScrollTrigger.refresh();
+              },
+            },
+          );
+        }
+      });
+    });
+
+    // Initialize counter for default view
+    setActiveProject(activeProjectIdx);
   }
-
-  const carousels = document.querySelectorAll(".project-carousel");
-  carousels.forEach((carousel) => {
-    const trackEl = carousel.querySelector(".carousel-track");
-    const images = carousel.querySelectorAll(".carousel-track img");
-    const prevBtn = carousel.querySelector(".prev-btn");
-    const nextBtn = carousel.querySelector(".next-btn");
-    const indicatorsContainer = carousel.querySelector(".carousel-indicators");
-
-    if (!trackEl || images.length === 0) return;
-
-    let currentIndex = 0;
-    const totalImages = images.length;
-    let autoPlayInterval;
-
-    images.forEach((_, i) => {
-      const dot = document.createElement("span");
-      dot.classList.add("dot");
-      if (i === 0) dot.classList.add("active");
-      dot.addEventListener("click", () => goToSlide(i));
-      indicatorsContainer.appendChild(dot);
-    });
-
-    const dots = indicatorsContainer.querySelectorAll(".dot");
-
-    function updateCarousel() {
-      trackEl.style.transform = `translateX(-${currentIndex * 100}%)`;
-      dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === currentIndex);
-      });
-    }
-
-    function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalImages;
-      updateCarousel();
-    }
-
-    function prevSlide() {
-      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
-      updateCarousel();
-    }
-
-    function goToSlide(index) {
-      currentIndex = index;
-      updateCarousel();
-    }
-
-    function startAutoPlay() {
-      autoPlayInterval = setInterval(nextSlide, 3500);
-    }
-
-    function stopAutoPlay() {
-      clearInterval(autoPlayInterval);
-    }
-
-    nextBtn.addEventListener("click", () => {
-      nextSlide();
-      stopAutoPlay();
-      startAutoPlay();
-    });
-
-    prevBtn.addEventListener("click", () => {
-      prevSlide();
-      stopAutoPlay();
-      startAutoPlay();
-    });
-
-    carousel.addEventListener("mouseenter", stopAutoPlay);
-    carousel.addEventListener("mouseleave", startAutoPlay);
-    startAutoPlay();
-  });
 
   // =========================================================
   // 9. MOBILE NATIVE FULLSCREEN CHAT IMMERSION
